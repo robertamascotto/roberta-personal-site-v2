@@ -40,6 +40,13 @@ export default defineType({
       options: { list: ASPECT_RATIOS, layout: "dropdown" },
       initialValue: "4/5",
     }),
+    defineField({
+      name: "frameWidth",
+      title: "Frame Width (px)",
+      type: "number",
+      description:
+        "Only used for the Editorials index page's staggered cover frames — the image's display width in pixels at desktop size (height follows automatically from the crop shape above). Leave blank elsewhere.",
+    }),
   ],
   preview: {
     select: { title: "alt", media: "image" },

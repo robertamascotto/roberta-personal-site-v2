@@ -3,26 +3,26 @@ import Image from "next/image";
 import { urlFor } from "@/studio/lib/image";
 import type { EditorialSummary } from "@/studio/lib/helpers";
 
-// Frames within a shoot vary in both size and vertical position — this is
-// what gives the teaser its scattered, editorial-mosaic feel, rather than a
-// uniform row of same-height images.
-const HEIGHT_SCALE = [0.74, 1, 0.68, 0.86];
-const OFFSETS = [22, -18, 26, -14];
+// Matches the source design's mechanism: each frame gets an explicit
+// display width (from the CMS) and its own aspect ratio, so height derives
+// automatically. Frames are vertically centered on a shared midline, so a
+// taller frame naturally extends further above/below it than a shorter
+// one — that's what produces the staggered look, not an artificial offset.
+const FALLBACK_WIDTHS = [280, 360, 260, 240];
 
 export default function EditorialTeaser({ editorial }: { editorial: EditorialSummary }) {
   const frames = editorial.coverFrames || [];
 
   return (
     <section className="border-t border-ink/10 py-14">
-      <div className="flex items-center justify-center gap-8 md:gap-10 h-[340px] md:h-[500px] mb-9 flex-wrap md:flex-nowrap">
+      <div className="flex items-center justify-center gap-5 mb-9 flex-wrap md:flex-nowrap">
         {frames.map((frame, i) => (
           <div
             key={i}
             className="relative flex-none"
             style={{
+              width: frame.frameWidth || FALLBACK_WIDTHS[i % FALLBACK_WIDTHS.length],
               aspectRatio: frame.aspectRatio || "4/5",
-              height: `${HEIGHT_SCALE[i % HEIGHT_SCALE.length] * 100}%`,
-              marginTop: OFFSETS[i % OFFSETS.length],
             }}
           >
             <Image

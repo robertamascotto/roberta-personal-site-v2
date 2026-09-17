@@ -43,7 +43,7 @@ export const siteConfigQuery = groq`*[_type == "siteConfig"][0]{
   siteMetadata{siteDescription, siteTitleTemplate}
 }`;
 
-const imageWithAspectProjection = groq`{ image, alt, aspectRatio }`;
+const imageWithAspectProjection = groq`{ image, alt, aspectRatio, frameWidth }`;
 
 // All editorials, ordered for the Editorials index page
 export const editorialsQuery = groq`*[_type == "editorial"] | order(orderRank asc){

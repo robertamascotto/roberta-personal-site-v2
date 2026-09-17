@@ -64,6 +64,7 @@ export interface ImageWithAspect {
   image: unknown;
   alt: string;
   aspectRatio?: string;
+  frameWidth?: number;
 }
 
 export interface EditorialSummary {

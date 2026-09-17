@@ -113,14 +113,15 @@ function key() {
   return Math.random().toString(36).slice(2, 10);
 }
 
-/** An `imageWithAspect` object: [filename, alt, aspectRatio] */
-async function frame([filename, alt, aspectRatio]) {
+/** An `imageWithAspect` object: [filename, alt, aspectRatio, frameWidth?] */
+async function frame([filename, alt, aspectRatio, frameWidth]) {
   return {
     _type: "imageWithAspect",
     _key: key(),
     image: await image(filename),
     alt,
     aspectRatio: String(aspectRatio),
+    ...(frameWidth ? { frameWidth } : {}),
   };
 }
 
@@ -144,9 +145,9 @@ const editorials = [
     description:
       "Personal editorial shot against black with a single directional light source.\nExplores what a body reveals and withholds under partial light.\nDried florals and a bare shoulder are the only points of contact with the frame.",
     coverFrames: [
-      ["ed-1a-e53b1f5a.jpg", "Soft Exposure — frame 1", "2/3"],
-      ["ed-1b-d2cd0a3b.jpg", "Soft Exposure — frame 2", "3/4"],
-      ["ed-1c-eb44c6b5.jpg", "Soft Exposure — frame 3", "3/2"],
+      ["ed-1a-e53b1f5a.jpg", "Soft Exposure — frame 1", "2/3", 320],
+      ["ed-1b-d2cd0a3b.jpg", "Soft Exposure — frame 2", "3/4", 380],
+      ["ed-1c-eb44c6b5.jpg", "Soft Exposure — frame 3", "3/2", 400],
     ],
     gallery: [
       ["se-full-1-a0c8973f.jpg", "Soft Exposure — frame 1", "5184/3455"],
@@ -165,9 +166,9 @@ const editorials = [
     description:
       "A personal editorial about waiting for someone who isn't calling back and deciding it doesn't matter anymore.\nVintage phone, pearls, and soft pink satin play against the character's shift from longing to not caring at all.",
     coverFrames: [
-      ["ed-2a.jpg", "Double Exposure — frame 1", "3/4"],
-      ["ed-2b.jpg", "Double Exposure — frame 2", "3/2"],
-      ["ed-2c.jpg", "Double Exposure — frame 3", "2/3"],
+      ["ed-2a.jpg", "Double Exposure — frame 1", "3/4", 200],
+      ["ed-2b.jpg", "Double Exposure — frame 2", "3/2", 520],
+      ["ed-2c.jpg", "Double Exposure — frame 3", "2/3", 160],
     ],
     gallery: [
       ["do-full1.jpg", "Double Exposure — frame 1", "3/2"],
@@ -192,9 +193,9 @@ const editorials = [
     description:
       "Personal editorial split across two treatments,\nWarm, retro portraits with vintage sunglasses and silk headscarves.\nCold, moody portraits shot with colored flash.\nThe amber lenses and the blue-lit color shift carry the mood shift between the two halves.",
     coverFrames: [
-      ["ed-3a.jpg", "Wrong Number — frame 1", "3/2"],
-      ["ed-3b.jpg", "Wrong Number — frame 2", "4/5"],
-      ["ed-3c.jpg", "Wrong Number — frame 3", "1/1"],
+      ["ed-3a.jpg", "Wrong Number — frame 1", "3/2", 360],
+      ["ed-3b.jpg", "Wrong Number — frame 2", "4/5", 340],
+      ["ed-3c.jpg", "Wrong Number — frame 3", "1/1", 300],
     ],
     gallery: [
       ["wn-full1.jpg", "Wrong Number — frame 1", "3/2"],
@@ -214,10 +215,10 @@ const editorials = [
     year: "2024",
     description: "Wet-look hair, heavy silver and gold jewelry,\nA smoky eye play against the rawness of fire held close to skin.",
     coverFrames: [
-      ["ed-4a.jpg", "Strike — frame 1", "1/1"],
-      ["ed-4b.jpg", "Strike — frame 2", "3/4"],
-      ["ed-4m.jpg", "Strike — frame 3", "4/5"],
-      ["ed-4c.jpg", "Strike — frame 4", "16/10"],
+      ["ed-4a.jpg", "Strike — frame 1", "1/1", 200],
+      ["ed-4b.jpg", "Strike — frame 2", "3/4", 220],
+      ["ed-4m.jpg", "Strike — frame 3", "4/5", 300],
+      ["ed-4c.jpg", "Strike — frame 4", "16/10", 290],
     ],
     gallery: [
       ["st-full-1.JPG", "Strike — frame 1", "1/1"],
@@ -237,9 +238,9 @@ const editorials = [
     description:
       "Campaign photography for Smoke Rise NY's SS25 collection, styled around a recording studio setting.\nTalent shot in and around studio gear: headphones, mixing consoles, mic booths with the intent to ground the collection in a real working environment rather than a traditional studio backdrop.",
     coverFrames: [
-      ["ed-5a.jpg", "In Session SS25 — frame 1", "1/1"],
-      ["ed-5b.jpg", "In Session SS25 — frame 2", "3/4"],
-      ["ed-5c.jpg", "In Session SS25 — frame 3", "3/2"],
+      ["ed-5a.jpg", "In Session SS25 — frame 1", "1/1", 270],
+      ["ed-5b.jpg", "In Session SS25 — frame 2", "3/4", 380],
+      ["ed-5c.jpg", "In Session SS25 — frame 3", "3/2", 310],
     ],
     gallery: [
       ["is25-full-1.jpg", "In Session — 2025 — frame 1", "3/5"],
@@ -263,10 +264,10 @@ const editorials = [
     description:
       "A black and white portrait series shot using natural window light.\nSimple, undone styling across multiple subjects, focused on face and expression rather than concept or wardrobe.",
     coverFrames: [
-      ["ed-6a.jpg", "West Village — frame 1", "5/4"],
-      ["ed-6b.jpg", "West Village — frame 2", "1/1"],
-      ["ed-6c.jpg", "West Village — frame 3", "4/5"],
-      ["ed-6d.jpg", "West Village — frame 4", "3/2"],
+      ["ed-6a.jpg", "West Village — frame 1", "5/4", 240],
+      ["ed-6b.jpg", "West Village — frame 2", "1/1", 280],
+      ["ed-6c.jpg", "West Village — frame 3", "4/5", 200],
+      ["ed-6d.jpg", "West Village — frame 4", "3/2", 240],
     ],
     gallery: [
       ["wv-full-1.jpg", "West Village — 2022 — frame 1", "3/2"],
@@ -290,9 +291,9 @@ const editorials = [
     description:
       "New York City streets.\nSimple styling: a white collared top and tan trousers, kept the focus on candid movement and the surrounding city backdrop.",
     coverFrames: [
-      ["ed-7a.jpg", "Loft — frame 1", "3/2"],
-      ["ed-7b.jpg", "Loft — frame 2", "1/1"],
-      ["ed-7c.jpg", "Loft — frame 3", "4/5"],
+      ["ed-7a.jpg", "Loft — frame 1", "3/2", 310],
+      ["ed-7b.jpg", "Loft — frame 2", "1/1", 360],
+      ["ed-7c.jpg", "Loft — frame 3", "4/5", 250],
     ],
     gallery: [
       ["loft-full-1.JPG", "Loft — 2024 — frame 1", "3/2"],
