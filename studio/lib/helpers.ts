@@ -127,6 +127,7 @@ export interface ProductCaseStudy {
 export interface ProductSubGallery {
   title: string;
   slug: string;
+  fullGalleryGap?: number;
   fullGallery: ImageWithAspect[];
   parent: { title: string; slug: string };
   siblings: { title: string; slug: string }[];

@@ -31,23 +31,33 @@ export default async function ProductSubGalleryPage({
 
   if (!sub) notFound();
 
+  // The parent case study sits at both ends of the sibling order — it's
+  // the "previous" from the first sub-gallery and the "next" after the
+  // last one, matching the source design's nav on every sub-gallery page.
   const siblingIndex = sub.siblings.findIndex((s) => s.slug === subSlug);
-  const prevSibling = siblingIndex > 0 ? sub.siblings[siblingIndex - 1] : null;
+  const left =
+    siblingIndex > 0
+      ? { href: `/products/${slug}/${sub.siblings[siblingIndex - 1].slug}`, label: sub.siblings[siblingIndex - 1].title }
+      : { href: `/products/${slug}`, label: sub.parent.title };
+  const right =
+    siblingIndex < sub.siblings.length - 1
+      ? { href: `/products/${slug}/${sub.siblings[siblingIndex + 1].slug}`, label: sub.siblings[siblingIndex + 1].title }
+      : { href: `/products/${slug}`, label: sub.parent.title };
+
+  const navBar = (className: string) => (
+    <div className={className}>
+      <Link href={left.href} className="no-underline">
+        &#8592; {left.label}
+      </Link>
+      <Link href={right.href} className="no-underline">
+        {right.label} &#8594;
+      </Link>
+    </div>
+  );
 
   return (
     <PageContainer>
-      <div className="flex justify-between border-b border-ink/12 pt-6 pb-8 text-[13px]">
-        {prevSibling ? (
-          <Link href={`/products/${slug}/${prevSibling.slug}`} className="no-underline">
-            &#8592; {prevSibling.title}
-          </Link>
-        ) : (
-          <span />
-        )}
-        <Link href={`/products/${slug}`} className="no-underline">
-          {sub.parent.title} &#8594;
-        </Link>
-      </div>
+      {navBar("flex justify-between border-b border-ink/12 pt-6 pb-8 text-[13px]")}
 
       <section className="pt-6 pb-12 max-w-[64ch]">
         <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] m-0">
@@ -56,21 +66,10 @@ export default async function ProductSubGalleryPage({
       </section>
 
       <section className="pb-24">
-        <LightboxGrid images={sub.fullGallery} />
+        <LightboxGrid images={sub.fullGallery} gap={sub.fullGalleryGap ?? 12} />
       </section>
 
-      <div className="flex justify-between border-t border-ink/12 pt-8 pb-16 text-[13px]">
-        {prevSibling ? (
-          <Link href={`/products/${slug}/${prevSibling.slug}`} className="no-underline">
-            &#8592; {prevSibling.title}
-          </Link>
-        ) : (
-          <span />
-        )}
-        <Link href={`/products/${slug}`} className="no-underline">
-          {sub.parent.title} &#8594;
-        </Link>
-      </div>
+      {navBar("flex justify-between border-t border-ink/12 pt-8 pb-16 text-[13px]")}
     </PageContainer>
   );
 }

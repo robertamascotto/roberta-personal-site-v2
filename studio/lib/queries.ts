@@ -116,6 +116,7 @@ export const productCaseStudyNeighborsQuery = groq`*[_type == "productCaseStudy"
 export const productSubGalleryBySlugQuery = groq`*[_type == "productSubGallery" && slug.current == $subSlug && parentCaseStudy->slug.current == $parentSlug][0]{
   title,
   "slug": slug.current,
+  fullGalleryGap,
   fullGallery[]${imageWithAspectProjection},
   "parent": parentCaseStudy->{title, "slug": slug.current},
   "siblings": *[_type == "productSubGallery" && parentCaseStudy._ref == ^.parentCaseStudy._ref] | order(orderRank asc){

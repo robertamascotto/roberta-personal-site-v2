@@ -64,6 +64,13 @@ export default defineType({
       group: "gallery",
       validation: (rule) => rule.min(1),
     }),
+    defineField({
+      name: "fullGalleryGap",
+      title: "Full Gallery Gap (px)",
+      type: "number",
+      description: "Space between images on the 'See all' page's grid. Leave blank for the standard 12px.",
+      group: "gallery",
+    }),
     orderRankField({ type: "productSubGallery", hidden: true }),
   ],
   orderings: [orderRankOrdering],

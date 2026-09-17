@@ -7,7 +7,7 @@ import AspectImage from "./AspectImage";
 import { urlFor } from "@/studio/lib/image";
 import type { ImageWithAspect } from "@/studio/lib/helpers";
 
-export default function LightboxGrid({ images }: { images: ImageWithAspect[] }) {
+export default function LightboxGrid({ images, gap = 12 }: { images: ImageWithAspect[]; gap?: number }) {
   const [index, setIndex] = useState(-1);
 
   const slides = images.map((img) => ({
@@ -17,7 +17,7 @@ export default function LightboxGrid({ images }: { images: ImageWithAspect[] }) 
 
   return (
     <>
-      <div className="grid grid-cols-2 min-[901px]:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 min-[901px]:grid-cols-4 max-[640px]:!gap-2" style={{ gap }}>
         {images.map((img, i) => (
           <button
             key={i}

@@ -359,6 +359,7 @@ const productCaseStudies = [
         title: "On Figure",
         description:
           "On-figure ecommerce shoot. Each piece photographed against a consistent, post-edited background for a clean, uniform look across the collection. Shot with controlled lighting to ensure accurate color and detail reproduction.",
+        fullGalleryGap: 32,
         teaserImages: [
           ["sr-onfigure-1.jpg", "On figure — 01", "3/4"],
           ["sr-onfigure-2.jpg", "On figure — 02", "3/4"],
@@ -729,6 +730,7 @@ async function run() {
         title: sg.title,
         slug: { _type: "slug", current: sg.slug },
         description: sg.description,
+        fullGalleryGap: sg.fullGalleryGap,
         teaserImages: await frames(sg.teaserImages),
         fullGallery: await frames(sg.fullGallery),
         orderRank: orderRank(j),
