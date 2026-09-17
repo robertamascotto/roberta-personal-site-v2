@@ -1,38 +1,28 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
-import { getSocialIcon } from "@/lib/socialIcons";
+import { useState, type FormEvent } from "react";
 import type { SiteConfig } from "@/studio/lib/helpers";
-import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const defaults = {
-  sectionLabel: "Get in Touch",
-  heading: "Let's Work Together",
-  introText: "Have a project in mind? I'd love to hear about it. Let's create something beautiful together.",
-  location: "Los Angeles, CA",
-  availability: "Open for projects",
-  quote: "Every great photograph begins with a conversation.",
+  sectionLabel: "Contact",
+  heading: "Let's talk",
   formLabels: {
     name: "Name",
     email: "Email",
     projectType: "Project Type",
-    message: "Message",
-    submitButton: "Send Message",
+    message: "Project",
+    submitButton: "Send enquiry",
   },
   formPlaceholders: {
     name: "Your name",
-    email: "your@email.com",
+    email: "you@brand.com",
     projectType: "Select a project type",
-    message: "Tell me about your project...",
+    message: "What you need, timeline, anything else",
   },
-  projectTypes: [
-    "Lifestyle Photography",
-    "Ecommerce & Product",
-    "Brand Campaign",
-    "Other",
-  ],
-  successMessage: "Thank you! Your message has been sent.",
-  errorMessage: "Something went wrong. Please try again.",
+  successMessage: "Thanks — your brief has been noted.",
+  errorMessage: "Something went wrong. Please try again or email me directly.",
+  contactInfoHeading: "Direct",
+  availability: "Replies within two working days.",
 };
 
 interface ContactPageClientProps {
@@ -40,27 +30,12 @@ interface ContactPageClientProps {
 }
 
 export default function ContactPageClient({ siteConfig }: ContactPageClientProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const reducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (reducedMotion) {
-      setIsLoaded(true);
-      return;
-    }
-    const timer = setTimeout(() => setIsLoaded(true), 100);
-    return () => clearTimeout(timer);
-  }, [reducedMotion]);
 
   const contactPage = siteConfig?.contactPage;
 
   const sectionLabel = contactPage?.sectionLabel || defaults.sectionLabel;
   const heading = contactPage?.heading || defaults.heading;
-  const introText = contactPage?.introText || defaults.introText;
-  const location = contactPage?.location || defaults.location;
-  const availability = contactPage?.availability || defaults.availability;
-  const quote = contactPage?.quote || defaults.quote;
 
   const formLabels = {
     name: contactPage?.formLabels?.name || defaults.formLabels.name,
@@ -78,17 +53,11 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
   };
 
   const cmsProjectTypes = contactPage?.projectTypes?.filter(
-    (t): t is string => t !== null && t !== undefined && t.length > 0
+    (t): t is string => !!t && t.length > 0
   );
-  const projectTypes = (cmsProjectTypes && cmsProjectTypes.length > 0) ? cmsProjectTypes : defaults.projectTypes;
 
   const successMessage = contactPage?.successMessage || defaults.successMessage;
   const errorMessage = contactPage?.errorMessage || defaults.errorMessage;
-
-  const socialLinks = siteConfig?.socialLinks?.filter(
-    (link): link is NonNullable<typeof link> & { url: string } =>
-      link !== null && link !== undefined && !!link.url
-  ) || [];
 
   const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 
@@ -100,10 +69,7 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
     const formData = new FormData(form);
 
     try {
-      const endpoint = formspreeId
-        ? `https://formspree.io/f/${formspreeId}`
-        : "/api/contact";
-
+      const endpoint = formspreeId ? `https://formspree.io/f/${formspreeId}` : "/api/contact";
       const response = await fetch(endpoint, {
         method: "POST",
         body: formData,
@@ -122,267 +88,88 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
   };
 
   return (
-    <div className="py-16 md:py-24">
-      <div className="max-w-6xl mx-auto">
-        {/* Header — left-aligned */}
-        <div className="mb-16 md:mb-20 max-w-2xl">
-          <p
-            className={`text-[0.6875rem] tracking-[0.3em] uppercase text-warm-gray-lighter mb-4 transition-all duration-1000 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
-            style={{
-              transitionTimingFunction: "var(--ease-luxe)",
-              transitionDelay: "100ms",
-            }}
-          >
-            {sectionLabel}
-          </p>
-          <h1
-            className={`font-display text-4xl md:text-5xl lg:text-6xl font-light text-warm-gray mb-6 transition-all duration-1000 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-            style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-          >
-            {heading}
-          </h1>
-          {/* Accent rule */}
-          <div className="w-16 h-px bg-accent mb-6" />
-          <p
-            className={`text-warm-gray-light transition-all duration-1000 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
-            style={{
-              transitionTimingFunction: "var(--ease-luxe)",
-              transitionDelay: "200ms",
-            }}
-          >
-            {introText}
-          </p>
-        </div>
+    <div className="max-w-[1240px] mx-auto px-5 md:px-[clamp(20px,5vw,64px)] pt-[90px]">
+      <section className="pt-[72px] pb-14 max-w-[64ch]">
+        <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-[18px]">{sectionLabel}</span>
+        <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] m-0">
+          {heading}
+        </h1>
+      </section>
 
-        {/* Split Layout */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Contact Form */}
-          <div
-            className={`transition-all duration-1000 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-            style={{
-              transitionTimingFunction: "var(--ease-luxe)",
-              transitionDelay: "300ms",
-            }}
-          >
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-8"
+      <section className="grid lg:grid-cols-2 gap-14 lg:gap-[72px] border-t border-ink/10 pt-14 pb-20">
+        <div>
+          <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">Send a brief</span>
+          <form onSubmit={handleSubmit} className="grid gap-6 max-w-[44ch]">
+            <label className="grid gap-2">
+              <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.name}</span>
+              <input type="text" name="name" required className="editorial-input" placeholder={formPlaceholders.name} />
+            </label>
+
+            <label className="grid gap-2">
+              <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.email}</span>
+              <input type="email" name="email" required className="editorial-input" placeholder={formPlaceholders.email} />
+            </label>
+
+            {cmsProjectTypes && cmsProjectTypes.length > 0 && (
+              <label className="grid gap-2">
+                <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.projectType}</span>
+                <select name="project-type" className="editorial-input cursor-pointer appearance-none">
+                  <option value="">{formPlaceholders.projectType}</option>
+                  {cmsProjectTypes.map((type) => (
+                    <option key={type} value={type.toLowerCase().replace(/\s+/g, "-")}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
+            <label className="grid gap-2">
+              <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.message}</span>
+              <textarea name="message" rows={5} required className="editorial-input resize-y" placeholder={formPlaceholders.message} />
+            </label>
+
+            <button
+              type="submit"
+              disabled={formStatus === "submitting"}
+              className="justify-self-start mt-1 bg-ink text-paper border-0 px-7 py-[15px] font-body text-sm font-semibold tracking-[0.02em] cursor-pointer hover:bg-ink/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm tracking-wide text-warm-gray mb-2"
-                >
-                  {formLabels.name}
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  className="editorial-input"
-                  placeholder={formPlaceholders.name}
-                />
-              </div>
+              {formStatus === "submitting" ? "Sending..." : formLabels.submitButton}
+            </button>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm tracking-wide text-warm-gray mb-2"
-                >
-                  {formLabels.email}
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="editorial-input"
-                  placeholder={formPlaceholders.email}
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="project-type"
-                  className="block text-sm tracking-wide text-warm-gray mb-2"
-                >
-                  {formLabels.projectType}
-                </label>
-                <div className="relative">
-                  <select
-                    id="project-type"
-                    name="project-type"
-                    className="editorial-input cursor-pointer appearance-none pr-6"
-                  >
-                    <option value="">{formPlaceholders.projectType}</option>
-                    {projectTypes.map((type, index) => (
-                      <option key={index} value={type.toLowerCase().replace(/\s+/g, '-')}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                  <svg
-                    className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-gray-light pointer-events-none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm tracking-wide text-warm-gray mb-2"
-                >
-                  {formLabels.message}
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  required
-                  className="editorial-input resize-none"
-                  placeholder={formPlaceholders.message}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={formStatus === "submitting"}
-                className="px-10 py-4 text-sm tracking-[0.1em] uppercase bg-warm-gray text-cream hover:bg-accent transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-              >
-                {formStatus === "submitting" ? "Sending..." : formLabels.submitButton}
-              </button>
-
-              {formStatus === "success" && (
-                <p role="status" aria-live="polite" className="text-accent text-sm animate-fade-in-up">
-                  {successMessage}
-                </p>
-              )}
-
-              {formStatus === "error" && (
-                <p role="alert" className="text-red-600 text-sm animate-fade-in-up">
-                  {errorMessage}
-                </p>
-              )}
-            </form>
-          </div>
-
-          {/* Contact Info — clean typography with vertical rule */}
-          <div
-            className={`transition-all duration-1000 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-            style={{
-              transitionTimingFunction: "var(--ease-luxe)",
-              transitionDelay: "400ms",
-            }}
-          >
-            <div className="lg:border-l lg:border-cream-darker lg:pl-12 h-full">
-              <h2 className="font-display text-2xl md:text-3xl font-light text-warm-gray mb-8">
-                {contactPage?.contactInfoHeading || "Contact Information"}
-              </h2>
-
-              {/* Email */}
-              {siteConfig?.email && (
-                <div className="mb-8">
-                  <p className="text-[0.6875rem] tracking-[0.2em] uppercase text-warm-gray-lighter mb-2">
-                    {contactPage?.emailLabel || "Email"}
-                  </p>
-                  <a
-                    href={`mailto:${siteConfig.email}`}
-                    className="text-lg text-warm-gray hover:text-accent transition-colors duration-300"
-                  >
-                    {siteConfig.email}
-                  </a>
-                </div>
-              )}
-
-              {/* Location */}
-              <div className="mb-8">
-                <p className="text-[0.6875rem] tracking-[0.2em] uppercase text-warm-gray-lighter mb-2">
-                  {contactPage?.locationLabel || "Based In"}
-                </p>
-                <p className="text-lg text-warm-gray">
-                  {location}
-                </p>
-              </div>
-
-              {/* Availability */}
-              <div className="mb-10">
-                <p className="text-[0.6875rem] tracking-[0.2em] uppercase text-warm-gray-lighter mb-2">
-                  {contactPage?.availabilityLabel || "Availability"}
-                </p>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <p className="text-lg text-warm-gray">
-                    {availability}
-                  </p>
-                </div>
-              </div>
-
-              {/* Social Links */}
-              {socialLinks.length > 0 && (
-                <div>
-                  <p className="text-[0.6875rem] tracking-[0.2em] uppercase text-warm-gray-lighter mb-4">
-                    {contactPage?.socialLabel || "Follow Along"}
-                  </p>
-                  <div className="flex gap-4">
-                    {socialLinks.map((link) => (
-                      <a
-                        key={link.platform || link.url}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-11 h-11 flex items-center justify-center rounded-full border border-warm-gray-lighter/30 text-warm-gray-light hover:text-accent hover:border-accent transition-all duration-300"
-                        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                        aria-label={link.platform || "Social link"}
-                      >
-                        {getSocialIcon(link.platform)}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Decorative Quote */}
-              <div className="mt-12 pt-8 border-t border-warm-gray-lighter/30">
-                <p className="font-display text-xl md:text-2xl italic text-warm-gray-light leading-relaxed">
-                  &ldquo;{quote}&rdquo;
-                </p>
-              </div>
-            </div>
-          </div>
+            {formStatus === "success" && (
+              <p role="status" aria-live="polite" className="text-[13.5px] leading-[21px] text-ink/60 m-0">
+                {successMessage}
+              </p>
+            )}
+            {formStatus === "error" && (
+              <p role="alert" className="text-[13.5px] leading-[21px] text-red-700 m-0">
+                {errorMessage}
+              </p>
+            )}
+          </form>
         </div>
 
-        {/* No contact info fallback */}
-        {!siteConfig?.email && socialLinks.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-warm-gray-light">
-              Add your contact information through the{" "}
-              <a href="/studio" className="text-accent hover:text-accent-dark underline">
-                studio
-              </a>
-              .
-            </p>
-          </div>
-        )}
-      </div>
+        <div>
+          <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">
+            {contactPage?.contactInfoHeading || defaults.contactInfoHeading}
+          </span>
+          {siteConfig?.email && (
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="font-accent italic font-light text-[clamp(22px,2.4vw,30px)] leading-[1.25] no-underline inline-block mb-3"
+            >
+              {siteConfig.email}
+            </a>
+          )}
+          <p className="text-sm leading-[22px] text-ink/60 mb-2.5 mt-0">
+            {contactPage?.availability || defaults.availability}
+          </p>
+          {contactPage?.location && (
+            <p className="text-xs tracking-[0.1em] uppercase text-ink/38 m-0">{contactPage.location}</p>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

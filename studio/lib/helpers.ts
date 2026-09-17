@@ -14,7 +14,7 @@ import {
 
 export interface ProjectTeaser {
   image?: unknown;
-  video?: { asset?: { url?: string } };
+  videoUrl?: string;
   blurb?: string;
 }
 
@@ -23,18 +23,14 @@ export interface SiteConfig {
   email?: string;
   socialLinks?: { platform?: string; url?: string }[];
   footerTagline?: string;
+  footerDescription?: string;
   footerCTA?: { heading?: string; linkText?: string; linkUrl?: string };
   navigationLinks?: { label?: string; href?: string }[];
   mobileTagline?: string;
   homePage?: {
-    heroTagline?: string;
     heroImage?: unknown;
     heroImageLqip?: string;
     heroHeadline?: string;
-    heroSubtitle?: string;
-    heroTaglineColor?: string;
-    heroHeadlineColor?: string;
-    heroSubtitleColor?: string;
     featuredProjects?: {
       editorial?: ProjectTeaser;
       products?: ProjectTeaser;
@@ -62,7 +58,6 @@ export interface SiteConfig {
   };
   footerLabels?: { navigationHeading?: string; contactHeading?: string; copyrightText?: string };
   siteMetadata?: { siteDescription?: string; siteTitleTemplate?: string };
-  theme?: { themePreset?: string; backgroundColor?: string; textColor?: string; accentColor?: string; fontPairing?: string };
 }
 
 export interface ImageWithAspect {

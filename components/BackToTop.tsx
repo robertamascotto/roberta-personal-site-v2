@@ -24,7 +24,7 @@ export default function BackToTop() {
       aria-label="Back to top"
       tabIndex={isVisible ? 0 : -1}
       aria-hidden={!isVisible}
-      className={`fixed bottom-6 right-6 z-40 w-11 h-11 flex items-center justify-center bg-cream/80 backdrop-blur-sm text-warm-gray-light hover:text-warm-gray border border-cream-darker hover:border-warm-gray-lighter transition-all duration-300 ${
+      className={`fixed bottom-6 right-6 z-40 w-11 h-11 flex items-center justify-center bg-paper/80 backdrop-blur-sm text-ink/60 hover:text-ink border border-ink/15 hover:border-ink/35 transition-all duration-300 ${
         isVisible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none"

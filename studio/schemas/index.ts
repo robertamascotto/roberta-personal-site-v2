@@ -11,7 +11,6 @@ import homePage from "./objects/homePage";
 import contactPage from "./objects/contactPage";
 import footerLabels from "./objects/footerLabels";
 import siteMetadata from "./objects/siteMetadata";
-import themeConfig from "./objects/themeConfig";
 import imageWithAspect from "./objects/imageWithAspect";
 import imageGridBlock from "./objects/imageGridBlock";
 import scrollStripBlock from "./objects/scrollStripBlock";
@@ -39,7 +38,6 @@ export const schemaTypes = [
   contactPage,
   footerLabels,
   siteMetadata,
-  themeConfig,
   imageWithAspect,
   imageGridBlock,
   scrollStripBlock,

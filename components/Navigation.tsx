@@ -4,59 +4,50 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DEFAULT_NAVIGATION_LINKS } from "@/lib/constants";
-import { useReducedMotion } from "@/lib/useReducedMotion";
 import { toValidNavLinks, type NavigationLink } from "@/lib/types";
 
 interface NavigationProps {
   siteName?: string;
   navigationLinks?: (NavigationLink | null)[] | null;
-  mobileTagline?: string | null;
+  email?: string;
 }
 
-const defaultMobileTagline = "Lifestyle & Ecommerce Photography";
+function getMonogram(siteName?: string): string {
+  if (!siteName) return "RM";
+  const initials = siteName
+    .trim()
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+  return initials.slice(0, 2) || "RM";
+}
 
-export default function Navigation({
-  siteName = "Roberta",
-  navigationLinks,
-  mobileTagline,
-}: NavigationProps) {
+export default function Navigation({ siteName, navigationLinks, email }: NavigationProps) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const reducedMotion = useReducedMotion();
-
-  const isOverHero = pathname === "/" && !isScrolled;
 
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const links = toValidNavLinks(navigationLinks || DEFAULT_NAVIGATION_LINKS);
-
-  const tagline = mobileTagline || defaultMobileTagline;
-  const barColor = isOverHero && !isMobileMenuOpen ? "bg-white" : "bg-warm-gray";
+  const monogram = getMonogram(siteName);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu on route change, restore focus
   useEffect(() => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
@@ -65,50 +56,41 @@ export default function Navigation({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  // Close mobile menu on Escape key, restore focus
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.key === "Escape" && isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-      hamburgerRef.current?.focus();
-    }
-  }, [isMobileMenuOpen]);
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    },
+    [isMobileMenuOpen]
+  );
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  // Focus trap for mobile menu
   useEffect(() => {
     if (!isMobileMenuOpen || !mobileMenuRef.current) return;
-
     const menu = mobileMenuRef.current;
     const focusableSelector = 'a[href], button, [tabindex]:not([tabindex="-1"])';
 
     const handleTrap = (e: KeyboardEvent) => {
       if (e.key !== "Tab") return;
-
       const focusables = menu.querySelectorAll<HTMLElement>(focusableSelector);
-      // Include the hamburger button which is outside the menu overlay
-      const allFocusables = hamburgerRef.current
-        ? [hamburgerRef.current, ...Array.from(focusables)]
-        : Array.from(focusables);
-
-      if (allFocusables.length === 0) return;
-
-      const first = allFocusables[0];
-      const last = allFocusables[allFocusables.length - 1];
-
+      const all = hamburgerRef.current ? [hamburgerRef.current, ...Array.from(focusables)] : Array.from(focusables);
+      if (all.length === 0) return;
+      const first = all[0];
+      const last = all[all.length - 1];
       if (e.shiftKey) {
         if (document.activeElement === first) {
           e.preventDefault();
           last.focus();
         }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
+      } else if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
     };
 
@@ -119,199 +101,93 @@ export default function Navigation({
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-          isScrolled
-            ? "bg-cream/95 backdrop-blur-sm shadow-[0_1px_0_color-mix(in_srgb,var(--color-warm-gray)_6%,transparent)]"
-            : "bg-transparent"
-        }`}
-        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
+        id="rm-nav"
+        className="fixed top-0 left-0 right-0 z-[100] flex items-center px-5 py-4 md:px-[clamp(20px,5vw,64px)] md:py-7 transition-[background-color,backdrop-filter,border-color] duration-300"
+        style={{
+          backgroundColor: isScrolled ? "rgba(253,253,252,0.7)" : "transparent",
+          backdropFilter: isScrolled ? "blur(10px)" : "none",
+          WebkitBackdropFilter: isScrolled ? "blur(10px)" : "none",
+          borderBottom: `1px solid ${isScrolled ? "rgba(17,17,16,0.08)" : "transparent"}`,
+        }}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className={`flex items-center justify-between transition-all duration-700 ${
-            isScrolled ? "h-16 md:h-20" : "h-20 md:h-24"
-          }`} style={{ transitionTimingFunction: "var(--ease-luxe)" }}>
-            {/* Logo - hidden on homepage */}
-            <Link
-              href="/"
-              className={`font-display text-2xl md:text-[1.75rem] font-normal tracking-wide transition-all duration-500 ${
-                pathname === "/" ? "opacity-0 pointer-events-none" : "opacity-100"
-              } ${isOverHero ? "text-white hover:text-white/80" : "text-warm-gray hover:text-accent"}`}
-              style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-              tabIndex={pathname === "/" ? -1 : undefined}
-              aria-hidden={pathname === "/" ? true : undefined}
-            >
-              {siteName}
-            </Link>
+        <div className="flex items-center gap-5 md:gap-7 font-body text-[13px] tracking-[0.06em] uppercase w-full md:w-auto justify-between md:justify-start">
+          <Link
+            href="/"
+            className="flex-none bg-ink flex items-center justify-center px-1.5 pt-1"
+            aria-label="Home"
+          >
+            <span className="font-mark font-bold text-2xl leading-[0.84] tracking-[-0.01em] text-paper block">
+              {monogram}
+            </span>
+          </Link>
 
-            {/* Desktop Navigation */}
-            <ul className="hidden md:flex items-center gap-10">
-              {links.map((link, index) => {
-                const isActive = pathname === link.href;
-                return (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="group relative py-2"
-                      aria-current={isActive ? "page" : undefined}
-                    >
-                      <span
-                        className={`text-[0.8125rem] tracking-[0.08em] uppercase transition-colors duration-500 ${
-                          isOverHero
-                            ? (isActive ? "text-white" : "text-white/80 hover:text-white")
-                            : (isActive ? "text-warm-gray" : "text-warm-gray-light hover:text-warm-gray")
-                        }`}
-                        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                      >
-                        {link.label}
-                      </span>
-                      {/* Animated underline */}
-                      <span
-                        className={`absolute bottom-0 left-0 h-px transition-all duration-500 ${
-                          isOverHero ? "bg-white/60" : "bg-accent"
-                        } ${
-                          isActive ? "w-full" : "w-0 group-hover:w-full"
-                        }`}
-                        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                      />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {/* Mobile Menu Button */}
-            <button
-              ref={hamburgerRef}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden relative w-11 h-11 flex items-center justify-center"
-              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              <div className="relative w-6 h-4">
-                {/* Top line */}
-                <span
-                  className={`absolute left-0 top-0 w-full h-px transition-all duration-500 ${barColor} ${
-                    isMobileMenuOpen
-                      ? "rotate-45 translate-y-[7px]"
-                      : "rotate-0 translate-y-0"
+          <div className="hidden md:flex items-center gap-7">
+            {links.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`no-underline hover:text-ink/55 transition-colors ${
+                    isActive ? "border-b border-ink pb-[2px]" : ""
                   }`}
-                  style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                />
-                {/* Middle line */}
-                <span
-                  className={`absolute left-0 top-1/2 w-full h-px transition-all duration-500 ${barColor} ${
-                    isMobileMenuOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100"
-                  }`}
-                  style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                />
-                {/* Bottom line */}
-                <span
-                  className={`absolute left-0 bottom-0 w-full h-px transition-all duration-500 ${barColor} ${
-                    isMobileMenuOpen
-                      ? "-rotate-45 -translate-y-[7px]"
-                      : "rotate-0 translate-y-0"
-                  }`}
-                  style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                />
-              </div>
-            </button>
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
+
+          <button
+            ref={hamburgerRef}
+            onClick={() => setIsMobileMenuOpen((v) => !v)}
+            className="md:hidden flex flex-col justify-center gap-[5px] w-11 h-11 p-0 border-0 bg-transparent cursor-pointer"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="rm-mobile-menu"
+          >
+            <span
+              className="block w-[22px] h-[1.5px] bg-ink transition-transform duration-300"
+              style={{ transform: isMobileMenuOpen ? "translateY(3px) rotate(45deg)" : "none" }}
+            />
+            <span
+              className="block w-[22px] h-[1.5px] bg-ink transition-transform duration-300"
+              style={{ transform: isMobileMenuOpen ? "translateY(-3px) rotate(-45deg)" : "none" }}
+            />
+          </button>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <div
         ref={mobileMenuRef}
-        id="mobile-menu"
+        id="rm-mobile-menu"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-700 ${
-          isMobileMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-[99] md:hidden bg-paper flex-col justify-center gap-1 px-6 transition-opacity duration-300 ${
+          isMobileMenuOpen ? "flex opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none hidden"
         }`}
-        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
       >
-        {/* Background */}
-        <div
-          className={`absolute inset-0 bg-cream transition-transform duration-700 origin-top ${
-            isMobileMenuOpen ? "scale-y-100" : "scale-y-0"
-          }`}
-          style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-        />
-
-        {/* Menu Content */}
-        <div className="relative h-full flex flex-col items-center justify-center overflow-y-auto">
-          <nav aria-label="Mobile navigation">
-            <ul className="flex flex-col items-center gap-8">
-              {links.map((link, index) => {
-                const isActive = pathname === link.href;
-                return (
-                  <li
-                    key={link.href}
-                    className={`transition-all duration-700 ${
-                      isMobileMenuOpen
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-8"
-                    }`}
-                    style={{
-                      transitionTimingFunction: "var(--ease-luxe)",
-                      transitionDelay: isMobileMenuOpen && !reducedMotion
-                        ? `${200 + index * 80}ms`
-                        : "0ms",
-                    }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="group relative block py-2"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      aria-current={isActive ? "page" : undefined}
-                    >
-                      <span
-                        className={`font-display text-4xl md:text-5xl font-light tracking-wide transition-colors duration-500 ${
-                          isActive
-                            ? "text-warm-gray"
-                            : "text-warm-gray-light hover:text-warm-gray"
-                        }`}
-                        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                      >
-                        {link.label}
-                      </span>
-                      {/* Underline accent */}
-                      <span
-                        className={`absolute -bottom-1 left-0 h-px bg-accent transition-all duration-500 ${
-                          isActive ? "w-full" : "w-0 group-hover:w-full"
-                        }`}
-                        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-                      />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-
-          {/* Decorative tagline at bottom */}
-          <p
-            className={`absolute bottom-12 text-[0.6875rem] tracking-[0.2em] uppercase text-warm-gray-lighter transition-all duration-700 ${
-              isMobileMenuOpen
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-            style={{
-              transitionTimingFunction: "var(--ease-luxe)",
-              transitionDelay: isMobileMenuOpen && !reducedMotion ? "500ms" : "0ms",
-            }}
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="font-heading font-bold text-[38px] leading-[1.15] uppercase no-underline text-ink py-1"
           >
-            {tagline}
-          </p>
-        </div>
+            {link.label}
+          </Link>
+        ))}
+        {email && (
+          <a
+            href={`mailto:${email}`}
+            className="mt-7 font-body text-[13px] tracking-[0.06em] uppercase text-ink/55 no-underline"
+          >
+            {email}
+          </a>
+        )}
       </div>
-
-      {/* Spacer to prevent content from going under fixed nav */}
-      <div className="h-20 md:h-24" />
     </>
   );
 }

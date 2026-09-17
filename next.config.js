@@ -12,9 +12,11 @@ module.exports = {
   },
   async redirects() {
     return [
-      { source: "/e-commerce", destination: "/portfolio", permanent: true },
-      { source: "/campaigns", destination: "/portfolio", permanent: true },
-      { source: "/branded-content", destination: "/portfolio", permanent: true },
+      { source: "/e-commerce", destination: "/products", permanent: true },
+      { source: "/campaigns", destination: "/products", permanent: true },
+      { source: "/branded-content", destination: "/editorials", permanent: true },
+      { source: "/portfolio", destination: "/", permanent: true },
+      { source: "/portfolio/:category", destination: "/", permanent: true },
     ];
   },
   async headers() {

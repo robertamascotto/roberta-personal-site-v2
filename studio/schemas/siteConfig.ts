@@ -11,7 +11,6 @@ export default defineType({
     { name: "pages", title: "Pages" },
     { name: "navigation", title: "Navigation" },
     { name: "footer", title: "Footer" },
-    { name: "theme", title: "Theme" },
     { name: "seo", title: "SEO" },
   ],
   fields: [
@@ -77,7 +76,14 @@ export default defineType({
       name: "footerTagline",
       title: "Footer Tagline",
       type: "string",
-      description: "Short description displayed in the footer beneath the site name",
+      description: "Short italic tagline displayed in the footer, e.g. 'Photography and content strategy for fashion and lifestyle brands.'",
+      group: "footer",
+    }),
+    defineField({
+      name: "footerDescription",
+      title: "Footer Description",
+      type: "string",
+      description: "Plain descriptive line shown under the footer tagline",
       group: "footer",
     }),
     defineField({
@@ -93,13 +99,6 @@ export default defineType({
       type: "footerLabels",
       description: "Section headings and copyright text for footer columns",
       group: "footer",
-    }),
-    defineField({
-      name: "theme",
-      title: "Theme",
-      type: "themeConfig",
-      description: "Site-wide colors and font pairing",
-      group: "theme",
     }),
     defineField({
       name: "siteMetadata",

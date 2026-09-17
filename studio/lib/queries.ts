@@ -6,23 +6,19 @@ export const siteConfigQuery = groq`*[_type == "siteConfig"][0]{
   email,
   socialLinks[]{platform, url},
   footerTagline,
+  footerDescription,
   footerCTA{heading, linkText, linkUrl},
   navigationLinks[]{label, href},
   mobileTagline,
   homePage{
-    heroTagline,
     heroImage,
     "heroImageLqip": heroImage.asset->metadata.lqip,
     heroHeadline,
-    heroSubtitle,
-    "heroTaglineColor": heroTaglineColor.hex,
-    "heroHeadlineColor": heroHeadlineColor.hex,
-    "heroSubtitleColor": heroSubtitleColor.hex,
     featuredProjects{
-      editorial{image, video, blurb},
-      products{image, video, blurb},
-      movement{image, video, blurb},
-      strategy{image, video, blurb}
+      editorial{image, "videoUrl": video.asset->url, blurb},
+      products{image, "videoUrl": video.asset->url, blurb},
+      movement{image, "videoUrl": video.asset->url, blurb},
+      strategy{image, "videoUrl": video.asset->url, blurb}
     }
   },
   contactPage{
@@ -44,8 +40,7 @@ export const siteConfigQuery = groq`*[_type == "siteConfig"][0]{
     socialLabel
   },
   footerLabels{navigationHeading, contactHeading, copyrightText},
-  siteMetadata{siteDescription, siteTitleTemplate},
-  theme{themePreset, "backgroundColor": backgroundColor.hex, "textColor": textColor.hex, "accentColor": accentColor.hex, fontPairing}
+  siteMetadata{siteDescription, siteTitleTemplate}
 }`;
 
 const imageWithAspectProjection = groq`{ image, alt, aspectRatio }`;
@@ -77,7 +72,7 @@ export const editorialNeighborsQuery = groq`*[_type == "editorial"] | order(orde
 }`;
 
 const galleryBlockProjection = groq`
-  _type == "imageWithAspect" => ${imageWithAspectProjection},
+  _type == "imageWithAspect" => { _type, image, alt, aspectRatio },
   _type == "imageGridBlock" => { _type, columns, images[]${imageWithAspectProjection} },
   _type == "scrollStripBlock" => { _type, images[]${imageWithAspectProjection} }
 `;

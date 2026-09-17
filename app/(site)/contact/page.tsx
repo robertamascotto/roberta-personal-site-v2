@@ -31,17 +31,14 @@ export default async function ContactPage() {
   } catch (error) {
     console.error("Could not fetch site config:", error);
     return (
-      <div className="py-12 md:py-16">
-        <div className="max-w-xl mx-auto text-center">
-          <h1 className="text-3xl md:text-4xl font-light tracking-wide mb-8">
-            Get in Touch
+      <div className="max-w-[1240px] mx-auto px-5 md:px-[clamp(20px,5vw,64px)] pt-[90px] pb-24">
+        <div className="max-w-xl">
+          <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] mb-6">
+            Let&apos;s talk
           </h1>
-          <p className="text-warm-gray-light mb-12">
-            Interested in working together? I&apos;d love to hear from you.
-          </p>
-          <p className="text-warm-gray-light">
+          <p className="text-ink/60 mb-6">
             Add your contact information through the{" "}
-            <a href="/studio" className="text-accent hover:text-accent-dark underline">
+            <a href="/studio" className="underline">
               studio
             </a>
             .
