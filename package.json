@@ -1,0 +1,37 @@
+{
+  "name": ".",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "migrate": "node scripts/migrate-to-sanity.mjs"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.16.0",
+    "@sanity/color-input": "^6.0.4",
+    "@sanity/image-url": "^2.0.3",
+    "@sanity/orderable-document-list": "^1.5.1",
+    "@sanity/vision": "^5.12.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.24",
+    "next": "^16.1.6",
+    "next-sanity": "^12.1.0",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sanity": "^5.12.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "yet-another-react-lightbox": "^3.28.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "@types/react": "^19.2.10",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.1.6",
+    "gray-matter": "^4.0.3"
+  }
+}
