@@ -36,7 +36,7 @@ export default async function ProductSubGalleryPage({
 
   return (
     <PageContainer>
-      <div className="flex justify-between border-b border-ink/10 py-6 text-[13px]">
+      <div className="flex justify-between border-b border-ink/12 pt-6 pb-8 text-[13px]">
         {prevSibling ? (
           <Link href={`/products/${slug}/${prevSibling.slug}`} className="no-underline">
             &#8592; {prevSibling.title}
@@ -49,7 +49,7 @@ export default async function ProductSubGalleryPage({
         </Link>
       </div>
 
-      <section className="py-12 max-w-[64ch]">
+      <section className="pt-6 pb-12 max-w-[64ch]">
         <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] m-0">
           {sub.title}
         </h1>
@@ -59,7 +59,7 @@ export default async function ProductSubGalleryPage({
         <LightboxGrid images={sub.fullGallery} />
       </section>
 
-      <div className="flex justify-between border-t border-ink/10 pt-8 pb-16 text-[13px]">
+      <div className="flex justify-between border-t border-ink/12 pt-8 pb-16 text-[13px]">
         {prevSibling ? (
           <Link href={`/products/${slug}/${prevSibling.slug}`} className="no-underline">
             &#8592; {prevSibling.title}

@@ -14,8 +14,8 @@ export default function EditorialTeaser({ editorial }: { editorial: EditorialSum
   const frames = editorial.coverFrames || [];
 
   return (
-    <section className="border-t border-ink/10 py-14">
-      <div className="flex items-center justify-center gap-5 mb-9 flex-wrap md:flex-nowrap">
+    <section className="border-t border-ink/12 py-12 max-[640px]:!py-8">
+      <div className="relative flex items-center justify-center gap-5 mb-9 flex-wrap md:flex-nowrap">
         {frames.map((frame, i) => (
           <div
             key={i}
@@ -35,12 +35,10 @@ export default function EditorialTeaser({ editorial }: { editorial: EditorialSum
             />
           </div>
         ))}
-      </div>
 
-      <div className="flex justify-end mb-4">
         <Link
           href={`/editorials/${editorial.slug}`}
-          className="inline-block font-body text-[13px] font-semibold no-underline border-b border-ink pb-[2px]"
+          className="absolute left-0 bottom-0 inline-block font-body text-[13px] font-semibold tracking-[0.04em] no-underline border-b border-ink pb-[2px]"
         >
           View all &#8594;
         </Link>

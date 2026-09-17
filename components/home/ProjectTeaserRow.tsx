@@ -9,9 +9,18 @@ interface ProjectTeaserRowProps {
   image?: unknown;
   videoUrl?: string;
   reversed?: boolean;
+  blurbMaxWidth?: string;
 }
 
-export default function ProjectTeaserRow({ href, label, blurb, image, videoUrl, reversed = false }: ProjectTeaserRowProps) {
+export default function ProjectTeaserRow({
+  href,
+  label,
+  blurb,
+  image,
+  videoUrl,
+  reversed = false,
+  blurbMaxWidth = "48ch",
+}: ProjectTeaserRowProps) {
   const media = (
     <Link href={href} className="block no-underline">
       <figure className="relative m-0 overflow-hidden" style={{ aspectRatio: "16/9" }}>
@@ -42,7 +51,9 @@ export default function ProjectTeaserRow({ href, label, blurb, image, videoUrl, 
   const text = (
     <div>
       <div className="font-accent italic text-base font-normal tracking-[0.14em] uppercase text-ink/50 mb-2.5">{label}</div>
-      <p className="font-body text-sm leading-[22px] text-ink/62 m-0 mb-3.5 max-w-[48ch]">{blurb}</p>
+      <p className="font-body text-sm leading-[22px] text-ink/62 m-0 mb-3.5" style={{ maxWidth: blurbMaxWidth }}>
+        {blurb}
+      </p>
       <Link href={href} className="font-body text-sm font-semibold no-underline text-ink">
         View project &#8594;
       </Link>
@@ -50,11 +61,11 @@ export default function ProjectTeaserRow({ href, label, blurb, image, videoUrl, 
   );
 
   return (
-    <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center py-9 border-t border-ink/10">
+    <div className="grid min-[641px]:grid-cols-2 gap-12 max-[640px]:gap-5 items-center py-9 max-[640px]:py-8 border-t border-ink/[0.08]">
       {reversed ? (
         <>
-          <div className="order-2 md:order-1">{text}</div>
-          <div className="order-1 md:order-2">{media}</div>
+          <div className="max-[640px]:order-2">{text}</div>
+          <div className="max-[640px]:order-1">{media}</div>
         </>
       ) : (
         <>

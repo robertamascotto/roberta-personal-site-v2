@@ -49,41 +49,47 @@ export default async function ProductCaseStudyPage({ params }: { params: Promise
         )}
       </section>
 
-      <section className="pb-16">
+      <section className="pb-24">
         <GalleryBlockRenderer blocks={caseStudy.gallery} />
       </section>
 
       {caseStudy.subGalleries && caseStudy.subGalleries.length > 0 && (
         <div className="pb-8">
-          {caseStudy.subGalleries.map((sub, i) => (
-            <section key={sub.slug} className={`pb-20 ${i > 0 ? "border-t border-ink/10 pt-14" : ""}`}>
-              <h2 className="font-accent italic font-light text-[34px] leading-[1.25] tracking-[-0.01em] m-0 mb-4">
-                {sub.title}
-              </h2>
-              {sub.description && (
-                <p className="text-[15.5px] leading-[26px] text-ink/75 max-w-[62ch] mb-8 whitespace-pre-line">
-                  {sub.description}
-                </p>
-              )}
-              <div className="flex justify-end mb-4">
-                <Link
-                  href={`/products/${caseStudy.slug}/${sub.slug}`}
-                  className="text-[13px] font-semibold no-underline border-b border-ink pb-[2px]"
-                >
-                  See all &#8594;
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {sub.teaserImages?.map((img, j) => (
-                  <AspectImage key={j} image={img.image} alt={img.alt} aspectRatio={img.aspectRatio || "3/4"} />
-                ))}
-              </div>
-            </section>
-          ))}
+          {caseStudy.subGalleries.map((sub, i) => {
+            const isLast = i === caseStudy.subGalleries!.length - 1;
+            return (
+              <section
+                key={sub.slug}
+                className={`${isLast ? "pb-24" : "pb-20"} ${i > 0 ? "border-t border-ink/12 pt-14" : ""}`}
+              >
+                <h2 className="font-accent italic font-light text-[34px] leading-[1.25] tracking-[-0.01em] m-0 mb-4">
+                  {sub.title}
+                </h2>
+                {sub.description && (
+                  <p className="text-[15.5px] leading-[26px] text-ink/75 max-w-[62ch] mb-8 whitespace-pre-line">
+                    {sub.description}
+                  </p>
+                )}
+                <div className="flex justify-end mb-4">
+                  <Link
+                    href={`/products/${caseStudy.slug}/${sub.slug}`}
+                    className="text-[13px] font-semibold no-underline border-b border-ink pb-[2px]"
+                  >
+                    See all &#8594;
+                  </Link>
+                </div>
+                <div className="grid grid-cols-2 min-[801px]:grid-cols-4 gap-4">
+                  {sub.teaserImages?.map((img, j) => (
+                    <AspectImage key={j} image={img.image} alt={img.alt} aspectRatio={img.aspectRatio || "3/4"} />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
       )}
 
-      <div className="flex justify-between border-t border-ink/10 pt-8 pb-16 text-[13px]">
+      <div className="flex justify-between border-t border-ink/12 pt-8 pb-16 text-[13px]">
         {prev ? (
           <Link href={`/products/${prev.slug}`} className="no-underline">
             &#8592; {prev.title}

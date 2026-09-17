@@ -3,11 +3,12 @@ interface PageHeroProps {
   headline: string;
   body?: string;
   maxWidth?: string;
+  compactOnMobile?: boolean;
 }
 
-export default function PageHero({ label, headline, body, maxWidth = "max-w-3xl" }: PageHeroProps) {
+export default function PageHero({ label, headline, body, maxWidth = "max-w-3xl", compactOnMobile = false }: PageHeroProps) {
   return (
-    <section className={`pt-[72px] pb-14 ${maxWidth}`}>
+    <section className={`pt-[72px] pb-14 ${compactOnMobile ? "max-[640px]:pt-12 max-[640px]:pb-9" : ""} ${maxWidth}`}>
       {label && (
         <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-[18px]">{label}</span>
       )}

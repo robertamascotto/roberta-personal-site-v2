@@ -19,7 +19,7 @@ const defaults = {
     projectType: "Select a project type",
     message: "What you need, timeline, anything else",
   },
-  successMessage: "Thanks — your brief has been noted.",
+  successMessage: "Thanks — your brief has been noted. In a live site this would land in my inbox.",
   errorMessage: "Something went wrong. Please try again or email me directly.",
   contactInfoHeading: "Direct",
   availability: "Replies within two working days.",
@@ -88,7 +88,7 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
   };
 
   return (
-    <div className="max-w-[1240px] mx-auto px-5 md:px-[clamp(20px,5vw,64px)] pt-[90px]">
+    <div className="max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] pt-[90px]">
       <section className="pt-[72px] pb-14 max-w-[64ch]">
         <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-[18px]">{sectionLabel}</span>
         <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] m-0">
@@ -96,7 +96,7 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
         </h1>
       </section>
 
-      <section className="grid lg:grid-cols-2 gap-14 lg:gap-[72px] border-t border-ink/10 pt-14 pb-20">
+      <section className="contact-split border-t border-ink/12">
         <div>
           <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">Send a brief</span>
           <form onSubmit={handleSubmit} className="grid gap-6 max-w-[44ch]">
@@ -126,13 +126,19 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
 
             <label className="grid gap-2">
               <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.message}</span>
-              <textarea name="message" rows={5} required className="editorial-input resize-y" placeholder={formPlaceholders.message} />
+              <textarea
+                name="message"
+                rows={5}
+                required
+                className="editorial-input resize-y leading-[24px]"
+                placeholder={formPlaceholders.message}
+              />
             </label>
 
             <button
               type="submit"
               disabled={formStatus === "submitting"}
-              className="justify-self-start mt-1 bg-ink text-paper border-0 px-7 py-[15px] font-body text-sm font-semibold tracking-[0.02em] cursor-pointer hover:bg-ink/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="justify-self-start mt-1 bg-ink text-white border-0 px-7 py-[15px] font-body text-sm font-semibold tracking-[0.02em] cursor-pointer hover:bg-ink/[0.82] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {formStatus === "submitting" ? "Sending..." : formLabels.submitButton}
             </button>
@@ -143,7 +149,7 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
               </p>
             )}
             {formStatus === "error" && (
-              <p role="alert" className="text-[13.5px] leading-[21px] text-red-700 m-0">
+              <p role="alert" className="text-[13.5px] leading-[21px] text-ink/60 m-0">
                 {errorMessage}
               </p>
             )}
@@ -166,7 +172,7 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
             {contactPage?.availability || defaults.availability}
           </p>
           {contactPage?.location && (
-            <p className="text-xs tracking-[0.1em] uppercase text-ink/38 m-0">{contactPage.location}</p>
+            <p className="text-[11px] tracking-[0.1em] uppercase text-ink/38 m-0">{contactPage.location}</p>
           )}
         </div>
       </section>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function BackToTop() {
+  const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -14,6 +16,9 @@ export default function BackToTop() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Absent from the design's Home page — only appears on interior pages.
+  if (pathname === "/") return null;
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -24,26 +29,14 @@ export default function BackToTop() {
       aria-label="Back to top"
       tabIndex={isVisible ? 0 : -1}
       aria-hidden={!isVisible}
-      className={`fixed bottom-6 right-6 z-40 w-11 h-11 flex items-center justify-center bg-paper/80 backdrop-blur-sm text-ink/60 hover:text-ink border border-ink/15 hover:border-ink/35 transition-all duration-300 ${
+      className={`fixed z-[95] bottom-7 right-[clamp(20px,5vw,64px)] inline-flex items-center font-body text-[11px] tracking-[0.1em] uppercase text-ink px-3.5 py-2.5 border border-ink/[0.14] backdrop-blur-[8px] transition-all duration-300 ${
         isVisible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none"
       }`}
-      style={{ transitionTimingFunction: "var(--ease-luxe)" }}
+      style={{ backgroundColor: "rgba(253,253,252,0.86)" }}
     >
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M5 15l7-7 7 7"
-        />
-      </svg>
+      Top &#8593;
     </button>
   );
 }

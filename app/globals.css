@@ -34,6 +34,59 @@ a {
   color: inherit;
 }
 
+a:hover {
+  color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+/* Home hero split — mirrors the design's own two-tier breakpoint cascade
+   (880px, then 640px) rather than Tailwind's default `md` (768px). */
+.home-hero-grid {
+  display: grid;
+  grid-template-columns: 35fr 65fr;
+  grid-template-rows: 100vh;
+  height: 100vh;
+}
+
+@media (max-width: 880px) {
+  .home-hero-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 60vh;
+  }
+  .home-hero-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-hero-grid {
+    grid-template-rows: auto 58vh;
+    height: auto;
+  }
+}
+
+/* Contact page's two-column split — same two-tier cascade as the design
+   (880px, then 640px). */
+.contact-split {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 72px;
+  padding: 56px 0 72px;
+}
+
+@media (max-width: 880px) {
+  .contact-split {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-split {
+    gap: 44px;
+    padding: 36px 0 48px;
+  }
+}
+
 /* Full-bleed breakout — escapes any centered container */
 .full-bleed {
   width: 100vw;

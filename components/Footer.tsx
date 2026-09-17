@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { getSocialIcon } from "@/lib/socialIcons";
 import { DEFAULT_NAVIGATION_LINKS } from "@/lib/constants";
 import { toValidNavLinks, toValidSocialLinks, type NavigationLink, type SocialLink } from "@/lib/types";
@@ -29,6 +32,7 @@ export default function Footer({
   email,
   footerLabels,
 }: FooterProps) {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
   const validSocialLinks = toValidSocialLinks(socialLinks || []);
   const validNavLinks = toValidNavLinks(navigationLinks || DEFAULT_NAVIGATION_LINKS);
@@ -36,17 +40,17 @@ export default function Footer({
   const tagline = footerTagline || defaults.footerTagline;
   const description = footerDescription || defaults.footerDescription;
 
+  // The Home page builds its own bottom bar (see app/(site)/page.tsx) instead
+  // of this shared footer — the design's Home.dc.html has no <footer> at all.
+  if (pathname === "/") return null;
+
   return (
-    <footer className="border-t border-ink/10 px-5 py-14 md:px-[clamp(20px,5vw,64px)] md:py-14 flex flex-col items-center text-center">
-      <p className="font-accent italic font-light text-[clamp(18px,1.9vw,25px)] leading-[1.35] mb-3.5 max-w-2xl">
-        {tagline}
-      </p>
-      <p className="font-body text-[13px] leading-[21px] text-ink/58 mb-6 max-w-xl">
-        {description}
-      </p>
+    <footer className="border-t border-ink/[0.08] px-[clamp(20px,5vw,64px)] pt-14 pb-10 flex flex-col items-center text-center">
+      <p className="font-accent italic font-light text-[clamp(18px,1.9vw,25px)] leading-[1.35] mb-3.5">{tagline}</p>
+      <p className="font-body text-[13px] leading-[21px] text-ink/58 mb-6">{description}</p>
 
       {validSocialLinks.length > 0 && (
-        <div className="flex gap-2.5 mb-6">
+        <div className="flex gap-2.5 mb-[26px]">
           {validSocialLinks.map((social) => (
             <a
               key={social.platform}
@@ -72,11 +76,11 @@ export default function Footer({
       )}
 
       <nav aria-label="Footer" className="flex gap-[18px] flex-wrap justify-center mb-[18px]">
-        <Link href="/" className="font-body text-[13px] no-underline text-ink hover:text-ink/60">
+        <Link href="/" className="font-body text-[13px] no-underline text-ink hover:text-ink/55">
           Home
         </Link>
         {validNavLinks.map((link) => (
-          <Link key={link.href} href={link.href} className="font-body text-[13px] no-underline text-ink hover:text-ink/60">
+          <Link key={link.href} href={link.href} className="font-body text-[13px] no-underline text-ink hover:text-ink/55">
             {link.label}
           </Link>
         ))}

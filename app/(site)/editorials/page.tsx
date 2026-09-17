@@ -17,7 +17,12 @@ export default async function EditorialsPage() {
 
   return (
     <PageContainer>
-      <PageHero label="Editorial" headline="Personal and campaign portrait series." maxWidth="max-w-[60ch]" />
+      <PageHero
+        label="Editorial"
+        headline="Personal and campaign portrait series."
+        maxWidth="max-w-[60ch]"
+        compactOnMobile
+      />
       {editorials.length === 0 ? (
         <p className="text-ink/60 pb-24">No editorials yet.</p>
       ) : (

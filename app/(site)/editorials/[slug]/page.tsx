@@ -31,29 +31,31 @@ export default async function EditorialDetailPage({ params }: { params: Promise<
   const next = neighbors.length > 1 ? neighbors[(currentIndex + 1) % neighbors.length] : null;
 
   return (
-    <PageContainer>
-      <div className="flex justify-between border-b border-ink/10 py-6 text-[13px]">
-        <Link href="/editorials" className="no-underline">
-          &#8592; All editorials
-        </Link>
-        {next && (
-          <Link href={`/editorials/${next.slug}`} className="no-underline">
-            {next.title} &#8594;
+    <>
+      <PageContainer>
+        <div className="flex justify-between border-b border-ink/12 pt-6 pb-8 text-[13px]">
+          <Link href="/editorials" className="no-underline">
+            &#8592; All editorials
           </Link>
-        )}
-      </div>
+          {next && (
+            <Link href={`/editorials/${next.slug}`} className="no-underline">
+              {next.title} &#8594;
+            </Link>
+          )}
+        </div>
 
-      <section className="py-14 max-w-[60ch]">
-        <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] m-0 mb-1.5">
-          {editorial.title}
-        </h1>
-        {editorial.year && <span className="block mb-5 font-body text-xs tracking-[0.1em] text-ink/32">{editorial.year}</span>}
-        {editorial.description && (
-          <p className="text-[15px] leading-[25px] text-ink/72 whitespace-pre-line m-0">{editorial.description}</p>
-        )}
-      </section>
+        <section className="pt-14 pb-12">
+          <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] m-0 mb-1.5">
+            {editorial.title}
+          </h1>
+          {editorial.year && <span className="block mb-5 font-body text-xs tracking-[0.1em] text-ink/32">{editorial.year}</span>}
+          {editorial.description && (
+            <p className="text-[15px] leading-[25px] text-ink/72 whitespace-pre-line m-0">{editorial.description}</p>
+          )}
+        </section>
+      </PageContainer>
 
-      <div className="flex flex-col gap-3 pb-20">
+      <div className="full-bleed flex flex-col gap-3 pb-24">
         {editorial.gallery?.map((frame, i) => (
           <AspectImage
             key={i}
@@ -61,12 +63,12 @@ export default async function EditorialDetailPage({ params }: { params: Promise<
             alt={frame.alt}
             aspectRatio={frame.aspectRatio}
             priority={i === 0}
-            sizes="(max-width: 768px) 100vw, 1200px"
+            sizes="100vw"
           />
         ))}
       </div>
 
-      <div className="flex justify-between border-t border-ink/10 pt-8 pb-16 text-[13px]">
+      <div className="max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] flex justify-between border-t border-ink/12 pt-8 pb-16 text-[13px]">
         <Link href="/editorials" className="no-underline">
           &#8592; All editorials
         </Link>
@@ -76,6 +78,6 @@ export default async function EditorialDetailPage({ params }: { params: Promise<
           </Link>
         )}
       </div>
-    </PageContainer>
+    </>
   );
 }

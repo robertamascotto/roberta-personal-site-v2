@@ -17,7 +17,7 @@ export default function LightboxGrid({ images }: { images: ImageWithAspect[] }) 
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 min-[901px]:grid-cols-4 gap-3">
         {images.map((img, i) => (
           <button
             key={i}
@@ -26,7 +26,13 @@ export default function LightboxGrid({ images }: { images: ImageWithAspect[] }) 
             className="cursor-zoom-in text-left p-0 border-0 bg-transparent"
             aria-label={`Open image ${i + 1} of ${images.length}`}
           >
-            <AspectImage image={img.image} alt={img.alt} aspectRatio={img.aspectRatio || "3/4"} />
+            <AspectImage
+              image={img.image}
+              alt={img.alt}
+              aspectRatio={img.aspectRatio || "3/4"}
+              objectFit="contain"
+              background="#fff"
+            />
           </button>
         ))}
       </div>

@@ -21,25 +21,21 @@ export default async function ContentStrategyPage() {
         label={page?.heroLabel || "Content Strategy"}
         headline={page?.heroHeadline || "Planning the content, not just shooting it."}
         body={page?.heroBody}
-        maxWidth="max-w-3xl"
+        maxWidth="max-w-[64ch]"
       />
 
       <div className="pb-16">
         {page?.sections?.map((section, i) => (
-          <section key={i} className="border-t border-ink/10 py-14">
-            <h2 className="font-accent italic font-light text-[34px] leading-[1.2] max-w-[26ch] m-0 mb-4">
-              {section.heading}
-            </h2>
-            <p className="text-[15.5px] leading-[26px] text-ink/75 max-w-[62ch] mb-8 whitespace-pre-line">
-              {section.body}
-            </p>
+          <section key={i} className="border-t border-ink/12 pt-14 pb-[72px]">
+            <h2 className="font-accent italic font-light text-[34px] leading-[1.2] m-0 mb-4">{section.heading}</h2>
+            <p className="text-[15px] leading-[25px] text-ink/72 mb-8 whitespace-pre-line">{section.body}</p>
 
             {section.stats && section.stats.length > 0 && (
               <div className="flex flex-wrap gap-10 mb-8">
                 {section.stats.map((stat, j) => (
                   <div key={j}>
-                    <div className="font-heading font-black text-4xl">{stat.value}</div>
-                    <div className="font-body text-xs tracking-[0.14em] uppercase text-ink/50 mt-1">{stat.label}</div>
+                    <div className="font-heading font-black text-[26px] leading-none">{stat.value}</div>
+                    <div className="font-body text-[9.5px] tracking-[0.06em] uppercase text-ink/50 mt-1">{stat.label}</div>
                   </div>
                 ))}
               </div>

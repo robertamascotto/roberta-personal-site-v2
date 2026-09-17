@@ -102,7 +102,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
     <>
       <nav
         id="rm-nav"
-        className="fixed top-0 left-0 right-0 z-[100] flex items-center px-5 py-4 md:px-[clamp(20px,5vw,64px)] md:py-7 transition-[background-color,backdrop-filter,border-color] duration-300"
+        className="fixed top-0 left-0 right-0 z-[100] flex items-center px-5 py-4 min-[641px]:px-[clamp(20px,5vw,64px)] min-[641px]:py-7 transition-[background-color,backdrop-filter,border-color] duration-300"
         style={{
           backgroundColor: isScrolled ? "rgba(253,253,252,0.7)" : "transparent",
           backdropFilter: isScrolled ? "blur(10px)" : "none",
@@ -110,18 +110,18 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
           borderBottom: `1px solid ${isScrolled ? "rgba(17,17,16,0.08)" : "transparent"}`,
         }}
       >
-        <div className="flex items-center gap-5 md:gap-7 font-body text-[13px] tracking-[0.06em] uppercase w-full md:w-auto justify-between md:justify-start">
+        <div className="flex items-center gap-5 min-[641px]:gap-7 font-body text-[13px] tracking-[0.06em] uppercase w-full min-[641px]:w-auto justify-between min-[641px]:justify-start">
           <Link
             href="/"
             className="flex-none bg-ink flex items-center justify-center px-1.5 pt-1"
             aria-label="Home"
           >
-            <span className="font-mark font-bold text-2xl leading-[0.84] tracking-[-0.01em] text-paper block">
+            <span className="font-mark font-bold text-2xl leading-[0.84] tracking-[-0.01em] text-white block">
               {monogram}
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-7">
+          <div className="hidden min-[641px]:flex items-center gap-7">
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -142,7 +142,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
           <button
             ref={hamburgerRef}
             onClick={() => setIsMobileMenuOpen((v) => !v)}
-            className="md:hidden flex flex-col justify-center gap-[5px] w-11 h-11 p-0 border-0 bg-transparent cursor-pointer"
+            className="min-[641px]:hidden flex flex-col justify-center gap-[5px] w-11 h-11 p-0 border-0 bg-transparent cursor-pointer"
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileMenuOpen}
             aria-controls="rm-mobile-menu"
@@ -165,7 +165,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className={`fixed inset-0 z-[99] md:hidden bg-paper flex-col justify-center gap-1 px-6 transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[99] min-[641px]:hidden bg-paper flex-col justify-center gap-1 px-6 transition-opacity duration-300 ${
           isMobileMenuOpen ? "flex opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none hidden"
         }`}
       >
@@ -174,7 +174,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
             key={link.href}
             href={link.href}
             onClick={() => setIsMobileMenuOpen(false)}
-            className="font-heading font-bold text-[38px] leading-[1.15] uppercase no-underline text-ink py-1"
+            className="font-heading font-bold text-[38px] leading-[1.15] uppercase no-underline text-ink"
           >
             {link.label}
           </Link>

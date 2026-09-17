@@ -22,7 +22,7 @@ function renderHeadline(headline: string) {
   const [first, last] = words;
   return (
     <>
-      {first} <span className="font-mark">{last[0]}</span>
+      {first} <span className="font-mark font-bold">{last[0]}</span>
       {last.slice(1)}
     </>
   );
@@ -38,24 +38,24 @@ export default function HomeHero({ headline, heroImageUrl, heroImageLqip }: Home
   }, []);
 
   return (
-    <div className="full-bleed grid grid-cols-1 md:grid-cols-[35fr_65fr] h-[60vh] md:h-screen relative overflow-hidden">
-      <div className="hidden md:block absolute left-[35%] top-0 bottom-0 w-px bg-ink/10" />
+    <div className="full-bleed home-hero-grid relative overflow-hidden">
+      <div className="home-hero-divider absolute left-[35%] top-0 bottom-0 w-px bg-ink/[0.12]" />
 
-      <div className="flex flex-col justify-center px-5 md:pl-11 md:pr-0 order-2 md:order-1">
-        <h1 className="font-heading font-black uppercase text-[clamp(40px,8vw,80px)] leading-[0.95] tracking-[-0.01em] m-0 pr-6">
+      <div className="flex flex-col justify-center pl-11 pr-0 pt-0 pb-0 max-[640px]:pl-5 max-[640px]:pr-5 max-[640px]:pt-[132px] max-[640px]:pb-9 min-h-0 overflow-x-hidden">
+        <h1 className="font-heading font-black uppercase text-[clamp(40px,calc(8vw_-_14px),80px)] leading-[0.95] tracking-[-0.01em] m-0 pr-6">
           {renderHeadline(headline)}
         </h1>
       </div>
 
       <div
-        className="absolute left-5 md:left-11 bottom-10 z-[5] flex flex-col items-start gap-2.5 font-body text-[11px] tracking-[0.16em] uppercase text-ink/50 pointer-events-none transition-opacity duration-300"
+        className="absolute left-11 bottom-10 z-[5] flex flex-col items-start gap-2.5 font-body text-[11px] tracking-[0.16em] uppercase text-ink/50 pointer-events-none transition-opacity duration-300 max-[640px]:hidden"
         style={{ opacity: scrolled ? 0 : 1 }}
       >
         <span>Scroll</span>
         <span className="text-base leading-none animate-nudge">&#8595;</span>
       </div>
 
-      <figure className="m-0 h-full min-h-0 overflow-hidden order-1 md:order-2 relative">
+      <figure className="m-0 h-full min-h-0 overflow-hidden relative">
         {heroImageUrl && (
           <Image
             src={heroImageUrl}
