@@ -9,6 +9,25 @@ interface HomeHeroProps {
   heroImageLqip?: string;
 }
 
+/**
+ * Matches the design's brand detail: for a two-word "Firstname Lastname"
+ * headline, the first letter of the last name switches to the mark font
+ * (Oswald — the same font as the RM logo). Any other headline shape (a
+ * custom tagline, a single word, etc.) just renders plainly.
+ */
+function renderHeadline(headline: string) {
+  const words = headline.trim().split(/\s+/);
+  if (words.length !== 2) return headline;
+
+  const [first, last] = words;
+  return (
+    <>
+      {first} <span className="font-mark">{last[0]}</span>
+      {last.slice(1)}
+    </>
+  );
+}
+
 export default function HomeHero({ headline, heroImageUrl, heroImageLqip }: HomeHeroProps) {
   const [scrolled, setScrolled] = useState(false);
 
@@ -24,7 +43,7 @@ export default function HomeHero({ headline, heroImageUrl, heroImageLqip }: Home
 
       <div className="flex flex-col justify-center px-5 md:pl-11 md:pr-0 order-2 md:order-1">
         <h1 className="font-heading font-black uppercase text-[clamp(40px,8vw,80px)] leading-[0.95] tracking-[-0.01em] m-0 pr-6">
-          {headline}
+          {renderHeadline(headline)}
         </h1>
       </div>
 
