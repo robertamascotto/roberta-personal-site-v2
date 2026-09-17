@@ -14,7 +14,7 @@ export default function EditorialTeaser({ editorial }: { editorial: EditorialSum
 
   return (
     <section className="border-t border-ink/10 py-14">
-      <div className="flex items-center justify-center gap-8 md:gap-10 h-[260px] md:h-[340px] mb-9 flex-wrap md:flex-nowrap">
+      <div className="flex items-center justify-center gap-8 md:gap-10 h-[340px] md:h-[500px] mb-9 flex-wrap md:flex-nowrap">
         {frames.map((frame, i) => (
           <div
             key={i}
