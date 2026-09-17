@@ -63,6 +63,14 @@ export default defineType({
       group: "gallery",
       validation: (rule) => rule.min(1),
     }),
+    defineField({
+      name: "galleryGap",
+      title: "Gallery Gap (px)",
+      type: "number",
+      description:
+        "Space between images on this shoot's own page. Leave blank for the standard 12px — only a couple of shoots use a seamless 0px gallery in the source design.",
+      group: "gallery",
+    }),
     orderRankField({ type: "editorial", hidden: true }),
   ],
   orderings: [orderRankOrdering],

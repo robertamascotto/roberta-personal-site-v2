@@ -82,6 +82,7 @@ export interface Editorial {
   slug: string;
   year?: string;
   description?: string;
+  galleryGap?: number;
   gallery?: ImageWithAspect[];
 }
 

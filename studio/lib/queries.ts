@@ -62,6 +62,7 @@ export const editorialBySlugQuery = groq`*[_type == "editorial" && slug.current 
   "slug": slug.current,
   year,
   description,
+  galleryGap,
   gallery[]${imageWithAspectProjection}
 }`;
 

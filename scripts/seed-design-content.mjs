@@ -263,6 +263,7 @@ const editorials = [
     year: "2022",
     description:
       "A black and white portrait series shot using natural window light.\nSimple, undone styling across multiple subjects, focused on face and expression rather than concept or wardrobe.",
+    galleryGap: 0,
     coverFrames: [
       ["ed-6a.jpg", "West Village — frame 1", "5/4", 240],
       ["ed-6b.jpg", "West Village — frame 2", "1/1", 280],
@@ -687,6 +688,7 @@ async function run() {
       slug: { _type: "slug", current: e.slug },
       year: e.year,
       description: e.description,
+      galleryGap: e.galleryGap,
       coverFrames: await frames(e.coverFrames),
       gallery: await frames(e.gallery),
       orderRank: orderRank(i),

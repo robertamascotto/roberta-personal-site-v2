@@ -55,7 +55,7 @@ export default async function EditorialDetailPage({ params }: { params: Promise<
         </section>
       </PageContainer>
 
-      <div className="full-bleed flex flex-col gap-3 pb-24">
+      <div className="full-bleed flex flex-col pb-24" style={{ gap: editorial.galleryGap ?? 12 }}>
         {editorial.gallery?.map((frame, i) => (
           <AspectImage
             key={i}
