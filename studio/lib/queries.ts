@@ -17,7 +17,13 @@ export const siteConfigQuery = groq`*[_type == "siteConfig"][0]{
     heroSubtitle,
     "heroTaglineColor": heroTaglineColor.hex,
     "heroHeadlineColor": heroHeadlineColor.hex,
-    "heroSubtitleColor": heroSubtitleColor.hex
+    "heroSubtitleColor": heroSubtitleColor.hex,
+    featuredProjects{
+      editorial{image, video, blurb},
+      products{image, video, blurb},
+      movement{image, video, blurb},
+      strategy{image, video, blurb}
+    }
   },
   contactPage{
     sectionLabel,
@@ -38,38 +44,128 @@ export const siteConfigQuery = groq`*[_type == "siteConfig"][0]{
     socialLabel
   },
   footerLabels{navigationHeading, contactHeading, copyrightText},
-  uiLabels{portfolioHeading, allPhotosLabel, noPhotos, noImages},
   siteMetadata{siteDescription, siteTitleTemplate},
-  theme{themePreset, "backgroundColor": backgroundColor.hex, "textColor": textColor.hex, "accentColor": accentColor.hex, fontPairing},
-  portfolioLayout,
-  portfolioColumns,
-  portfolioAspectRatio,
-  categoryOverrides[]{ category, portfolioLayout, portfolioColumns, portfolioAspectRatio }
+  theme{themePreset, "backgroundColor": backgroundColor.hex, "textColor": textColor.hex, "accentColor": accentColor.hex, fontPairing}
 }`;
 
-// All tags ordered by sortOrder
-export const tagsQuery = groq`*[_type == "tag"] | order(orderRank asc, sortOrder asc){
+const imageWithAspectProjection = groq`{ image, alt, aspectRatio }`;
+
+// All editorials, ordered for the Editorials index page
+export const editorialsQuery = groq`*[_type == "editorial"] | order(orderRank asc){
   _id,
-  label,
+  title,
   "slug": slug.current,
-  sortOrder
+  year,
+  description,
+  coverFrames[]${imageWithAspectProjection}
 }`;
 
-// Shared photo projection — weak tag refs are pre-filtered to exclude deleted tags
-const photoProjection = groq`{
+// A single editorial by slug, with its full gallery
+export const editorialBySlugQuery = groq`*[_type == "editorial" && slug.current == $slug][0]{
   _id,
-  "src": image.asset->url,
-  "lqip": image.asset->metadata.lqip,
-  alt,
-  caption,
-  date,
-  sortOrder,
-  featured,
-  "tags": tags[@->_id != null]->{_id, label, "slug": slug.current}
+  title,
+  "slug": slug.current,
+  year,
+  description,
+  gallery[]${imageWithAspectProjection}
 }`;
 
-// All photos with dereferenced tags, ordered by featured → sortOrder → date
-export const photosQuery = groq`*[_type == "photo"] | order(featured desc, orderRank asc, sortOrder asc, date desc) ${photoProjection}`;
+// Adjacent editorial slugs/titles for prev/next navigation
+export const editorialNeighborsQuery = groq`*[_type == "editorial"] | order(orderRank asc){
+  "slug": slug.current,
+  title
+}`;
 
-// Photos filtered by category
-export const photosByCategoryQuery = groq`*[_type == "photo" && category == $category] | order(featured desc, orderRank asc, sortOrder asc, date desc) ${photoProjection}`;
+const galleryBlockProjection = groq`
+  _type == "imageWithAspect" => ${imageWithAspectProjection},
+  _type == "imageGridBlock" => { _type, columns, images[]${imageWithAspectProjection} },
+  _type == "scrollStripBlock" => { _type, images[]${imageWithAspectProjection} }
+`;
+
+// All product case studies, ordered for the Products index page
+export const productCaseStudiesQuery = groq`*[_type == "productCaseStudy"] | order(orderRank asc){
+  _id,
+  title,
+  "slug": slug.current,
+  categoryLabel,
+  yearRange,
+  coverImage,
+  coverAlt
+}`;
+
+// A single product case study by slug, with gallery + its sub-galleries
+export const productCaseStudyBySlugQuery = groq`*[_type == "productCaseStudy" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  categoryLabel,
+  yearRange,
+  description,
+  "gallery": gallery[]{ ${galleryBlockProjection} },
+  "subGalleries": *[_type == "productSubGallery" && parentCaseStudy._ref == ^._id] | order(orderRank asc){
+    title,
+    "slug": slug.current,
+    description,
+    teaserImages[]${imageWithAspectProjection}
+  }
+}`;
+
+// Adjacent product case study slugs/titles for prev/next navigation
+export const productCaseStudyNeighborsQuery = groq`*[_type == "productCaseStudy"] | order(orderRank asc){
+  "slug": slug.current,
+  title
+}`;
+
+// A single sub-gallery by parent + own slug, with the parent's title/slug and sibling order for prev/next
+export const productSubGalleryBySlugQuery = groq`*[_type == "productSubGallery" && slug.current == $subSlug && parentCaseStudy->slug.current == $parentSlug][0]{
+  title,
+  "slug": slug.current,
+  fullGallery[]${imageWithAspectProjection},
+  "parent": parentCaseStudy->{title, "slug": slug.current},
+  "siblings": *[_type == "productSubGallery" && parentCaseStudy._ref == ^.parentCaseStudy._ref] | order(orderRank asc){
+    title,
+    "slug": slug.current
+  }
+}`;
+
+const videoAssetProjection = groq`{
+  "videoUrl": video.asset->url,
+  poster,
+  label,
+  caption,
+  aspectRatio
+}`;
+
+// Movement page singleton
+export const movementPageQuery = groq`*[_type == "movementPage"][0]{
+  heroLabel,
+  heroHeadline,
+  heroBody,
+  featuredReel{
+    "videoUrl": video.asset->url,
+    tag,
+    title,
+    blurb,
+    year,
+    "linkedEditorialSlug": linkedEditorial->slug.current
+  },
+  videoGroups[]{
+    sectionLabel,
+    intro,
+    layout,
+    videos[]${videoAssetProjection}
+  }
+}`;
+
+// Content strategy page singleton
+export const contentStrategyPageQuery = groq`*[_type == "contentStrategyPage"][0]{
+  heroLabel,
+  heroHeadline,
+  heroBody,
+  sections[]{
+    heading,
+    body,
+    image,
+    stats[]{label, value}
+  }
+}`;

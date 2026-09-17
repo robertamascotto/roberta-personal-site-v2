@@ -1,11 +1,7 @@
 import { defineType, defineField } from "sanity";
 import { validateUrl } from "../../lib/validators";
-import { CATEGORIES } from "@/lib/constants";
 
-const knownPaths = [
-  ...CATEGORIES.map((c) => `/portfolio/${c.slug}`),
-  "/contact",
-];
+const knownPaths = ["/", "/editorials", "/products", "/movement", "/strategy", "/contact"];
 
 function validateNavHref(value: unknown): string | true {
   const urlResult = validateUrl(value);
@@ -39,7 +35,7 @@ export default defineType({
       title: "URL",
       type: "string",
       description:
-        "Link destination — portfolio pages must include the /portfolio/ prefix (e.g. /portfolio/campaigns, /portfolio/e-commerce)",
+        "Link destination, e.g. /editorials, /products, /movement, /strategy, /contact",
       validation: (rule) => rule.required().custom(validateNavHref),
     }),
   ],

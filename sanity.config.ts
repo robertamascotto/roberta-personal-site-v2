@@ -2,8 +2,6 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { colorInput } from "@sanity/color-input";
-import { dashboard } from "./studio/tools/dashboard";
-import { bulkManager } from "./studio/tools/bulkManager";
 import { schemaTypes } from "./studio/schemas";
 import { structure } from "./studio/structure";
 import { projectId, dataset } from "./studio/env";
@@ -18,39 +16,16 @@ export default defineConfig({
   dataset,
   basePath: "/studio",
   plugins: [
-    dashboard(),
     structureTool({ structure }),
     colorInput(),
-    bulkManager(),
     ...devOnlyPlugins,
   ],
   schema: {
     types: schemaTypes,
-    templates: (prev) => [
-      ...prev.filter((t) => t.id !== "photo"),
-      {
-        id: "photo-e-commerce",
-        title: "New E-Commerce Photo",
-        schemaType: "photo",
-        value: { category: "e-commerce" },
-      },
-      {
-        id: "photo-campaigns",
-        title: "New Campaigns Photo",
-        schemaType: "photo",
-        value: { category: "campaigns" },
-      },
-      {
-        id: "photo-branded-content",
-        title: "New Branded Content Photo",
-        schemaType: "photo",
-        value: { category: "branded-content" },
-      },
-    ],
   },
   document: {
     actions: (prev, context) => {
-      if (context.schemaType === "siteConfig") {
+      if (context.schemaType === "siteConfig" || context.schemaType === "movementPage" || context.schemaType === "contentStrategyPage") {
         return prev.filter(
           ({ action }) => action !== "delete" && action !== "duplicate"
         );
@@ -63,14 +38,22 @@ export default defineConfig({
       const baseUrl =
         process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+      const slug = (document as Record<string, unknown>).slug as { current?: string } | undefined;
+
       if (document._type === "siteConfig") {
         return `${baseUrl}/api/draft?secret=${secret}&slug=/`;
       }
-
-      if (document._type === "photo") {
-        const category = (document as Record<string, unknown>).category as string | undefined;
-        const slug = category || "e-commerce";
-        return `${baseUrl}/api/draft?secret=${secret}&slug=/portfolio/${slug}`;
+      if (document._type === "movementPage") {
+        return `${baseUrl}/api/draft?secret=${secret}&slug=/movement`;
+      }
+      if (document._type === "contentStrategyPage") {
+        return `${baseUrl}/api/draft?secret=${secret}&slug=/strategy`;
+      }
+      if (document._type === "editorial" && slug?.current) {
+        return `${baseUrl}/api/draft?secret=${secret}&slug=/editorials/${slug.current}`;
+      }
+      if (document._type === "productCaseStudy" && slug?.current) {
+        return `${baseUrl}/api/draft?secret=${secret}&slug=/products/${slug.current}`;
       }
 
       return prev;

@@ -6,6 +6,7 @@ export default defineType({
   type: "object",
   groups: [
     { name: "content", title: "Content", default: true },
+    { name: "projects", title: "Featured Projects" },
     { name: "colors", title: "Color Overrides" },
   ],
   fields: [
@@ -37,6 +38,13 @@ export default defineType({
       type: "text",
       description: "Supporting text below the headline",
       group: "content",
+    }),
+    defineField({
+      name: "featuredProjects",
+      title: "Featured Projects",
+      type: "featuredProjects",
+      description: "The Editorial / Products / Movement / Strategy teasers in the home page scroll section",
+      group: "projects",
     }),
     defineField({
       name: "heroTaglineColor",
