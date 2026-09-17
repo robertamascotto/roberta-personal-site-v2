@@ -3,20 +3,25 @@ import Image from "next/image";
 import { urlFor } from "@/studio/lib/image";
 import type { EditorialSummary } from "@/studio/lib/helpers";
 
-const OFFSETS = [24, -16, 20, -12];
+// Frames within a shoot vary in both size and vertical position — this is
+// what gives the teaser its scattered, editorial-mosaic feel, rather than a
+// uniform row of same-height images.
+const HEIGHT_SCALE = [0.74, 1, 0.68, 0.86];
+const OFFSETS = [22, -18, 26, -14];
 
 export default function EditorialTeaser({ editorial }: { editorial: EditorialSummary }) {
   const frames = editorial.coverFrames || [];
 
   return (
     <section className="border-t border-ink/10 py-14">
-      <div className="flex items-center justify-center gap-6 h-[280px] md:h-[380px] mb-9 flex-wrap md:flex-nowrap">
+      <div className="flex items-center justify-center gap-8 md:gap-10 h-[260px] md:h-[340px] mb-9 flex-wrap md:flex-nowrap">
         {frames.map((frame, i) => (
           <div
             key={i}
-            className="relative h-full flex-none"
+            className="relative flex-none"
             style={{
               aspectRatio: frame.aspectRatio || "4/5",
+              height: `${HEIGHT_SCALE[i % HEIGHT_SCALE.length] * 100}%`,
               marginTop: OFFSETS[i % OFFSETS.length],
             }}
           >
