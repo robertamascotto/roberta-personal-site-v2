@@ -6,7 +6,7 @@
   --color-ink: #111110;
 
   /* Type roles */
-  --font-heading: var(--font-big-shoulders), "Big Shoulders Display", sans-serif;
+  --font-heading: var(--font-big-shoulders), "Big Shoulders", sans-serif;
   --font-mark: var(--font-oswald), Oswald, sans-serif;
   --font-accent: var(--font-spectral), Spectral, serif;
   --font-body: var(--font-poppins), Poppins, sans-serif;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
-import { getContentStrategyPage } from "@/studio/lib/helpers";
+import { getContentStrategyPage, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import PageHero from "@/components/PageHero";
 import AspectImage from "@/components/gallery/AspectImage";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function ContentStrategyPage() {
   const { isEnabled: isPreview } = await draftMode();
-  const page = await getContentStrategyPage(isPreview);
+  const page = await safeFetch(getContentStrategyPage(isPreview), null);
 
   return (
     <PageContainer>

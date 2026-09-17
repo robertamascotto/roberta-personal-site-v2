@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getSiteConfig, getSiteConfigSafe } from "@/studio/lib/helpers";
 import ContactPageClient from "@/components/ContactPageClient";
 
@@ -38,9 +39,9 @@ export default async function ContactPage() {
           </h1>
           <p className="text-ink/60 mb-6">
             Add your contact information through the{" "}
-            <a href="/studio" className="underline">
+            <Link href="/studio" className="underline">
               studio
-            </a>
+            </Link>
             .
           </p>
         </div>

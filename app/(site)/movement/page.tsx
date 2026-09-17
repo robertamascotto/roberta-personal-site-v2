@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { draftMode } from "next/headers";
-import { getMovementPage } from "@/studio/lib/helpers";
+import { getMovementPage, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import PageHero from "@/components/PageHero";
 import VideoTile from "@/components/gallery/VideoTile";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default async function MovementPage() {
   const { isEnabled: isPreview } = await draftMode();
-  const page = await getMovementPage(isPreview);
+  const page = await safeFetch(getMovementPage(isPreview), null);
 
   const reel = page?.featuredReel;
   const reelBlock = reel && (

@@ -228,3 +228,18 @@ export async function getMovementPage(preview = false): Promise<MovementPage | n
 export async function getContentStrategyPage(preview = false): Promise<ContentStrategyPage | null> {
   return getClient(preview).fetch(contentStrategyPageQuery);
 }
+
+/**
+ * Awaits a Sanity fetch and falls back to a default value on failure (e.g. a
+ * misconfigured or unreachable dataset), instead of crashing the page.
+ */
+export async function safeFetch<T>(promise: Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await promise;
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("Sanity fetch failed:", error);
+    }
+    return fallback;
+  }
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { draftMode } from "next/headers";
-import { getProductCaseStudies } from "@/studio/lib/helpers";
+import { getProductCaseStudies, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import PageHero from "@/components/PageHero";
 import AspectImage from "@/components/gallery/AspectImage";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function ProductsPage() {
   const { isEnabled: isPreview } = await draftMode();
-  const caseStudies = await getProductCaseStudies(isPreview);
+  const caseStudies = await safeFetch(getProductCaseStudies(isPreview), []);
   const [featured, ...rest] = caseStudies;
 
   return (

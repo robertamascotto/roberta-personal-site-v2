@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { draftMode } from "next/headers";
-import { getEditorialBySlug, getEditorialNeighbors } from "@/studio/lib/helpers";
+import { getEditorialBySlug, getEditorialNeighbors, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import AspectImage from "@/components/gallery/AspectImage";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const editorial = await getEditorialBySlug(slug);
+  const editorial = await safeFetch(getEditorialBySlug(slug), null);
   if (!editorial) return {};
   return {
     title: editorial.title,
@@ -21,8 +21,8 @@ export default async function EditorialDetailPage({ params }: { params: Promise<
   const { slug } = await params;
   const { isEnabled: isPreview } = await draftMode();
   const [editorial, neighbors] = await Promise.all([
-    getEditorialBySlug(slug, isPreview),
-    getEditorialNeighbors(isPreview),
+    safeFetch(getEditorialBySlug(slug, isPreview), null),
+    safeFetch(getEditorialNeighbors(isPreview), []),
   ]);
 
   if (!editorial) notFound();

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
-import { getEditorials } from "@/studio/lib/helpers";
+import { getEditorials, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import PageHero from "@/components/PageHero";
 import EditorialTeaser from "@/components/gallery/EditorialTeaser";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function EditorialsPage() {
   const { isEnabled: isPreview } = await draftMode();
-  const editorials = await getEditorials(isPreview);
+  const editorials = await safeFetch(getEditorials(isPreview), []);
 
   return (
     <PageContainer>

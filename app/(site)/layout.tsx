@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Oswald, Big_Shoulders_Display, Spectral, Poppins, IBM_Plex_Mono } from "next/font/google";
+import { Oswald, Big_Shoulders, Spectral, Poppins, IBM_Plex_Mono } from "next/font/google";
 import { draftMode } from "next/headers";
 import "../globals.css";
 import Navigation from "@/components/Navigation";
@@ -17,7 +17,7 @@ const oswald = Oswald({
   display: "swap",
 });
 
-const bigShoulders = Big_Shoulders_Display({
+const bigShoulders = Big_Shoulders({
   subsets: ["latin"],
   weight: ["400", "700", "900"],
   variable: "--font-big-shoulders",

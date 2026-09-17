@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { draftMode } from "next/headers";
-import { getProductSubGallery } from "@/studio/lib/helpers";
+import { getProductSubGallery, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import LightboxGrid from "@/components/gallery/LightboxGrid";
 
@@ -12,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string; subSlug: string }>;
 }): Promise<Metadata> {
   const { slug, subSlug } = await params;
-  const sub = await getProductSubGallery(slug, subSlug);
+  const sub = await safeFetch(getProductSubGallery(slug, subSlug), null);
   if (!sub) return {};
   return {
     title: `${sub.title} — ${sub.parent.title}`,
@@ -27,7 +27,7 @@ export default async function ProductSubGalleryPage({
 }) {
   const { slug, subSlug } = await params;
   const { isEnabled: isPreview } = await draftMode();
-  const sub = await getProductSubGallery(slug, subSlug, isPreview);
+  const sub = await safeFetch(getProductSubGallery(slug, subSlug, isPreview), null);
 
   if (!sub) notFound();
 

@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { draftMode } from "next/headers";
-import { getProductCaseStudyBySlug, getProductCaseStudyNeighbors } from "@/studio/lib/helpers";
+import { getProductCaseStudyBySlug, getProductCaseStudyNeighbors, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import AspectImage from "@/components/gallery/AspectImage";
 import GalleryBlockRenderer from "@/components/gallery/GalleryBlockRenderer";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const caseStudy = await getProductCaseStudyBySlug(slug);
+  const caseStudy = await safeFetch(getProductCaseStudyBySlug(slug), null);
   if (!caseStudy) return {};
   return {
     title: caseStudy.title,
@@ -22,8 +22,8 @@ export default async function ProductCaseStudyPage({ params }: { params: Promise
   const { slug } = await params;
   const { isEnabled: isPreview } = await draftMode();
   const [caseStudy, neighbors] = await Promise.all([
-    getProductCaseStudyBySlug(slug, isPreview),
-    getProductCaseStudyNeighbors(isPreview),
+    safeFetch(getProductCaseStudyBySlug(slug, isPreview), null),
+    safeFetch(getProductCaseStudyNeighbors(isPreview), []),
   ]);
 
   if (!caseStudy) notFound();
