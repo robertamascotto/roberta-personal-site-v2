@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { urlFor } from "@/studio/lib/image";
 import AspectImage from "./AspectImage";
 import type { GalleryBlock } from "@/studio/lib/helpers";
@@ -48,7 +49,7 @@ export default function GalleryBlockRenderer({ blocks }: { blocks?: GalleryBlock
 
         if (block._type === "scrollStripBlock") {
           return (
-            <div key={i}>
+            <Fragment key={i}>
               <div className="full-bleed relative">
                 <div
                   className="flex gap-4 overflow-x-auto overflow-y-hidden pr-[clamp(20px,5vw,64px)]"
@@ -79,7 +80,7 @@ export default function GalleryBlockRenderer({ blocks }: { blocks?: GalleryBlock
               <div className="flex justify-end items-center gap-2 font-body text-[11px] tracking-[0.08em] uppercase text-ink -mt-6">
                 Scroll <span className="text-[15px] leading-none">&#8594;</span>
               </div>
-            </div>
+            </Fragment>
           );
         }
 

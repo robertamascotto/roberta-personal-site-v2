@@ -15,33 +15,35 @@ export default function EditorialTeaser({ editorial }: { editorial: EditorialSum
 
   return (
     <section className="border-t border-ink/12 py-12 max-[640px]:!py-8">
-      <div className="relative flex items-center justify-center gap-5 mb-9 flex-wrap md:flex-nowrap">
-        {frames.map((frame, i) => (
-          <div
-            key={i}
-            className="relative flex-none"
-            style={{
-              width: frame.frameWidth || FALLBACK_WIDTHS[i % FALLBACK_WIDTHS.length],
-              aspectRatio: frame.aspectRatio || "4/5",
-            }}
-          >
-            <Image
-              src={urlFor(frame.image).width(1200).fit("max").auto("format").url()}
-              alt={frame.alt}
-              fill
-              sizes="(max-width: 768px) 60vw, 40vw"
-              className="object-cover"
-              priority={i === 0}
-            />
-          </div>
-        ))}
+      <div className="flex justify-center mb-9">
+        <div className="relative flex items-center gap-5 flex-wrap md:flex-nowrap">
+          {frames.map((frame, i) => (
+            <div
+              key={i}
+              className="relative flex-none"
+              style={{
+                width: frame.frameWidth || FALLBACK_WIDTHS[i % FALLBACK_WIDTHS.length],
+                aspectRatio: frame.aspectRatio || "4/5",
+              }}
+            >
+              <Image
+                src={urlFor(frame.image).width(1200).fit("max").auto("format").url()}
+                alt={frame.alt}
+                fill
+                sizes="(max-width: 768px) 60vw, 40vw"
+                className="object-cover"
+                priority={i === 0}
+              />
+            </div>
+          ))}
 
-        <Link
-          href={`/editorials/${editorial.slug}`}
-          className="absolute left-0 bottom-0 inline-block font-body text-[13px] font-semibold tracking-[0.04em] no-underline border-b border-ink pb-[2px]"
-        >
-          View all &#8594;
-        </Link>
+          <Link
+            href={`/editorials/${editorial.slug}`}
+            className="absolute right-0 bottom-0 inline-block font-body text-[13px] font-semibold tracking-[0.04em] no-underline border-b border-ink pb-[2px]"
+          >
+            View all &#8594;
+          </Link>
+        </div>
       </div>
 
       <div className="inline-block bg-paper/70 px-[22px] py-[18px]">
