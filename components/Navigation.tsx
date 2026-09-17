@@ -128,7 +128,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`no-underline hover:text-ink/55 transition-colors ${
+                  className={`no-underline hover:text-ink/55 transition-colors outline-none focus-visible:border-b focus-visible:border-ink focus-visible:pb-[2px] ${
                     isActive ? "border-b border-ink pb-[2px]" : ""
                   }`}
                   aria-current={isActive ? "page" : undefined}
