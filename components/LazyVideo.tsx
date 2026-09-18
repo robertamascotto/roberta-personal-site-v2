@@ -31,5 +31,14 @@ export default function LazyVideo({ src, ...props }: LazyVideoProps) {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    // The native `autoplay` attribute is only reliably honored when a
+    // <video>'s source is present at initial parse time. Since we assign
+    // `src` later (once it scrolls into view), we have to kick off
+    // playback ourselves once there's something to play.
+    if (!shouldLoad || !props.autoPlay) return;
+    ref.current?.play().catch(() => {});
+  }, [shouldLoad, props.autoPlay]);
+
   return <video ref={ref} src={shouldLoad ? src : undefined} preload={shouldLoad ? "auto" : "none"} {...props} />;
 }
