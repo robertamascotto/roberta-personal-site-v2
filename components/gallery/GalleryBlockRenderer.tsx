@@ -28,12 +28,25 @@ export default function GalleryBlockRenderer({ blocks }: { blocks?: GalleryBlock
         }
 
         if (block._type === "imageGridBlock") {
+          // Two consecutive 3-column grids sit noticeably closer together (16px)
+          // than the usual 32px between blocks — confirmed directly against
+          // Risa-Venezia.dc.html, the only source file with this pairing.
+          const next = blocks[i + 1];
+          const compressGapAfter =
+            block.columns === 3 && next?._type === "imageGridBlock" && next.columns === 3;
+
           return (
             <div
               key={i}
               className={`grid max-[640px]:!grid-cols-2 max-[640px]:!gap-2 ${GRID_GAP[block.columns] || "gap-4"}`}
-              style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}
+              style={{
+                gridTemplateColumns: `repeat(${block.columns}, 1fr)`,
+                ...(compressGapAfter ? { marginBottom: -16 } : {}),
+              }}
             >
+              {Array.from({ length: block.leadingEmptyColumns || 0 }).map((_, k) => (
+                <div key={`empty-${k}`} aria-hidden className="max-[640px]:hidden" />
+              ))}
               {block.images.map((img, j) => (
                 <AspectImage
                   key={j}

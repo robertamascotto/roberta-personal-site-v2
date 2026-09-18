@@ -423,8 +423,14 @@ const productCaseStudies = [
   },
 ];
 
-async function imageGrid(columns, list) {
-  return { _type: "imageGridBlock", _key: key(), columns, images: await Promise.all(list.map(frame)) };
+async function imageGrid(columns, list, { leadingEmptyColumns } = {}) {
+  return {
+    _type: "imageGridBlock",
+    _key: key(),
+    columns,
+    ...(leadingEmptyColumns ? { leadingEmptyColumns } : {}),
+    images: await Promise.all(list.map(frame)),
+  };
 }
 
 async function scrollStrip(list) {
@@ -460,10 +466,14 @@ async function buildRisaGallery() {
 
 async function buildApreGallery() {
   return [
-    await imageGrid(2, [
-      ["apre-1.jpg", "Apre — vertical 01", "4/5"],
-      ["apre-2.jpg", "Apre — vertical 02", "4/5"],
-    ]),
+    await imageGrid(
+      3,
+      [
+        ["apre-1.jpg", "Apre — vertical 01", "4/5"],
+        ["apre-2.jpg", "Apre — vertical 02", "4/5"],
+      ],
+      { leadingEmptyColumns: 1 }
+    ),
     await scrollStrip([
       ["apre-3.jpg", "Apre — wide 03", "3/2"],
       ["apre-4.jpg", "Apre — vertical 04", "4/5"],

@@ -74,7 +74,7 @@ export const editorialNeighborsQuery = groq`*[_type == "editorial"] | order(orde
 
 const galleryBlockProjection = groq`
   _type == "imageWithAspect" => { _type, image, alt, aspectRatio },
-  _type == "imageGridBlock" => { _type, columns, images[]${imageWithAspectProjection} },
+  _type == "imageGridBlock" => { _type, columns, leadingEmptyColumns, images[]${imageWithAspectProjection} },
   _type == "scrollStripBlock" => { _type, images[]${imageWithAspectProjection} }
 `;
 

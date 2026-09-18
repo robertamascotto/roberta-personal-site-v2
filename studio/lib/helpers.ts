@@ -93,7 +93,7 @@ export interface EditorialNeighbor {
 
 export type GalleryBlock =
   | ({ _type: "imageWithAspect" } & ImageWithAspect)
-  | { _type: "imageGridBlock"; columns: number; images: ImageWithAspect[] }
+  | { _type: "imageGridBlock"; columns: number; leadingEmptyColumns?: number; images: ImageWithAspect[] }
   | { _type: "scrollStripBlock"; images: ImageWithAspect[] };
 
 export interface ProductCaseStudySummary {
