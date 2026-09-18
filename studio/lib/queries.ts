@@ -117,6 +117,7 @@ export const productSubGalleryBySlugQuery = groq`*[_type == "productSubGallery" 
   title,
   "slug": slug.current,
   fullGalleryGap,
+  fullGalleryFit,
   fullGallery[]${imageWithAspectProjection},
   "parent": parentCaseStudy->{title, "slug": slug.current},
   "siblings": *[_type == "productSubGallery" && parentCaseStudy._ref == ^.parentCaseStudy._ref] | order(orderRank asc){

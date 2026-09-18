@@ -386,6 +386,7 @@ const productCaseStudies = [
         title: "Flats",
         description:
           "Flat lay ecommerce, shot with consistent lighting and framing to maintain visual coherence throughout the catalog. Focused on texture, construction details, and accurate color rendering.",
+        fullGalleryFit: "contain",
         teaserImages: [
           ["sr-flats-1.JPG", "Flats — 01", "3/4"],
           ["sr-flats-2.JPG", "Flats — 02", "3/4"],
@@ -731,6 +732,7 @@ async function run() {
         slug: { _type: "slug", current: sg.slug },
         description: sg.description,
         fullGalleryGap: sg.fullGalleryGap,
+        fullGalleryFit: sg.fullGalleryFit,
         teaserImages: await frames(sg.teaserImages),
         fullGallery: await frames(sg.fullGallery),
         orderRank: orderRank(j),

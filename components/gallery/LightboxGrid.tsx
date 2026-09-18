@@ -7,7 +7,15 @@ import AspectImage from "./AspectImage";
 import { urlFor } from "@/studio/lib/image";
 import type { ImageWithAspect } from "@/studio/lib/helpers";
 
-export default function LightboxGrid({ images, gap = 12 }: { images: ImageWithAspect[]; gap?: number }) {
+export default function LightboxGrid({
+  images,
+  gap = 12,
+  fit = "cover",
+}: {
+  images: ImageWithAspect[];
+  gap?: number;
+  fit?: "cover" | "contain";
+}) {
   const [index, setIndex] = useState(-1);
 
   const slides = images.map((img) => ({
@@ -30,8 +38,8 @@ export default function LightboxGrid({ images, gap = 12 }: { images: ImageWithAs
               image={img.image}
               alt={img.alt}
               aspectRatio={img.aspectRatio || "3/4"}
-              objectFit="contain"
-              background="#fff"
+              objectFit={fit}
+              background={fit === "contain" ? "#fff" : undefined}
             />
           </button>
         ))}

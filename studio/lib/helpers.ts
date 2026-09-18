@@ -128,6 +128,7 @@ export interface ProductSubGallery {
   title: string;
   slug: string;
   fullGalleryGap?: number;
+  fullGalleryFit?: "cover" | "contain";
   fullGallery: ImageWithAspect[];
   parent: { title: string; slug: string };
   siblings: { title: string; slug: string }[];

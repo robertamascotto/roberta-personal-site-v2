@@ -66,7 +66,7 @@ export default async function ProductSubGalleryPage({
       </section>
 
       <section className="pb-24">
-        <LightboxGrid images={sub.fullGallery} gap={sub.fullGalleryGap ?? 12} />
+        <LightboxGrid images={sub.fullGallery} gap={sub.fullGalleryGap ?? 12} fit={sub.fullGalleryFit ?? "cover"} />
       </section>
 
       {navBar("flex justify-between border-t border-ink/12 pt-8 pb-16 text-[13px]")}
