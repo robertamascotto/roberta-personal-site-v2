@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { urlFor } from "@/studio/lib/image";
+import LazyVideo from "@/components/LazyVideo";
 import type { CsFeedMedia } from "@/studio/lib/helpers";
 
 export default function FeedPhoneSection({
@@ -10,7 +11,7 @@ export default function FeedPhoneSection({
   phoneImage?: unknown;
 }) {
   if (!media || media.length === 0 || !phoneImage) return null;
-  const phoneUrl = urlFor(phoneImage).width(940).auto("format").url();
+  const phoneUrl = urlFor(phoneImage).url();
 
   return (
     <section className="grid grid-cols-1 min-[881px]:grid-cols-2 gap-y-8 min-[881px]:gap-x-[clamp(28px,5vw,64px)] pt-2 pb-20 items-start">
@@ -19,7 +20,7 @@ export default function FeedPhoneSection({
           <figure key={i} className="m-0 min-w-0">
             <div className="relative w-full bg-ink" style={{ aspectRatio: "9/16" }}>
               {item.videoUrl ? (
-                <video
+                <LazyVideo
                   src={item.videoUrl}
                   autoPlay
                   muted
@@ -29,7 +30,7 @@ export default function FeedPhoneSection({
                 />
               ) : item.image ? (
                 <Image
-                  src={urlFor(item.image).width(600).auto("format").url()}
+                  src={urlFor(item.image).url()}
                   alt=""
                   fill
                   sizes="(max-width: 880px) 33vw, 16vw"
@@ -42,17 +43,16 @@ export default function FeedPhoneSection({
         ))}
       </div>
 
-      <div className="justify-self-end max-[880px]:!justify-self-center max-[640px]:!justify-self-stretch min-w-0 w-full max-w-[470px]">
-        <div className="relative w-full max-w-[470px]" style={{ aspectRatio: "941/1672" }}>
-          <Image
-            src={phoneUrl}
-            alt="Instagram profile mockup shown on an iPhone"
-            fill
-            sizes="(max-width: 880px) 100vw, 470px"
-            className="object-contain"
-            style={{ objectPosition: "100% 100%" }}
-          />
-        </div>
+      <div className="justify-self-end max-[880px]:!justify-self-center max-[640px]:!justify-self-stretch min-w-0 w-full max-w-[440px] min-[1100px]:relative min-[1100px]:h-full">
+        <Image
+          src={phoneUrl}
+          alt="Instagram profile mockup shown on an iPhone"
+          width={941}
+          height={1672}
+          sizes="(max-width: 1099px) 440px, 440px"
+          className="block w-full h-auto min-[1100px]:absolute min-[1100px]:-right-8 min-[1100px]:bottom-0"
+          style={{ aspectRatio: "941/1672" }}
+        />
       </div>
     </section>
   );

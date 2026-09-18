@@ -72,7 +72,7 @@ export default function GalleryBlockRenderer({ blocks }: { blocks?: GalleryBlock
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       key={j}
-                      src={urlFor(img.image).height(1040).fit("max").auto("format").url()}
+                      src={urlFor(img.image).height(1040).fit("max").auto("format").quality(92).url()}
                       alt={img.alt}
                       className="flex-none block"
                       style={{

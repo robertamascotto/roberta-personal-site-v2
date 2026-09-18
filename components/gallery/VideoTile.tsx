@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { urlFor } from "@/studio/lib/image";
+import LazyVideo from "@/components/LazyVideo";
 
 interface VideoTileProps {
   videoUrl?: string;
@@ -19,13 +20,13 @@ export default function VideoTile({ videoUrl, poster, aspectRatio = "16/9", labe
   const videoRef = useRef<HTMLVideoElement>(null);
 
   if (!videoUrl) return null;
-  const posterUrl = poster ? urlFor(poster).width(1200).url() : undefined;
+  const posterUrl = poster ? urlFor(poster).url() : undefined;
 
   if (autoPlay) {
     return (
       <div className="min-w-0">
         <div className="relative w-full overflow-hidden bg-ink" style={{ aspectRatio }}>
-          <video
+          <LazyVideo
             src={videoUrl}
             muted
             loop

@@ -23,7 +23,7 @@ export default function AspectImage({
   background,
 }: AspectImageProps) {
   if (!image) return null;
-  const src = urlFor(image).width(1600).fit("max").auto("format").url();
+  const src = urlFor(image).url();
 
   return (
     <figure

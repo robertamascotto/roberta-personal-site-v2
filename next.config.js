@@ -2,7 +2,8 @@
 
 module.exports = {
   images: {
-    unoptimized: true,
+    loader: 'custom',
+    loaderFile: './lib/sanityImageLoader.js',
     remotePatterns: [
       {
         protocol: 'https',

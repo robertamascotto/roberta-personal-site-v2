@@ -239,7 +239,7 @@ const editorials = [
       "Campaign photography for Smoke Rise NY's SS25 collection, styled around a recording studio setting.\nTalent shot in and around studio gear: headphones, mixing consoles, mic booths with the intent to ground the collection in a real working environment rather than a traditional studio backdrop.",
     coverFrames: [
       ["ed-5a.jpg", "In Session SS25 — frame 1", "1/1", 270],
-      ["ed-5b.jpg", "In Session SS25 — frame 2", "3/4", 380],
+      ["ed-5b.jpg", "In Session SS25 — frame 2", "3/4", 340],
       ["ed-5c.jpg", "In Session SS25 — frame 3", "3/2", 310],
     ],
     gallery: [
@@ -504,7 +504,7 @@ async function buildMovementPage() {
       "Motion as an extension of the photography.\nThe tool changed over time, from camera to phone to old digital formats, but the eye behind it stayed the same.",
     featuredReel: {
       _type: "featuredReel",
-      video: await file("mv-banner-e5768110.mp4"),
+      video: await file("mv-banner-highres-h264.mp4"),
       tag: "Editorial",
       title: "Wrong Number",
       blurb: "Movement carried over from the stills of the Wrong Number editorial, used as a sneak peek for the photos to come.",

@@ -27,7 +27,7 @@ export default function EditorialTeaser({ editorial }: { editorial: EditorialSum
               }}
             >
               <Image
-                src={urlFor(frame.image).width(1200).fit("max").auto("format").url()}
+                src={urlFor(frame.image).url()}
                 alt={frame.alt}
                 fill
                 sizes="(max-width: 768px) 60vw, 40vw"

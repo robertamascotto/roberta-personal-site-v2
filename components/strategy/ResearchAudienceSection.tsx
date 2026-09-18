@@ -46,7 +46,7 @@ export default function ResearchAudienceSection({
               <figure className="m-0 min-w-0">
                 <div className="w-[150px] max-w-full relative" style={{ aspectRatio: "3/4.6" }}>
                   <Image
-                    src={urlFor(corePersona.image).width(300).auto("format").url()}
+                    src={urlFor(corePersona.image).url()}
                     alt="Core buyer portrait"
                     fill
                     sizes="150px"

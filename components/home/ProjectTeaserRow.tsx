@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { urlFor } from "@/studio/lib/image";
+import LazyVideo from "@/components/LazyVideo";
 
 interface ProjectTeaserRowProps {
   href: string;
@@ -25,7 +26,7 @@ export default function ProjectTeaserRow({
     <Link href={href} className="block no-underline">
       <figure className="relative m-0 overflow-hidden" style={{ aspectRatio: "16/9" }}>
         {videoUrl ? (
-          <video
+          <LazyVideo
             src={videoUrl}
             autoPlay
             muted
@@ -35,7 +36,7 @@ export default function ProjectTeaserRow({
           />
         ) : image ? (
           <Image
-            src={urlFor(image).width(1200).fit("max").auto("format").url()}
+            src={urlFor(image).url()}
             alt={label}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"

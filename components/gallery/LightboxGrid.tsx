@@ -19,7 +19,7 @@ export default function LightboxGrid({
   const [index, setIndex] = useState(-1);
 
   const slides = images.map((img) => ({
-    src: urlFor(img.image).width(2000).fit("max").auto("format").url(),
+    src: urlFor(img.image).width(3200).fit("max").auto("format").quality(92).url(),
     alt: img.alt,
   }));
 

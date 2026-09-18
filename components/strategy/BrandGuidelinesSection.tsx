@@ -52,7 +52,7 @@ export default function BrandGuidelinesSection({
                         <div className="relative" style={{ aspectRatio: "3/4" }}>
                           {item.image ? (
                             <Image
-                              src={urlFor(item.image).width(300).auto("format").url()}
+                              src={urlFor(item.image).url()}
                               alt={item.heading}
                               fill
                               sizes="(max-width: 640px) 45vw, 15vw"
