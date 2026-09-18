@@ -54,6 +54,8 @@ export default function VideoTile({ videoUrl, poster, aspectRatio = "16/9", labe
           <video
             src={videoUrl}
             controls
+            controlsList="nofullscreen nodownload noremoteplayback noplaybackrate"
+            disablePictureInPicture
             autoPlay
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
