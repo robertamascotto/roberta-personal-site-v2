@@ -45,7 +45,7 @@ export default function Footer({
   if (pathname === "/") return null;
 
   return (
-    <footer className="border-t border-ink/[0.08] px-[clamp(20px,5vw,64px)] pt-14 pb-10 flex flex-col items-center text-center">
+    <footer className="border-t border-ink/[0.08] px-[clamp(20px,5vw,64px)] pt-14 pb-10 max-[640px]:!pb-24 flex flex-col items-center text-center">
       <p className="font-accent italic font-light text-[clamp(18px,1.9vw,25px)] leading-[1.35] mb-3.5">{tagline}</p>
       <p className="font-body text-[13px] leading-[21px] text-ink/58 mb-6">{description}</p>
 
