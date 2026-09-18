@@ -80,7 +80,13 @@ export default async function ProductCaseStudyPage({ params }: { params: Promise
                 </div>
                 <div className="grid grid-cols-2 min-[801px]:grid-cols-4 gap-4">
                   {sub.teaserImages?.map((img, j) => (
-                    <AspectImage key={j} image={img.image} alt={img.alt} aspectRatio={img.aspectRatio || "3/4"} />
+                    <AspectImage
+                      key={j}
+                      image={img.image}
+                      alt={img.alt}
+                      aspectRatio={img.aspectRatio || "3/4"}
+                      className={j >= 2 ? "max-[800px]:hidden" : ""}
+                    />
                   ))}
                 </div>
               </section>
