@@ -3,7 +3,11 @@ import { draftMode } from "next/headers";
 import { getContentStrategyPage, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import PageHero from "@/components/PageHero";
-import AspectImage from "@/components/gallery/AspectImage";
+import FeedPhoneSection from "@/components/strategy/FeedPhoneSection";
+import ProcessSection from "@/components/strategy/ProcessSection";
+import ResearchAudienceSection from "@/components/strategy/ResearchAudienceSection";
+import BrandGuidelinesSection from "@/components/strategy/BrandGuidelinesSection";
+import ReportSection from "@/components/strategy/ReportSection";
 
 export const metadata: Metadata = {
   title: "Content Strategy",
@@ -24,27 +28,46 @@ export default async function ContentStrategyPage() {
         maxWidth="max-w-[64ch]"
       />
 
-      <div className="pb-16">
-        {page?.sections?.map((section, i) => (
-          <section key={i} className="border-t border-ink/12 pt-14 pb-[72px]">
-            <h2 className="font-accent italic font-light text-[34px] leading-[1.2] m-0 mb-4">{section.heading}</h2>
-            <p className="text-[15px] leading-[25px] text-ink/72 mb-8 whitespace-pre-line">{section.body}</p>
+      {page?.feedSection && (
+        <FeedPhoneSection media={page.feedSection.media} phoneImage={page.feedSection.phoneImage} />
+      )}
 
-            {section.stats && section.stats.length > 0 && (
-              <div className="flex flex-wrap gap-10 mb-8">
-                {section.stats.map((stat, j) => (
-                  <div key={j}>
-                    <div className="font-heading font-black text-[26px] leading-none">{stat.value}</div>
-                    <div className="font-body text-[9.5px] tracking-[0.06em] uppercase text-ink/50 mt-1">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            )}
+      {page?.processSection && (
+        <ProcessSection sectionLabel={page.processSection.sectionLabel} steps={page.processSection.steps} />
+      )}
 
-            {section.image ? <AspectImage image={section.image} alt={section.heading} aspectRatio="16/9" /> : null}
-          </section>
-        ))}
-      </div>
+      {page?.researchAudienceSection && (
+        <ResearchAudienceSection
+          sectionLabel={page.researchAudienceSection.sectionLabel}
+          heading={page.researchAudienceSection.heading}
+          intro={page.researchAudienceSection.intro}
+          researchItems={page.researchAudienceSection.researchItems}
+          corePersona={page.researchAudienceSection.corePersona}
+          secondaryPersonas={page.researchAudienceSection.secondaryPersonas}
+        />
+      )}
+
+      {page?.brandGuidelinesSection && (
+        <BrandGuidelinesSection
+          sectionLabel={page.brandGuidelinesSection.sectionLabel}
+          heading={page.brandGuidelinesSection.heading}
+          intro={page.brandGuidelinesSection.intro}
+          rows={page.brandGuidelinesSection.rows}
+        />
+      )}
+
+      {page?.reportSection && (
+        <ReportSection
+          sectionLabel={page.reportSection.sectionLabel}
+          heading={page.reportSection.heading}
+          intro={page.reportSection.intro}
+          reportLabel={page.reportSection.reportLabel}
+          dateRange={page.reportSection.dateRange}
+          kpis={page.reportSection.kpis}
+          monthlyBars={page.reportSection.monthlyBars}
+          pillars={page.reportSection.pillars}
+        />
+      )}
 
       {!page && <p className="text-ink/60 pb-24">Add Content Strategy page content in the Studio.</p>}
     </PageContainer>

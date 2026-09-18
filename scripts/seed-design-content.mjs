@@ -547,7 +547,7 @@ async function buildMovementPage() {
           "Short-form content built for social for Smoke Rise NY, each one showcasing a specific style or collection. Location and gear shift with the moment, outdoor, in studio, or on the go, captured on phone or camera depending on what the shot called for. (2024—2026)",
         layout: "vertical-3up",
         videos: [
-          { _type: "videoAsset", _key: key(), video: await file("mv-vert-3-001bd12b.mp4"), aspectRatio: "9/16" },
+          { _type: "videoAsset", _key: key(), video: await file("mv-vert-3-001bd12b.mp4"), aspectRatio: "9/16", ambientLoop: true },
           {
             _type: "videoAsset",
             _key: key(),
@@ -586,6 +586,7 @@ async function buildMovementPage() {
             label: "Smoke Rise NY — 2025",
             caption: "Social content styled around matching couple's looks for Valentine's Day, with a projector used on set to create a practical smoke effect.",
             aspectRatio: "9/16",
+            ambientLoop: true,
           },
         ],
       },
@@ -622,37 +623,183 @@ async function buildContentStrategyPage() {
     heroHeadline: "Planning the content, not just shooting it.",
     heroBody:
       "A shoot is only as good as the plan around it. Content strategy decides what a campaign says. It sets the formats that carry the message and the dates each asset publishes, so one shoot becomes a month of content.\n\nTo show the process, I created Moss & Milk, a fictional skincare brand, and built its strategy from scratch.",
-    sections: [
-      {
-        _type: "strategySection",
-        _key: key(),
-        heading: "Before anything gets shot",
-        body:
-          "Research sets the brief. Audiences get a face, not a demographic.\n\nMarket & category — where the brand sits in its price bracket, and which of the category's visual conventions are worth breaking.\n\nCompetitive scan — five to eight comparable accounts read side by side: posting rhythm, formats, and the hooks that keep working.\n\nChannel audit — the brand's own last ninety days: top and bottom performers, and which pillars are missing entirely.\n\nThe core buyer already owns the brand and reorders without being prompted. The discoverer arrives from reels with no idea of the name — a strong first frame is what stops the scroll. The industry eye (press, retailers, collaborators) watches whether the imagery holds up over time.",
+
+    feedSection: {
+      media: [
+        { _type: "csFeedMedia", _key: key(), video: await file("cs-feed-reel-1.mp4"), caption: "Sponsored post — shoppable ad" },
+        { _type: "csFeedMedia", _key: key(), image: await image("cs-feed-still-2.png"), caption: "Campaign key visual" },
+        { _type: "csFeedMedia", _key: key(), video: await file("cs-feed-reel-3.mp4"), caption: "Campaign reel — lifestyle" },
+      ],
+      phoneImage: await image("cs-feed-mockup-moss-milk.png"),
+    },
+
+    processSection: {
+      sectionLabel: "Process",
+      steps: [
+        { _type: "titleBodyItem", _key: key(), title: "Research", body: "Audience, competitors, and the brand's own channels." },
+        { _type: "titleBodyItem", _key: key(), title: "Content pillars", body: "The recurring themes and formats a channel runs on." },
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "Shoot planning",
+          body: "Shot lists and schedules covering campaign and social in one session.",
+        },
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "Calendar & publishing",
+          body: "Edits, captions, and posting dates across the campaign window.",
+        },
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "Reporting",
+          body: "Monthly numbers checked against the pillars set at the start, feeding the next shot list.",
+        },
+      ],
+    },
+
+    researchAudienceSection: {
+      sectionLabel: "Research & audience",
+      heading: "Before anything gets shot",
+      intro: "Research sets the brief. Audiences get a face, not a demographic.",
+      researchItems: [
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "Market & category",
+          body: "Where the brand sits in its price bracket, and which of the category's visual conventions are worth breaking.",
+        },
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "Competitive scan",
+          body: "Five to eight comparable accounts read side by side: posting rhythm, formats, and the hooks that keep working.",
+        },
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "Channel audit",
+          body: "The brand's own last ninety days: top and bottom performers, and which pillars are missing entirely.",
+        },
+      ],
+      corePersona: {
+        _type: "csCorePersona",
         image: await image("core-buyer.jpg"),
+        name: "The core buyer",
+        quote: "Already owns the brand and reorders without being prompted.",
+        body: "Stops for new launches, restocks and the product in real use. Carousels and stories with a direct link do the work here.",
+        attribution: "Moss & Milk core buyer, mid-30s.",
       },
-      {
-        _type: "strategySection",
-        _key: key(),
-        heading: "A written rulebook the whole team can shoot to",
-        body:
-          "Guidelines keep a feed coherent when several people are producing for it. Each project ends with a short document covering voice, framing, color, and the things the brand never does.\n\nTone of voice — how captions read: sentence length, use of humor, whether the brand says \"we\" or disappears behind the product.\n\nVisual direction — light, framing, crop and grade; which surfaces and locations recur, and the treatment applied to every export.\n\nGrid rules — how posts sit next to each other, alternating product, portrait and detail so the profile reads as one piece.\n\nAsset specs — ratios, safe areas, file naming, and delivery, so one shoot serves ecommerce, paid, and organic without extra exports.",
-        image: await image("palette-2ad61167.jpg"),
-      },
-      {
-        _type: "strategySection",
-        _key: key(),
-        heading: "Every campaign closes with a report",
-        body:
-          "Monthly reporting tracks reach, engagement and saves against the pillars set at the start, then feeds the next shot list. The numbers below cover a spring launch for a fictional skincare brand.",
-        stats: [
-          { _type: "stat", _key: key(), label: "Reach, 90 days", value: "+128%" },
-          { _type: "stat", _key: key(), label: "Engagement rate", value: "6.4%" },
-          { _type: "stat", _key: key(), label: "Saves / month", value: "3.1k" },
-          { _type: "stat", _key: key(), label: "Assets / shoot", value: "42" },
-        ],
-      },
-    ],
+      secondaryPersonas: [
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "The discoverer",
+          body: "Arrives from reels with no idea of the name. A strong first frame is what stops the scroll.",
+        },
+        {
+          _type: "titleBodyItem",
+          _key: key(),
+          title: "The industry eye",
+          body: "Press, retailers and collaborators. They watch the campaign imagery and whether it holds up over time.",
+        },
+      ],
+    },
+
+    brandGuidelinesSection: {
+      sectionLabel: "Brand guidelines",
+      heading: "A written rulebook the whole team can shoot to",
+      intro:
+        "Guidelines keep a feed coherent when several people are producing for it. Each project ends with a short document covering voice, framing, color, and the things the brand never does.",
+      rows: [
+        {
+          _type: "csGuidelineRow",
+          _key: key(),
+          title: "Tone of voice",
+          body: "How captions read: sentence length, use of humor, whether the brand says \"we\" or disappears behind the product.",
+          exampleLabel: "Example — Moss & Milk, tone of voice",
+          exampleLayout: "textGrid",
+          exampleItems: [
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "Warm & approachable", body: "We speak like a friend, supportive, real and easy to relate to." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "Positive & encouraging", body: "Progress, not perfection. Small wins get celebrated." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "Clear & simple", body: "No jargon, no overcomplicating. Honest, helpful information." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "Natural & authentic", body: "Human language, light humor, a down-to-earth tone." },
+          ],
+        },
+        {
+          _type: "csGuidelineRow",
+          _key: key(),
+          title: "Visual direction",
+          body: "Light, framing, crop and grade. Which surfaces and locations recur, and the treatment applied to every export.",
+          exampleLabel: "Example — Moss & Milk, visual direction",
+          exampleLayout: "visualGrid",
+          exampleItems: [
+            { _type: "csGuidelineExampleItem", _key: key(), image: await image("lightning.jpg"), heading: "Lighting", body: "Natural light, soft shadows." },
+            { _type: "csGuidelineExampleItem", _key: key(), image: await image("palette-2ad61167.jpg"), heading: "Palette", body: "Greens, yellows, creams." },
+            { _type: "csGuidelineExampleItem", _key: key(), image: await image("mood.jpg"), heading: "Mood", body: "Clean, calm, confident." },
+            { _type: "csGuidelineExampleItem", _key: key(), image: await image("style.jpg"), heading: "Style", body: "Real moments, minimal." },
+          ],
+        },
+        {
+          _type: "csGuidelineRow",
+          _key: key(),
+          title: "Grid rules",
+          body: "How posts sit next to each other, alternating product, portrait and detail so the profile reads as one piece.",
+          exampleLabel: "Example — Moss & Milk, grid rules",
+          exampleLayout: "textGrid",
+          exampleItems: [
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "1. Layout", body: "A clean 1:1 or 4:5 grid, with consistent margins across layouts." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "2. Balance", body: "Imagery, text and brand elements mixed; compositions stay uncluttered." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "3. Hierarchy", body: "Lead with the visual, then headline, product and supporting text." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "4. Flexibility", body: "Stories, feed posts and carousels keep the same rhythm and spacing." },
+          ],
+        },
+        {
+          _type: "csGuidelineRow",
+          _key: key(),
+          title: "Asset specs",
+          body: "Specs cover ratios, safe areas, file naming, and how it's delivered. The same shoot ends up serving ecommerce, paid, and organic without extra exports.",
+          exampleLabel: "Example — Moss & Milk, asset specs",
+          exampleLayout: "textGrid",
+          exampleItems: [
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "Image ratio", value: "1:1 feed / 4:5 stories", body: "High resolution, 1080 × 1080 or 1080 × 1350." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "Video ratio", value: "9:16 stories / 1:1 feed", body: "Clean, bright and under fifteen seconds where possible." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "File format", value: "JPG or PNG", body: "High quality, compressed for fast loading." },
+            { _type: "csGuidelineExampleItem", _key: key(), heading: "Clear space", value: "10% minimum", body: "Space kept around the logo and key elements; edges never crowded." },
+          ],
+        },
+      ],
+    },
+
+    reportSection: {
+      sectionLabel: "Analytics & reporting",
+      heading: "Every campaign closes with a report",
+      intro:
+        "Monthly reporting tracks reach, engagement and saves against the pillars set at the start, then feeds the next shot list. The report alongside covers the spring launch for Moss & Milk.",
+      reportLabel: "Moss & Milk, quarterly report",
+      dateRange: "Jan – Jun",
+      kpis: [
+        { _type: "csKpi", _key: key(), value: "+128%", label: "Reach, 90 days" },
+        { _type: "csKpi", _key: key(), value: "6.4%", label: "Engagement rate" },
+        { _type: "csKpi", _key: key(), value: "3.1k", label: "Saves / month" },
+        { _type: "csKpi", _key: key(), value: "42", label: "Assets / shoot" },
+      ],
+      monthlyBars: [
+        { _type: "csMonthlyBar", _key: key(), month: "Jan", heightPercent: 34, highlighted: false },
+        { _type: "csMonthlyBar", _key: key(), month: "Feb", heightPercent: 41, highlighted: false },
+        { _type: "csMonthlyBar", _key: key(), month: "Mar", heightPercent: 38, highlighted: false },
+        { _type: "csMonthlyBar", _key: key(), month: "Apr", heightPercent: 56, highlighted: false },
+        { _type: "csMonthlyBar", _key: key(), month: "May", heightPercent: 72, highlighted: true },
+        { _type: "csMonthlyBar", _key: key(), month: "Jun", heightPercent: 88, highlighted: true },
+      ],
+      pillars: [
+        { _type: "csPillar", _key: key(), label: "Campaign stills", percent: 38 },
+        { _type: "csPillar", _key: key(), label: "Behind the scenes", percent: 27 },
+        { _type: "csPillar", _key: key(), label: "Product detail", percent: 21 },
+        { _type: "csPillar", _key: key(), label: "Community & UGC", percent: 14 },
+      ],
+    },
   };
 }
 

@@ -140,6 +140,7 @@ export interface VideoAsset {
   label?: string;
   caption?: string;
   aspectRatio?: "16/9" | "9/16";
+  ambientLoop?: boolean;
 }
 
 export interface VideoGroup {
@@ -164,18 +165,92 @@ export interface MovementPage {
   videoGroups?: VideoGroup[];
 }
 
-export interface StrategySection {
-  heading: string;
+export interface TitleBodyItem {
+  title: string;
   body: string;
+}
+
+export interface CsFeedMedia {
+  videoUrl?: string;
   image?: unknown;
-  stats?: { label?: string; value?: string }[];
+  caption: string;
+}
+
+export interface CsCorePersona {
+  image: unknown;
+  name: string;
+  quote: string;
+  body: string;
+  attribution?: string;
+}
+
+export interface CsGuidelineExampleItem {
+  image?: unknown;
+  heading: string;
+  value?: string;
+  body: string;
+}
+
+export interface CsGuidelineRow {
+  title: string;
+  body: string;
+  exampleLabel: string;
+  exampleLayout: "textGrid" | "visualGrid";
+  exampleItems: CsGuidelineExampleItem[];
+}
+
+export interface CsKpi {
+  value: string;
+  label: string;
+}
+
+export interface CsMonthlyBar {
+  month: string;
+  heightPercent: number;
+  highlighted?: boolean;
+}
+
+export interface CsPillar {
+  label: string;
+  percent: number;
 }
 
 export interface ContentStrategyPage {
   heroLabel?: string;
   heroHeadline?: string;
   heroBody?: string;
-  sections?: StrategySection[];
+  feedSection?: {
+    media?: CsFeedMedia[];
+    phoneImage: unknown;
+  };
+  processSection?: {
+    sectionLabel?: string;
+    steps?: TitleBodyItem[];
+  };
+  researchAudienceSection?: {
+    sectionLabel?: string;
+    heading?: string;
+    intro?: string;
+    researchItems?: TitleBodyItem[];
+    corePersona?: CsCorePersona;
+    secondaryPersonas?: TitleBodyItem[];
+  };
+  brandGuidelinesSection?: {
+    sectionLabel?: string;
+    heading?: string;
+    intro?: string;
+    rows?: CsGuidelineRow[];
+  };
+  reportSection?: {
+    sectionLabel?: string;
+    heading?: string;
+    intro?: string;
+    reportLabel?: string;
+    dateRange?: string;
+    kpis?: CsKpi[];
+    monthlyBars?: CsMonthlyBar[];
+    pillars?: CsPillar[];
+  };
 }
 
 export async function getSiteConfig(preview = false): Promise<SiteConfig> {

@@ -11,6 +11,7 @@
   --font-accent: var(--font-spectral), Spectral, serif;
   --font-body: var(--font-poppins), Poppins, sans-serif;
   --font-mono-label: var(--font-ibm-plex-mono), "IBM Plex Mono", monospace;
+  --font-numeral: var(--font-bodoni-moda), "Bodoni Moda", serif;
 
   /* Animation timing */
   --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);

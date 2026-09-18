@@ -17,9 +17,13 @@ import scrollStripBlock from "./objects/scrollStripBlock";
 import videoAsset from "./objects/videoAsset";
 import videoGroupBlock from "./objects/videoGroupBlock";
 import featuredReel from "./objects/featuredReel";
-import strategySection from "./objects/strategySection";
 import projectTeaser from "./objects/projectTeaser";
 import featuredProjects from "./objects/featuredProjects";
+import titleBodyItem from "./objects/titleBodyItem";
+import csFeedMedia from "./objects/csFeedMedia";
+import csCorePersona from "./objects/csCorePersona";
+import csGuidelineExampleItem from "./objects/csGuidelineExampleItem";
+import csGuidelineRow from "./objects/csGuidelineRow";
 
 export const schemaTypes = [
   // Singletons
@@ -44,7 +48,11 @@ export const schemaTypes = [
   videoAsset,
   videoGroupBlock,
   featuredReel,
-  strategySection,
   projectTeaser,
   featuredProjects,
+  titleBodyItem,
+  csFeedMedia,
+  csCorePersona,
+  csGuidelineExampleItem,
+  csGuidelineRow,
 ];

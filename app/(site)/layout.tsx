@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Oswald, Big_Shoulders, Spectral, Poppins, IBM_Plex_Mono } from "next/font/google";
+import { Oswald, Big_Shoulders, Spectral, Poppins, IBM_Plex_Mono, Bodoni_Moda } from "next/font/google";
 import { draftMode } from "next/headers";
 import "../globals.css";
 import Navigation from "@/components/Navigation";
@@ -47,12 +47,21 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const bodoniModa = Bodoni_Moda({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-bodoni-moda",
+  preload: false,
+  display: "swap",
+});
+
 const fontVariables = [
   oswald.variable,
   bigShoulders.variable,
   spectral.variable,
   poppins.variable,
   ibmPlexMono.variable,
+  bodoniModa.variable,
 ].join(" ");
 
 const defaultMetadata = {

@@ -131,7 +131,8 @@ const videoAssetProjection = groq`{
   poster,
   label,
   caption,
-  aspectRatio
+  aspectRatio,
+  ambientLoop
 }`;
 
 // Movement page singleton
@@ -160,10 +161,46 @@ export const contentStrategyPageQuery = groq`*[_type == "contentStrategyPage"][0
   heroLabel,
   heroHeadline,
   heroBody,
-  sections[]{
+  feedSection{
+    media[]{
+      "videoUrl": video.asset->url,
+      image,
+      caption
+    },
+    phoneImage
+  },
+  processSection{
+    sectionLabel,
+    steps[]{title, body}
+  },
+  researchAudienceSection{
+    sectionLabel,
     heading,
-    body,
-    image,
-    stats[]{label, value}
+    intro,
+    researchItems[]{title, body},
+    corePersona{image, name, quote, body, attribution},
+    secondaryPersonas[]{title, body}
+  },
+  brandGuidelinesSection{
+    sectionLabel,
+    heading,
+    intro,
+    rows[]{
+      title,
+      body,
+      exampleLabel,
+      exampleLayout,
+      exampleItems[]{image, heading, value, body}
+    }
+  },
+  reportSection{
+    sectionLabel,
+    heading,
+    intro,
+    reportLabel,
+    dateRange,
+    kpis[]{value, label},
+    monthlyBars[]{month, heightPercent, highlighted},
+    pillars[]{label, percent}
   }
 }`;
