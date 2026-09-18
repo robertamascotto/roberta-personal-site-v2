@@ -43,6 +43,14 @@ export default defineType({
       },
       initialValue: "16/9",
     }),
+    defineField({
+      name: "ambientLoop",
+      title: "Ambient Loop (no click needed)",
+      type: "boolean",
+      description:
+        "Plays automatically, muted and looped, with no play button or click-to-play — like the featured reel. Leave off for the normal click-to-play behavior (used by most videos).",
+      initialValue: false,
+    }),
   ],
   preview: {
     select: { title: "label", media: "poster" },

@@ -26,6 +26,7 @@ export default function VideoGroupRenderer({ group, isLast = false }: { group: V
             aspectRatio={video.aspectRatio}
             label={video.label}
             caption={video.caption}
+            autoPlay={video.ambientLoop}
           />
         ))}
       </div>
