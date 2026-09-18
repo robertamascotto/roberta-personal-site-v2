@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { urlFor } from "@/studio/lib/image";
 
@@ -16,6 +16,7 @@ interface VideoTileProps {
 
 export default function VideoTile({ videoUrl, poster, aspectRatio = "16/9", label, caption, autoPlay = false }: VideoTileProps) {
   const [playing, setPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   if (!videoUrl) return null;
   const posterUrl = poster ? urlFor(poster).width(1200).url() : undefined;
@@ -51,15 +52,30 @@ export default function VideoTile({ videoUrl, poster, aspectRatio = "16/9", labe
         onClick={() => setPlaying(true)}
       >
         {playing ? (
-          <video
-            src={videoUrl}
-            controls
-            controlsList="nofullscreen nodownload noremoteplayback noplaybackrate"
-            disablePictureInPicture
-            autoPlay
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          <>
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              controls
+              controlsList="nofullscreen nodownload noremoteplayback noplaybackrate"
+              disablePictureInPicture
+              autoPlay
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Lets clicking the video frame itself toggle play/pause, without
+                covering the native control bar (~40px) at the bottom. */}
+            <div
+              className="absolute inset-x-0 top-0 bottom-10 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                const v = videoRef.current;
+                if (!v) return;
+                if (v.paused) v.play();
+                else v.pause();
+              }}
+            />
+          </>
         ) : (
           <>
             {posterUrl && (
