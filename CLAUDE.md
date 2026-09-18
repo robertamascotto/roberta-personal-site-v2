@@ -188,4 +188,4 @@ npm run lint     # Lint code
 1. Verify Sanity project ID and dataset are set correctly in env vars
 2. `cdn.sanity.io` is listed in `next.config.js` `remotePatterns`
 3. Image/video assets are published (not just drafts) in Sanity
-4. `images.unoptimized: true` is set in `next.config.js` — Sanity CDN handles optimization
+4. `next.config.js` uses a custom image loader (`lib/sanityImageLoader.js`) that hands sizing off to Sanity's CDN — Next's own built-in optimizer is not used
