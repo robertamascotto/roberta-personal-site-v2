@@ -102,7 +102,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
     <>
       <nav
         id="rm-nav"
-        className="fixed top-0 left-0 right-0 z-[100] flex items-center px-5 py-4 min-[641px]:px-[clamp(20px,5vw,64px)] min-[641px]:py-7 transition-[background-color,backdrop-filter,border-color] duration-300"
+        className="fixed top-0 left-0 right-0 z-[100] flex items-center px-5 py-4 min-[641px]:px-[44px] min-[641px]:py-7 transition-[background-color,backdrop-filter,border-color] duration-300"
         style={{
           backgroundColor: isScrolled ? "rgba(253,253,252,0.7)" : "transparent",
           backdropFilter: isScrolled ? "blur(10px)" : "none",
@@ -110,7 +110,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
           borderBottom: `1px solid ${isScrolled ? "rgba(17,17,16,0.08)" : "transparent"}`,
         }}
       >
-        <div className="flex items-center gap-5 min-[641px]:gap-7 font-body text-[13px] tracking-[0.06em] uppercase w-full min-[641px]:w-auto justify-between min-[641px]:justify-start">
+        <div className="flex items-center gap-5 min-[641px]:gap-5 font-body text-[13px] tracking-[0.06em] uppercase w-full min-[641px]:w-auto justify-between min-[641px]:justify-start">
           <Link
             href="/"
             className="flex-none bg-ink flex items-center justify-center px-1.5 pt-1"
@@ -121,7 +121,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
             </span>
           </Link>
 
-          <div className="hidden min-[641px]:flex items-center gap-7">
+          <div className="hidden min-[641px]:flex items-center gap-5">
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
