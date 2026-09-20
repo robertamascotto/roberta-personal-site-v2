@@ -33,7 +33,7 @@ export default async function EditorialDetailPage({ params }: { params: Promise<
   return (
     <>
       <PageContainer>
-        <div className="flex justify-between border-b border-ink/12 pt-6 pb-8 text-[13px]">
+        <div className="flex justify-between border-b border-ink/12 pt-6 pb-8 min-[641px]:!border-b-0 min-[641px]:!pt-9 min-[641px]:!pb-12 text-[13px]">
           <Link href="/editorials" className="no-underline">
             &#8592; All editorials
           </Link>
@@ -68,7 +68,7 @@ export default async function EditorialDetailPage({ params }: { params: Promise<
         ))}
       </div>
 
-      <div className="max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] flex justify-between border-t border-ink/12 pt-8 pb-16 text-[13px]">
+      <div className="max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] flex justify-between border-t border-ink/12 pt-8 pb-16 min-[641px]:!border-t-0 min-[641px]:!pt-12 min-[641px]:!pb-24 text-[13px]">
         <Link href="/editorials" className="no-underline">
           &#8592; All editorials
         </Link>
