@@ -46,7 +46,7 @@ export default async function HomePage() {
       />
 
       <div
-        className="border-t border-ink/[0.08] px-5 min-[641px]:px-11 pt-[88px] min-[641px]:pt-[176px] pb-9 min-[641px]:pb-12"
+        className="border-t border-ink/[0.08] min-[641px]:!border-t-0 px-5 min-[641px]:px-11 pt-[88px] min-[641px]:pt-[176px] pb-9 min-[641px]:pb-12"
         style={{ backgroundColor: "#ffffff" }}
       >
         <div className="mx-auto text-center mb-14 min-[641px]:mb-[104px]">
