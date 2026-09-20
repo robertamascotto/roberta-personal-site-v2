@@ -62,7 +62,7 @@ export default function ProjectTeaserRow({
   );
 
   return (
-    <div className="grid min-[641px]:grid-cols-2 gap-12 max-[640px]:gap-5 items-center py-9 max-[640px]:py-8 border-t border-ink/[0.08]">
+    <div className="grid min-[641px]:grid-cols-2 gap-12 max-[640px]:gap-5 items-center py-9 max-[640px]:py-8 border-t border-ink/[0.08] min-[641px]:!py-20 min-[641px]:!border-t-0">
       {reversed ? (
         <>
           <div className="max-[640px]:order-2">{text}</div>
