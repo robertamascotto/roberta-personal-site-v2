@@ -15,7 +15,7 @@ export default function EditorialTeaser({ editorial }: { editorial: EditorialSum
   const frames = editorial.coverFrames || [];
 
   return (
-    <section className="border-t border-ink/12 py-12 max-[640px]:!py-8 min-[641px]:!py-48 min-[641px]:!border-t-0">
+    <section className="border-t border-ink/12 py-12 max-[640px]:!py-8 min-[641px]:!py-32 min-[641px]:!border-t-0">
       <div className="flex justify-center mb-9">
         <div className="relative flex items-center gap-5 flex-wrap md:flex-nowrap max-[640px]:!flex-nowrap max-[640px]:!w-full max-[640px]:!overflow-x-auto max-[640px]:!gap-3 max-[640px]:!pb-1">
           {frames.map((frame, i) => {
