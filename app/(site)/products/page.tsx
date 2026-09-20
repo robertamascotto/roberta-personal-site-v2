@@ -29,7 +29,7 @@ export default async function ProductsPage() {
       <section className="pb-24">
         {featured && (
           <div className="mb-12">
-            <Link href={`/products/${featured.slug}`} className="block no-underline">
+            <Link href={`/products/${featured.slug}`} className="block no-underline min-[641px]:!max-w-[50%]">
               <AspectImage image={featured.coverImage} alt={featured.coverAlt} aspectRatio="16/9" priority />
             </Link>
             <div className="flex justify-end mt-3 mb-5">
@@ -52,7 +52,7 @@ export default async function ProductsPage() {
             {rest.map((cs) => (
               <div key={cs._id} className="flex flex-col gap-3.5">
                 <div>
-                  <Link href={`/products/${cs.slug}`} className="block no-underline">
+                  <Link href={`/products/${cs.slug}`} className="block no-underline min-[641px]:!max-w-[50%]">
                     <AspectImage image={cs.coverImage} alt={cs.coverAlt} aspectRatio="4/5" />
                   </Link>
                   <div className="flex justify-end mt-3">
