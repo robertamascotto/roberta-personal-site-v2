@@ -51,7 +51,7 @@ a:hover {
 @media (max-width: 880px) {
   .home-hero-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 60vh;
+    grid-template-rows: auto 60svh;
   }
   .home-hero-divider {
     display: none;
@@ -60,7 +60,7 @@ a:hover {
 
 @media (max-width: 640px) {
   .home-hero-grid {
-    grid-template-rows: auto 58vh;
+    grid-template-rows: auto 58svh;
     height: auto;
   }
 }
@@ -84,7 +84,7 @@ a:hover {
 @media (max-width: 640px) {
   .contact-split {
     gap: 44px;
-    padding: 36px 0 48px;
+    padding: 36px 0 96px;
   }
 }
 
