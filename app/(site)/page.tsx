@@ -4,6 +4,7 @@ import { getSiteConfigSafe } from "@/studio/lib/helpers";
 import { urlFor } from "@/studio/lib/image";
 import { getSocialIcon } from "@/lib/socialIcons";
 import { toValidSocialLinks } from "@/lib/types";
+import CameraIntro from "@/components/CameraIntro";
 import HomeHero from "@/components/home/HomeHero";
 import ProjectTeaserRow from "@/components/home/ProjectTeaserRow";
 import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION, isHiddenHref } from "@/lib/constants";
@@ -60,6 +61,7 @@ export default async function HomePage() {
 
   return (
     <div>
+      <CameraIntro />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}

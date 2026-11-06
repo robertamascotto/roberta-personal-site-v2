@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import { VT323 } from "next/font/google";
 import { SITE_NAME } from "@/lib/constants";
 import "./camera-intro.css";
@@ -23,11 +22,30 @@ function setIntroAttr(value: "on" | "off") {
   document.documentElement.setAttribute("data-intro", value);
 }
 
-export default function CameraIntro() {
-  const pathname = usePathname();
-  // Only the first page of a visit can show the intro, and only if it is the home page.
-  const startedOnHome = useRef(pathname === "/");
+/** Marks everything on the page except the intro's own branch as inert. */
+function inertEverythingElse(root: HTMLElement | null): Element[] {
+  const marked: Element[] = [];
+  let node: HTMLElement | null = root;
+  while (node && node !== document.body) {
+    const parent: HTMLElement | null = node.parentElement;
+    if (!parent) break;
+    Array.from(parent.children).forEach((el) => {
+      if (el === node || el.tagName === "SCRIPT" || el.hasAttribute("inert")) return;
+      el.setAttribute("inert", "");
+      marked.push(el);
+    });
+    node = parent;
+  }
+  return marked;
+}
 
+/**
+ * Rendered by the home page only, so the server never has to work out which page it is
+ * building (it can't do that reliably when Vercel rebuilds the page in the background).
+ * It only plays when the inline script below ran, which only happens when the home page
+ * is the page the visitor actually loaded, never on in-site navigation.
+ */
+export default function CameraIntro() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [gone, setGone] = useState(false);
   const [phase, setPhase] = useState<"idle" | "shot" | "fade" | "fadeFast">("idle");
@@ -72,7 +90,6 @@ export default function CameraIntro() {
   }
 
   useEffect(() => {
-    if (!startedOnHome.current) return;
     // The inline script decides; if it said "off" (or never ran), there is nothing to do.
     if (document.documentElement.getAttribute("data-intro") !== "on") {
       setGone(true);
@@ -85,11 +102,7 @@ export default function CameraIntro() {
 
     // Keep the page behind the intro out of reach of keyboards and screen readers.
     const root = rootRef.current;
-    Array.from(document.body.children).forEach((el) => {
-      if (el === root || el.tagName === "SCRIPT" || el.hasAttribute("inert")) return;
-      el.setAttribute("inert", "");
-      inerted.current.push(el);
-    });
+    inerted.current = inertEverythingElse(root);
 
     root?.querySelector<HTMLButtonElement>("[data-ci-shoot]")?.focus({ preventScroll: true });
 
@@ -110,7 +123,7 @@ export default function CameraIntro() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!startedOnHome.current || gone) return null;
+  if (gone) return null;
 
   const cls = [
     "ci",

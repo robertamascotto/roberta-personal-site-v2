@@ -7,7 +7,6 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import BackToTop from "@/components/BackToTop";
-import CameraIntro from "@/components/CameraIntro";
 import { getSiteConfigSafe } from "@/studio/lib/helpers";
 import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/constants";
 
@@ -102,7 +101,6 @@ export default async function SiteLayout({
     // suppressHydrationWarning: the intro's inline script sets data-intro on <html> before React loads.
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <body className="font-sans min-h-screen flex flex-col bg-paper text-ink antialiased">
-        <CameraIntro />
         {isPreview && (
           <div
             role="status"
