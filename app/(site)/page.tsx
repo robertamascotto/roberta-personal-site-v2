@@ -6,7 +6,7 @@ import { getSocialIcon } from "@/lib/socialIcons";
 import { toValidSocialLinks } from "@/lib/types";
 import HomeHero from "@/components/home/HomeHero";
 import ProjectTeaserRow from "@/components/home/ProjectTeaserRow";
-import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/constants";
+import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION, isHiddenHref } from "@/lib/constants";
 
 export async function generateMetadata(): Promise<Metadata> {
   let description = HOME_DESCRIPTION;
@@ -109,15 +109,17 @@ export default async function HomePage() {
             videoUrl={projects?.movement?.videoUrl}
             blurbMaxWidth="48ch"
           />
-          <ProjectTeaserRow
-            href="/strategy"
-            label="Strategy"
-            blurb="Social planning and content strategy that turns shoots into a consistent brand presence, covering research, content pillars, and shoot planning."
-            image={projects?.strategy?.image}
-            videoUrl={projects?.strategy?.videoUrl}
-            reversed
-            blurbMaxWidth="52ch"
-          />
+          {!isHiddenHref("/strategy") && (
+            <ProjectTeaserRow
+              href="/strategy"
+              label="Strategy"
+              blurb="Social planning and content strategy that turns shoots into a consistent brand presence, covering research, content pillars, and shoot planning."
+              image={projects?.strategy?.image}
+              videoUrl={projects?.strategy?.videoUrl}
+              reversed
+              blurbMaxWidth="52ch"
+            />
+          )}
 
           <div className="flex justify-between items-center pt-9 border-t border-ink/[0.08]">
             {validSocialLinks.length > 0 && (

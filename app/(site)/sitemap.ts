@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, isHiddenHref } from "@/lib/constants";
 import {
   getEditorials,
   getProductCaseStudies,
@@ -18,7 +18,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     caseStudies.map((cs) => safeFetch(getProductCaseStudyBySlug(cs.slug), null))
   );
 
-  const staticPages = ["/editorials", "/products", "/movement", "/strategy", "/contact"].map(
+  const staticPages = ["/editorials", "/products", "/movement", "/strategy", "/contact"]
+    .filter((path) => !isHiddenHref(path))
+    .map(
     (path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: new Date(),

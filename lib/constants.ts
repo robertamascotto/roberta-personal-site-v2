@@ -25,6 +25,18 @@ function resolveSiteUrl(): string {
 
 export const SITE_URL = resolveSiteUrl();
 
+// Pages that are switched off for now. They disappear from the menu, footer, home
+// page and sitemap, and visiting them sends people (temporarily) to the home page.
+// The page code and its Sanity content are untouched: to bring a page back, just
+// remove its path from this list.
+export const HIDDEN_PAGES: readonly string[] = ["/strategy"];
+
+export function isHiddenHref(href: string | null | undefined): boolean {
+  if (!href) return false;
+  const path = href.split(/[?#]/)[0].replace(/\/+$/, "") || "/";
+  return HIDDEN_PAGES.includes(path);
+}
+
 export const DEFAULT_NAVIGATION_LINKS = [
   { href: "/editorials", label: "Editorials" },
   { href: "/products", label: "Products" },

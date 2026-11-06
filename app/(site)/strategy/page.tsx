@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
+import { isHiddenHref } from "@/lib/constants";
 import { getContentStrategyPage, safeFetch } from "@/studio/lib/helpers";
 import PageContainer from "@/components/PageContainer";
 import PageHero from "@/components/PageHero";
@@ -16,6 +18,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ContentStrategyPage() {
+  // Switched off for now (see HIDDEN_PAGES in lib/constants.ts). redirect() is a
+  // temporary (307) redirect, so search engines keep the page's history.
+  if (isHiddenHref("/strategy")) redirect("/");
+
   const { isEnabled: isPreview } = await draftMode();
   const page = await safeFetch(getContentStrategyPage(isPreview), null);
 

@@ -1,4 +1,5 @@
 import { sanitizeUrl } from "@/lib/urlSanitizer";
+import { isHiddenHref } from "@/lib/constants";
 
 export interface NavigationLink {
   label?: string | null;
@@ -32,7 +33,7 @@ export function toValidNavLinks(
       label: link.label as string,
       href: sanitizeUrl(link.href),
     }))
-    .filter((link): link is ValidNavigationLink => !!link.href);
+    .filter((link): link is ValidNavigationLink => !!link.href && !isHiddenHref(link.href));
 }
 
 export function toValidSocialLinks(
