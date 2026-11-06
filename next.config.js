@@ -23,6 +23,14 @@ module.exports = {
   async headers() {
     return [
       {
+        // Keep Vercel's own addresses (the production alias and every
+        // preview deployment) out of Google so they can't show up as
+        // duplicates of www.robertamascotto.com.
+        source: "/:path*",
+        has: [{ type: "host", value: ".*\\.vercel\\.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
         source: "/(.*)",
         headers: [
           {

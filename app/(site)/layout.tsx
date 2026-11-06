@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import BackToTop from "@/components/BackToTop";
 import { getSiteConfigSafe } from "@/studio/lib/helpers";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/constants";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -64,26 +64,21 @@ const fontVariables = [
   bodoniModa.variable,
 ].join(" ");
 
-const defaultMetadata = {
-  title: "Roberta Mascotto — Photography & Content Strategy",
-  description: "Photography and content strategy for fashion and lifestyle brands.",
-};
-
 export async function generateMetadata(): Promise<Metadata> {
   const siteConfig = await getSiteConfigSafe();
 
-  const title = siteConfig?.siteName || defaultMetadata.title;
-  const description = siteConfig?.siteMetadata?.siteDescription || defaultMetadata.description;
+  const description = siteConfig?.siteMetadata?.siteDescription || HOME_DESCRIPTION;
 
   return {
     metadataBase: new URL(SITE_URL),
+    applicationName: SITE_NAME,
     title: {
-      default: title,
-      template: siteConfig?.siteMetadata?.siteTitleTemplate || `%s — ${title}`,
+      default: HOME_TITLE,
+      template: siteConfig?.siteMetadata?.siteTitleTemplate || `%s | ${SITE_NAME}`,
     },
     description,
     openGraph: {
-      siteName: title,
+      siteName: SITE_NAME,
       type: "website",
     },
     twitter: {
@@ -146,18 +141,6 @@ export default async function SiteLayout({
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: siteConfig?.siteName || defaultMetadata.title,
-              url: SITE_URL,
-              description: siteConfig?.siteMetadata?.siteDescription || defaultMetadata.description,
-            }),
-          }}
-        />
         <Navigation
           siteName={siteConfig?.siteName || undefined}
           navigationLinks={siteConfig?.navigationLinks}

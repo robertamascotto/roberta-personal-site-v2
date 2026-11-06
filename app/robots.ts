@@ -1,9 +1,11 @@
 import { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 
+// Must live at the root of app/ - Next.js doesn't serve robots.txt from
+// inside a route group like app/(site)/.
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/studio", "/studio/"] }],
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/studio", "/api/"] }],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

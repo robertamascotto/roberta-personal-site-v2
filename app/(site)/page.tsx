@@ -6,23 +6,44 @@ import { getSocialIcon } from "@/lib/socialIcons";
 import { toValidSocialLinks } from "@/lib/types";
 import HomeHero from "@/components/home/HomeHero";
 import ProjectTeaserRow from "@/components/home/ProjectTeaserRow";
+import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/constants";
 
 export async function generateMetadata(): Promise<Metadata> {
+  let description = HOME_DESCRIPTION;
+  let heroImageUrl: string | undefined;
+
   try {
     const siteConfig = await getSiteConfigSafe();
+    description = siteConfig?.siteMetadata?.siteDescription || HOME_DESCRIPTION;
     const heroImage = siteConfig?.homePage?.heroImage;
-    const heroImageUrl = heroImage ? urlFor(heroImage).url() : undefined;
-
-    return {
-      alternates: { canonical: "/" },
-      openGraph: {
-        ...(heroImageUrl ? { images: [{ url: heroImageUrl }] } : {}),
-      },
-    };
+    heroImageUrl = heroImage ? urlFor(heroImage).url() : undefined;
   } catch {
-    return { alternates: { canonical: "/" } };
+    // fall back to the defaults above
   }
+
+  return {
+    title: { absolute: HOME_TITLE },
+    description,
+    alternates: { canonical: "/" },
+    // A page-level openGraph replaces the layout's wholesale, so site_name
+    // and type must be repeated here.
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      title: HOME_TITLE,
+      description,
+      url: "/",
+      ...(heroImageUrl ? { images: [{ url: heroImageUrl }] } : {}),
+    },
+  };
 }
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+};
 
 const defaultTagline = "Photography and content strategy for fashion and lifestyle brands.";
 const defaultDescription = "Editorial, campaign, and product photography, backed by social strategy and content planning.";
@@ -39,6 +60,10 @@ export default async function HomePage() {
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
       <HomeHero
         headline={homePage?.heroHeadline || "Roberta Mascotto"}
         heroImageUrl={heroImageUrl}

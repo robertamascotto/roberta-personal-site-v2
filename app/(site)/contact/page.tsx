@@ -1,28 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getSiteConfig, getSiteConfigSafe } from "@/studio/lib/helpers";
+import { getSiteConfigSafe } from "@/studio/lib/helpers";
 import ContactPageClient from "@/components/ContactPageClient";
+import { SITE_NAME } from "@/lib/constants";
 
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const siteConfig = await getSiteConfig();
-    const description =
-      siteConfig.siteMetadata?.siteDescription ||
-      "Get in touch for photography inquiries";
-    return {
-      title: "Contact",
-      description,
-      alternates: { canonical: "/contact" },
-      openGraph: { type: "website" },
-    };
-  } catch {
-    return {
-      title: "Contact",
-      description: "Get in touch for photography inquiries",
-      alternates: { canonical: "/contact" },
-    };
-  }
-}
+const CONTACT_DESCRIPTION =
+  "Get in touch with Roberta Mascotto about fashion, editorial and campaign photography.";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: CONTACT_DESCRIPTION,
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    url: "/contact",
+  },
+};
 
 export default async function ContactPage() {
   try {
