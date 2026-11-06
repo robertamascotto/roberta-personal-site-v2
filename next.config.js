@@ -13,6 +13,16 @@ module.exports = {
   },
   async redirects() {
     return [
+      {
+        // Google had picked the Vercel address as the canonical home page, so
+        // send it (permanently) to the real domain. API routes are excluded so
+        // webhooks and draft-mode links keep working there. Preview
+        // deployments (other *.vercel.app hosts) are left alone and noindexed.
+        source: "/:path((?!api/).*)",
+        has: [{ type: "host", value: "roberta-personal-site-v2.vercel.app" }],
+        destination: "https://www.robertamascotto.com/:path",
+        permanent: true,
+      },
       { source: "/e-commerce", destination: "/products", permanent: true },
       { source: "/campaigns", destination: "/products", permanent: true },
       { source: "/branded-content", destination: "/editorials", permanent: true },
