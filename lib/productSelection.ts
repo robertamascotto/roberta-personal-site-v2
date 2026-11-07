@@ -35,15 +35,15 @@ export const FEATURED_PHOTOS: Record<string, string[]> = {
     "030b549f26557e3cb5764d3d58c85e354d5ba914", // 10  silver top, cargo (was #18 of 36)
   ],
   "smoke-rise-ny/flats": [
-    "49cd7fdda332e6e1852952a79aafdf37edc6defa", //  1  blue patchwork shirt (was #1 of 28)
-    "b3739716b231c0b692925c8c1530335b00bf54aa", //  2  red racing jacket (was #11 of 28)
-    "122c67dd059c7da5bae59c3634b582482e84a816", //  3  plaid shirt (was #16 of 28)
-    "70c6df7767fe1b71c6730f62a535d4070a157ed8", //  4  cream tee (was #3 of 28)
-    "4bd355ff78e2eb6f7264da97b6f99847806e070d", //  5  black star jacket (was #15 of 28)
-    "ea19030452e4eb78d359ecae2e575a86a169d77c", //  6  green jacket (was #6 of 28)
-    "c24e26b7336bd22e27b9b12696ed4aee6f7d9c6c", //  7  white graphic tee (was #18 of 28)
-    "b1d1b919abef5c20bd1f53675d3f58d6d6240d64", //  8  yellow racing jacket (was #12 of 28)
-    "f517579274884c9fa082cb4d3573dc59fb6e8893", //  9  cream shorts (was #19 of 28)
-    "4d62debe90d7b7736f16ab262fdf75be5a69cef5", // 10  dark tee (was #13 of 28)
+    "b5d00c518a8077dc75487f791cd9f4952c269a26", //  1  grey leather jacket (was #5 of 28)
+    "ea19030452e4eb78d359ecae2e575a86a169d77c", //  2  green leather jacket (was #6 of 28)
+    "0ac25601099b35e320a763cc0cccdbe106a2f916", //  3  black vest (was #9 of 28)
+    "36caf99c952ea2823f9c4ec7afa0be8d53615e83", //  4  blue-grey vest (was #10 of 28)
+    "49cd7fdda332e6e1852952a79aafdf37edc6defa", //  5  blue patchwork shirt (was #1 of 28)
+    "a734b564bad6601448d055a3c343bfa764a2e4b5", //  6  ripped light shorts (was #27 of 28)
+    "70c6df7767fe1b71c6730f62a535d4070a157ed8", //  7  cream tee, front (was #3 of 28)
+    "0b57c21ffb9d09372e063478495e65d7fb15916c", //  8  cream tee, back (was #4 of 28)
+    "69b03ade94f79cac6d56eb54107273ea75635be2", //  9  blue denim shorts, front (was #21 of 28)
+    "9cc82bbd1a8cf6899b02628cbd2305134b178f05", // 10  blue denim shorts, back (was #22 of 28)
   ],
 };
