@@ -16,7 +16,6 @@ const STORAGE_KEY = "rmIntroSeen";
 const DECIDE_SCRIPT = `(function(){var d=document.documentElement;try{var force=/[?&]intro=1(&|$)/.test(location.search);var skip=!force&&(sessionStorage.getItem("${STORAGE_KEY}")||window.matchMedia("(prefers-reduced-motion: reduce)").matches||/bot|crawl|spider|slurp|lighthouse|headless|prerender/i.test(navigator.userAgent));d.setAttribute("data-intro",skip?"off":"on")}catch(e){d.setAttribute("data-intro","off")}})();`;
 
 const FLY_MS = 1250; // how long the words take to travel
-const HINT_AFTER_MS = 3500; // when the faint "click to enter" appears if nothing was clicked
 
 /** Marks everything on the page except the intro's own branch as inert. */
 function inertEverythingElse(root: HTMLElement | null): Element[] {
@@ -45,7 +44,6 @@ export default function NameIntro({ headline }: { headline: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [gone, setGone] = useState(false);
   const [go, setGo] = useState(false);
-  const [hint, setHint] = useState(false);
   const busy = useRef(false);
   const timers = useRef<number[]>([]);
   const inerted = useRef<Element[]>([]);
@@ -73,7 +71,6 @@ export default function NameIntro({ headline }: { headline: string }) {
   function enter() {
     if (busy.current) return;
     busy.current = true;
-    setHint(false);
 
     const words = Array.from(rootRef.current?.querySelectorAll<HTMLElement>("[data-ni-word]") ?? []);
     const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-intro-word]"));
@@ -110,8 +107,6 @@ export default function NameIntro({ headline }: { headline: string }) {
     // Keep the page behind the intro out of reach of keyboards and screen readers.
     inerted.current = inertEverythingElse(rootRef.current);
     rootRef.current?.querySelector<HTMLButtonElement>("[data-ni-enter]")?.focus({ preventScroll: true });
-
-    later(() => setHint(true), HINT_AFTER_MS);
 
     // The page must be at the top (a reload can restore a scrolled position) and stay there.
     window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
@@ -167,9 +162,6 @@ export default function NameIntro({ headline }: { headline: string }) {
         <button type="button" className="ni-btn" data-ni-enter>
           Enter site
         </button>
-        <div className={`ni-hint${hint ? " ni-hint-on" : ""}`} aria-hidden="true">
-          Click to enter
-        </div>
       </div>
     </>
   );
