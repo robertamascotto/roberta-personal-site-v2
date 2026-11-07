@@ -49,6 +49,7 @@ export default function NameIntro({ headline }: { headline: string }) {
   const busy = useRef(false);
   const timers = useRef<number[]>([]);
   const inerted = useRef<Element[]>([]);
+  const detach = useRef<() => void>(() => {});
 
   function later(fn: () => void, ms: number) {
     timers.current.push(window.setTimeout(fn, ms));
@@ -62,6 +63,7 @@ export default function NameIntro({ headline }: { headline: string }) {
     }
     inerted.current.forEach((el) => el.removeAttribute("inert"));
     inerted.current = [];
+    detach.current(); // scrolling works again
     const html = document.documentElement;
     html.setAttribute("data-intro", "off"); // the real headline appears exactly where the words landed
     html.removeAttribute("data-intro-go");
@@ -111,13 +113,32 @@ export default function NameIntro({ headline }: { headline: string }) {
 
     later(() => setHint(true), HINT_AFTER_MS);
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") enter();
+    // The page must be at the top (a reload can restore a scrolled position) and stay there.
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    const stop = (e: Event) => {
+      if ((e as WheelEvent).ctrlKey) return; // let pinch / Ctrl-scroll zoom through
+      e.preventDefault();
     };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        enter();
+        return;
+      }
+      const scrollKeys = ["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "];
+      const onButton = (e.target as HTMLElement | null)?.hasAttribute?.("data-ni-enter");
+      if (scrollKeys.includes(e.key) && !(e.key === " " && onButton)) e.preventDefault();
+    };
+    window.addEventListener("wheel", stop, { passive: false });
+    window.addEventListener("touchmove", stop, { passive: false });
     window.addEventListener("keydown", onKey);
+    detach.current = () => {
+      window.removeEventListener("wheel", stop);
+      window.removeEventListener("touchmove", stop);
+      window.removeEventListener("keydown", onKey);
+    };
 
     return () => {
-      window.removeEventListener("keydown", onKey);
+      detach.current();
       timers.current.forEach((t) => window.clearTimeout(t));
       timers.current = [];
       inerted.current.forEach((el) => el.removeAttribute("inert"));

@@ -24,7 +24,10 @@ html[data-intro="on"] .ni {
   display: flex;
 }
 html[data-intro="on"] {
-  overflow: hidden;
+  /* The page can't scroll behind the intro (NameIntro blocks wheel/touch/keys). The
+     scrollbar stays present, so the page doesn't shift sideways when the intro hands
+     over to the real page. (Invisible on systems with overlay scrollbars, e.g. Macs.) */
+  overflow-y: scroll;
 }
 .ni-go {
   background-color: transparent;
