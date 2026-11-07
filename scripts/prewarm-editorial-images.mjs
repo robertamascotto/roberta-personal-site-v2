@@ -15,6 +15,8 @@
  * SANITY_API_TOKEN if the dataset is private) in the environment.
  */
 
+import { createImageUrlBuilder } from "@sanity/image-url";
+
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 const token = process.env.SANITY_API_TOKEN;
@@ -36,24 +38,20 @@ if (!projectId) {
 }
 
 async function fetchPhotos() {
-  const query = encodeURIComponent(`*[_type == "editorial"]{ "slug": slug.current, "refs": gallery[].image.asset._ref }`);
+  const query = encodeURIComponent(`*[_type == "editorial"]{ "slug": slug.current, "images": gallery[].image }`);
   const res = await fetch(`https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${query}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   if (!res.ok) throw new Error(`Sanity query failed: ${res.status} ${await res.text()}`);
   const { result } = await res.json();
-  const refs = new Set();
+  // The same bare address the site uses (includes the crop, if one is set in Sanity).
+  const builder = createImageUrlBuilder({ projectId, dataset });
+  const urls = new Set();
   for (const e of result) {
     if (HIDDEN_EDITORIALS.includes(e.slug)) continue;
-    for (const ref of e.refs ?? []) if (ref) refs.add(ref);
+    for (const image of e.images ?? []) if (image?.asset) urls.add(builder.image(image).url());
   }
-  return [...refs];
-}
-
-// image-<id>-<width>x<height>-<ext>  ->  <id>-<width>x<height>.<ext>
-function assetPath(ref) {
-  const m = ref.match(/^image-([a-f0-9]+-\d+x\d+)-([a-z0-9]+)$/i);
-  return m ? `${m[1]}.${m[2]}` : null;
+  return [...urls];
 }
 
 async function warm(url, accept) {
@@ -67,19 +65,22 @@ async function warm(url, accept) {
   }
 }
 
-const refs = await fetchPhotos();
+const baseUrls = await fetchPhotos();
 const jobs = [];
-for (const ref of refs) {
-  const path = assetPath(ref);
-  if (!path) continue;
+for (const base of baseUrls) {
   for (const w of SIZES) {
     for (const accept of ACCEPTS) {
-      jobs.push({ url: `https://cdn.sanity.io/images/${projectId}/${dataset}/${path}?w=${w}&q=${QUALITY}&auto=format&fit=max`, accept });
+      const url = new URL(base);
+      url.searchParams.set("w", String(w));
+      url.searchParams.set("q", String(QUALITY));
+      url.searchParams.set("auto", "format");
+      url.searchParams.set("fit", "max");
+      jobs.push({ url: url.toString(), accept });
     }
   }
 }
 
-console.log(`Warming ${refs.length} photos x ${SIZES.length} sizes x ${ACCEPTS.length} formats = ${jobs.length} requests...`);
+console.log(`Warming ${baseUrls.length} photos x ${SIZES.length} sizes x ${ACCEPTS.length} formats = ${jobs.length} requests...`);
 let done = 0;
 let failed = 0;
 let slowest = 0;
