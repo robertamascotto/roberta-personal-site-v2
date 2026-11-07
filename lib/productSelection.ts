@@ -15,12 +15,12 @@ export const FEATURED_PHOTOS: Record<string, string[]> = {
     "08b90aaa8e320619b8911e70c2489d1ceb155df4", //  2  camo pants, hand in pocket (was #15 of 48)
     "991d85455341aed2927eec8d2eb107daa8d9266d", //  3  black flame jeans, front (was #18 of 48)
     "62d55f530016b0479b0b35808d7b91b817b5b54d", //  4  black flame jeans, back (was #20 of 48)
-    "082cd69f13d8a1fe62f4075b547bd144db9601bc", //  5  cream crop tee with scarf (new, #49)
+    "6297fcfca610663a8367e03b020b5a301f6f0e89", //  5  grey buckle cargo jeans (was #6 of 48)
     "2cbcfb5ea919471cf283b1ef1803fd281373a0a6", //  6  denim jacket, back (was #11 of 48)
     "907c9907ae67d4c22921bdb7c58be036b854b4d8", //  7  denim cargo jeans with chain (was #22 of 48)
     "7a0f4c7b07e9347a546350b538a428f1ba3303d0", //  8  Smoke tee, front (was #1 of 48)
     "f65523ecc056971a6495c833ce0974999530ea5f", //  9  Smoke tee, back (was #3 of 48)
-    "8dafe4b56918827fdc59bb68567b28d4d3889324", // 10  camo hooded set, man (new, #50)
+    "9ba22fbd28906e5f2fea7b348c963af39a22e5b6", // 10  denim cargo jeans with chain, close (was #24 of 48)
   ],
   "smoke-rise-ny/natural-light": [
     "9a003a9c12bd3287b69c2211cbb2ed5461538d7a", //  1  pink ripped jeans, full (was #3 of 36)
