@@ -11,16 +11,16 @@
  */
 export const FEATURED_PHOTOS: Record<string, string[]> = {
   "smoke-rise-ny/on-figure": [
-    "7a0f4c7b07e9347a546350b538a428f1ba3303d0", //  1  white tee (man) (was #1 of 48)
-    "83c76fab59091f09e04c61d097ac0110b36541b8", //  2  black crop top (was #5 of 48)
-    "7ccde32f019ac55fc7dfb63b42161ba9a130f3ef", //  3  grey denim jacket, close (was #9 of 48)
-    "a1cb255cc5cffe6bb030c4ffea4cf435d61b86e0", //  4  red jacket (was #41 of 48)
-    "36598f174ad7fb50143089f20c74d1751065651c", //  5  mesh tee (man) (was #25 of 48)
-    "bc9805b0fb1e4d05f6d1d967b9f350a28af4d272", //  6  camo set (was #13 of 48)
-    "41857cc0cb638864ecdf0721e93c2da2af6649bb", //  7  light denim jacket (man) (was #33 of 48)
-    "f1be815a5a84b2864bd68c04db68f8dfbdd18530", //  8  black denim jacket (was #17 of 48)
-    "1ec7169e235fe21331cbc79b3c1cdf38fb65edb9", //  9  hoodie, close (was #47 of 48)
-    "41c949fefa087c15563b5c0e9b9de1b72c5086e0", // 10  colour tee and jeans (was #38 of 48)
+    "bc9805b0fb1e4d05f6d1d967b9f350a28af4d272", //  1  camo pants, front (was #13 of 48)
+    "08b90aaa8e320619b8911e70c2489d1ceb155df4", //  2  camo pants, hand in pocket (was #15 of 48)
+    "991d85455341aed2927eec8d2eb107daa8d9266d", //  3  black flame jeans, front (was #18 of 48)
+    "62d55f530016b0479b0b35808d7b91b817b5b54d", //  4  black flame jeans, back (was #20 of 48)
+    "082cd69f13d8a1fe62f4075b547bd144db9601bc", //  5  cream crop tee with scarf (new, #49)
+    "2cbcfb5ea919471cf283b1ef1803fd281373a0a6", //  6  denim jacket, back (was #11 of 48)
+    "907c9907ae67d4c22921bdb7c58be036b854b4d8", //  7  denim cargo jeans with chain (was #22 of 48)
+    "7a0f4c7b07e9347a546350b538a428f1ba3303d0", //  8  Smoke tee, front (was #1 of 48)
+    "f65523ecc056971a6495c833ce0974999530ea5f", //  9  Smoke tee, back (was #3 of 48)
+    "8dafe4b56918827fdc59bb68567b28d4d3889324", // 10  camo hooded set, man (new, #50)
   ],
   "smoke-rise-ny/natural-light": [
     "9a003a9c12bd3287b69c2211cbb2ed5461538d7a", //  1  pink ripped jeans (was #3 of 36)
