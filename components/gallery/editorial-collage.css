@@ -49,6 +49,30 @@
   outline-offset: 2px;
 }
 
+/* every photo the same size (ecommerce sets) */
+.ec-ugrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+@media (min-width: 641px) {
+  .ec-ugrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+.ec-ugrid .ec-tile {
+  width: 100%;
+}
+@media (hover: hover) {
+  .ec-ugrid:hover .ec-tile:not(:hover) {
+    opacity: 0.55;
+  }
+}
+/* a single large photo */
+.ec-hero {
+  width: 100%;
+}
+
 /* ---------- full-screen viewer: white, with a little space at the sides; tall photos scroll ---------- */
 .ec-viewer {
   --vm: clamp(16px, 12vw, 220px);

@@ -1,0 +1,51 @@
+"use client";
+
+import Image from "next/image";
+import { usePhotoViewer, type CollagePhoto } from "./PhotoViewer";
+import "./editorial-collage.css";
+
+/**
+ * Photos all the same size in a plain grid (5 across on larger screens, 2 on phones),
+ * for ecommerce sets where every shot should look alike. Clicking opens the full-screen viewer.
+ */
+export default function UniformGrid({
+  title,
+  photos,
+  ratio = "3/4",
+}: {
+  title: string;
+  photos: CollagePhoto[];
+  ratio?: string;
+}) {
+  const { openAt, warm, viewer } = usePhotoViewer(title, photos);
+
+  return (
+    <>
+      <div className="ec-ugrid">
+        {photos.map((photo, i) => (
+          <button
+            key={photo.src}
+            type="button"
+            className="ec-tile"
+            style={{ aspectRatio: ratio }}
+            aria-label={`Open photo ${i + 1} of ${photos.length}: ${title}`}
+            onClick={(e) => openAt(i, e.currentTarget)}
+            onPointerEnter={() => warm(i)}
+            onFocus={() => warm(i)}
+            onTouchStart={() => warm(i)}
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              sizes="(min-width: 641px) 18vw, 46vw"
+              className="object-cover"
+              style={{ objectPosition: `${photo.focal[0]}% ${photo.focal[1]}%` }}
+            />
+          </button>
+        ))}
+      </div>
+      {viewer}
+    </>
+  );
+}

@@ -48,6 +48,13 @@ export function imageDimensions(image: unknown): { w: number; h: number } | null
   return w > 0 && h > 0 ? { w, h } : null;
 }
 
+/** The photo's file id (the part right after "image-" in its Sanity asset id), or null. */
+export function assetId(image: unknown): string | null {
+  const ref = (image as SanityImage | null | undefined)?.asset?._ref;
+  const m = ref?.match(/^image-([a-f0-9]+)-/i);
+  return m ? m[1] : null;
+}
+
 /** Where the photo should stay centred when it has to be trimmed (the editor's focal point if set). */
 export function focalPoint(image: unknown): [number, number] {
   const hs = (image as SanityImage | null | undefined)?.hotspot;

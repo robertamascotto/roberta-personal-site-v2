@@ -1,6 +1,7 @@
 import { getClient } from "../client";
 import {
   editorialsWithGalleriesQuery,
+  productsPageQuery,
   siteConfigQuery,
   editorialsQuery,
   editorialBySlugQuery,
@@ -94,6 +95,25 @@ export interface EditorialWithGallery {
   year?: string;
   description?: string;
   gallery?: { image: unknown }[];
+}
+
+export interface ProductsPageSet {
+  title: string;
+  slug: string;
+  description?: string;
+  photos?: { image: unknown }[];
+}
+
+export interface ProductsPageProject {
+  _id: string;
+  title: string;
+  slug: string;
+  categoryLabel?: string;
+  yearRange?: string;
+  description?: string;
+  coverImage?: unknown;
+  gallery?: { _type: string; image?: unknown; images?: { image: unknown }[] }[];
+  sets?: ProductsPageSet[];
 }
 
 export interface EditorialNeighbor {
@@ -284,6 +304,10 @@ export async function getEditorials(preview = false): Promise<EditorialSummary[]
 
 export async function getEditorialsWithGalleries(preview = false): Promise<EditorialWithGallery[]> {
   return getClient(preview).fetch(editorialsWithGalleriesQuery);
+}
+
+export async function getProductsPage(preview = false): Promise<ProductsPageProject[]> {
+  return getClient(preview).fetch(productsPageQuery);
 }
 
 export async function getEditorialBySlug(slug: string, preview = false): Promise<Editorial | null> {

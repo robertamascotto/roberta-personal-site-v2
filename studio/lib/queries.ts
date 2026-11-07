@@ -65,6 +65,30 @@ export const editorialsWithGalleriesQuery = groq`*[_type == "editorial"] | order
   gallery[]{ image }
 }`;
 
+// Everything the one long Products page needs: each project with its cover, its photos
+// and its sets (sub-galleries) with their photos
+export const productsPageQuery = groq`*[_type == "productCaseStudy"] | order(orderRank asc){
+  _id,
+  title,
+  "slug": slug.current,
+  categoryLabel,
+  yearRange,
+  description,
+  coverImage,
+  gallery[]{
+    _type,
+    _type == "imageWithAspect" => { image },
+    _type == "imageGridBlock" => { images[]{ image } },
+    _type == "scrollStripBlock" => { images[]{ image } }
+  },
+  "sets": *[_type == "productSubGallery" && parentCaseStudy._ref == ^._id] | order(orderRank asc){
+    title,
+    "slug": slug.current,
+    description,
+    "photos": fullGallery[]{ image }
+  }
+}`;
+
 // A single editorial by slug, with its full gallery
 export const editorialBySlugQuery = groq`*[_type == "editorial" && slug.current == $slug][0]{
   _id,

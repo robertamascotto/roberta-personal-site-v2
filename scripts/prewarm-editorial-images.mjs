@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Warms Sanity's image CDN for the Editorials full-screen viewer.
+ * Warms Sanity's image CDN for the full-screen photo viewer (Editorials and Products).
  *
  * The first time a photo is requested at a given size, Sanity has to generate that size,
  * which can take a second or two. This script asks for every editorial photo once, at the
@@ -15,6 +15,7 @@
  * SANITY_API_TOKEN if the dataset is private) in the environment.
  */
 
+import { readFileSync } from "node:fs";
 import { createImageUrlBuilder } from "@sanity/image-url";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -44,12 +45,40 @@ async function fetchPhotos() {
   });
   if (!res.ok) throw new Error(`Sanity query failed: ${res.status} ${await res.text()}`);
   const { result } = await res.json();
+  // The photos chosen for each Products set live in lib/productSelection.ts (40-character file ids).
+  const chosen = new Set(readFileSync(new URL("../lib/productSelection.ts", import.meta.url), "utf8").match(/[a-f0-9]{40}/g) ?? []);
+  const selectedSets = new Set(
+    [...readFileSync(new URL("../lib/productSelection.ts", import.meta.url), "utf8").matchAll(/"([a-z0-9-]+\/[a-z0-9-]+)":/g)].map((m) => m[1])
+  );
   // The same bare address the site uses (includes the crop, if one is set in Sanity).
   const builder = createImageUrlBuilder({ projectId, dataset });
   const urls = new Set();
   for (const e of result) {
     if (HIDDEN_EDITORIALS.includes(e.slug)) continue;
     for (const image of e.images ?? []) if (image?.asset) urls.add(builder.image(image).url());
+  }
+  // Products
+  const pq = encodeURIComponent(`*[_type == "productCaseStudy"]{ "slug": slug.current, coverImage, "own": gallery[]{ image, "images": images[].image },
+    "sets": *[_type == "productSubGallery" && parentCaseStudy._ref == ^._id]{ "slug": slug.current, "images": fullGallery[].image } }`);
+  const pres = await fetch(`https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${pq}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!pres.ok) throw new Error(`Sanity query failed: ${pres.status} ${await pres.text()}`);
+  const idOf = (image) => image?.asset?._ref?.match(/^image-([a-f0-9]+)-/i)?.[1];
+  for (const project of (await pres.json()).result) {
+    if (project.coverImage?.asset) urls.add(builder.image(project.coverImage).url());
+    for (const block of project.own ?? []) {
+      if (block.image?.asset) urls.add(builder.image(block.image).url());
+      for (const image of block.images ?? []) if (image?.asset) urls.add(builder.image(image).url());
+    }
+    for (const set of project.sets ?? []) {
+      const limited = selectedSets.has(`${project.slug}/${set.slug}`);
+      for (const image of set.images ?? []) {
+        if (!image?.asset) continue;
+        if (limited && !chosen.has(idOf(image))) continue;
+        urls.add(builder.image(image).url());
+      }
+    }
   }
   return [...urls];
 }
