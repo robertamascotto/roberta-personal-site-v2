@@ -23,16 +23,16 @@ export const FEATURED_PHOTOS: Record<string, string[]> = {
     "8dafe4b56918827fdc59bb68567b28d4d3889324", // 10  camo hooded set, man (new, #50)
   ],
   "smoke-rise-ny/natural-light": [
-    "9a003a9c12bd3287b69c2211cbb2ed5461538d7a", //  1  pink ripped jeans (was #3 of 36)
-    "3ea8ef8124ef0dd491c0025dc1fbb1e7f23419be", //  2  pink graphic tee, shorts (was #5 of 36)
-    "e538f20a0a1d9150d2a51a0f6cbe0e7cf37465bc", //  3  blue tee, white pants (was #20 of 36)
-    "93d8f71153b16432fb68a2eb814146a9093d8550", //  4  ripped shorts, boots (was #9 of 36)
-    "b5d703ebaf053d54cb5df1442d578ae6c4d23fdc", //  5  black pants (was #27 of 36)
-    "1d498a648744e253f1bc02903823abb5129705b0", //  6  black tee, white pants (man) (was #15 of 36)
-    "962e2bd27d87d15178b6af3b8fab08f5aca2f765", //  7  green cargo (was #29 of 36)
-    "d346605345f053e701785c2fe7ea16967fda4a9d", //  8  ripped blue capri (was #11 of 36)
-    "befccbc1649c7428fb912596db6de25e4e04de08", //  9  denim embroidery, close (was #23 of 36)
-    "030b549f26557e3cb5764d3d58c85e354d5ba914", // 10  silver top, cargo (was #18 of 36)
+    "9a003a9c12bd3287b69c2211cbb2ed5461538d7a", //  1  pink ripped jeans, full (was #3 of 36)
+    "49f717254298545ea10b6b1353ae0af7f667fade", //  2  pink ripped jeans, close (was #4 of 36)
+    "9e21d66e4356815a507a1f8ee7fd44d7b5166618", //  3  white camo ruched pants, grey top (was #25 of 36)
+    "93d8f71153b16432fb68a2eb814146a9093d8550", //  4  ripped denim shorts, Timberland boots (was #9 of 36)
+    "030b549f26557e3cb5764d3d58c85e354d5ba914", //  5  silver top, painted white cargo (was #18 of 36)
+    "f174e505e58defbd74d725e629dc1d1a5daf15d8", //  6  Kingdom tee, light denim shorts, legs (was #7 of 36)
+    "3ea8ef8124ef0dd491c0025dc1fbb1e7f23419be", //  7  Kingdom tee, light denim shorts, full (was #5 of 36)
+    "b13ca57e6dd7eb60a91d0c34744c7281c66e4815", //  8  white patchwork jeans, black tee, close (was #16 of 36)
+    "6328fafde9fd3fcc608b501f91935c0b8c07f53c", //  9  white patchwork jeans, black tee, full (was #17 of 36)
+    "88d9ae508d12f3fa3a1bd90b8e0bab43a7a14d2c", // 10  white patchwork jeans, close (woman) (was #19 of 36)
   ],
   "smoke-rise-ny/flats": [
     "b5d00c518a8077dc75487f791cd9f4952c269a26", //  1  grey leather jacket (was #5 of 28)
