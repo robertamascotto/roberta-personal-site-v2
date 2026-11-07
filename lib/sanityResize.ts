@@ -27,3 +27,12 @@ export function resizedUrl(baseUrl: string, width: number, quality = VIEWER_QUAL
   url.searchParams.set("fit", "max");
   return url.toString();
 }
+
+/**
+ * The smallest standard width that looks sharp in the "click to zoom" view, where the photo is
+ * shown centred and at most 88% of the screen wide (and 1100px) instead of nearly edge to edge.
+ */
+export function zoomWidth(screenWidth: number, pixelRatio: number): number {
+  const needed = Math.min(screenWidth * 0.88, 1100) * Math.min(pixelRatio || 1, 2);
+  return VIEWER_SIZES.find((w) => w >= needed) ?? VIEWER_SIZES[VIEWER_SIZES.length - 1];
+}

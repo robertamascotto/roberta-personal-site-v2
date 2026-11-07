@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { resizedUrl, viewerWidth } from "@/lib/sanityResize";
+import { resizedUrl, viewerWidth, zoomWidth } from "@/lib/sanityResize";
 import { inertEverythingElse } from "@/lib/inert";
 import "./editorial-collage.css";
 
@@ -22,7 +22,11 @@ export interface CollagePhoto {
  *   ...  onClick={(e) => openAt(index, e.currentTarget)}  onPointerEnter={() => warm(index)} ...
  *   ...  {viewer}
  */
-export function usePhotoViewer(title: string, photos: CollagePhoto[]) {
+export type ViewerVariant = "wide" | "zoom";
+
+const widthFor = (variant: ViewerVariant) => (variant === "zoom" ? zoomWidth : viewerWidth);
+
+export function usePhotoViewer(title: string, photos: CollagePhoto[], variant: ViewerVariant = "wide") {
   const [open, setOpen] = useState<number | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const warmed = useRef<Set<string>>(new Set());
@@ -34,13 +38,13 @@ export function usePhotoViewer(title: string, photos: CollagePhoto[]) {
       if (typeof window === "undefined") return;
       const photo = photos[index];
       if (!photo) return;
-      const url = resizedUrl(photo.src, viewerWidth(window.innerWidth, window.devicePixelRatio));
+      const url = resizedUrl(photo.src, widthFor(variant)(window.innerWidth, window.devicePixelRatio));
       if (warmed.current.has(url)) return;
       warmed.current.add(url);
       const img = new window.Image();
       img.src = url;
     },
-    [photos]
+    [photos, variant]
   );
 
   const openAt = useCallback((index: number, el: HTMLElement) => {
@@ -59,7 +63,7 @@ export function usePhotoViewer(title: string, photos: CollagePhoto[]) {
 
   const viewer: ReactNode =
     open !== null ? (
-      <Viewer title={title} photos={photos} index={open} onIndex={setOpen} onClose={close} warm={warm} />
+      <Viewer title={title} photos={photos} variant={variant} index={open} onIndex={setOpen} onClose={close} warm={warm} />
     ) : null;
 
   return { openAt, warm, viewer };
@@ -68,6 +72,7 @@ export function usePhotoViewer(title: string, photos: CollagePhoto[]) {
 function Viewer({
   title,
   photos,
+  variant,
   index,
   onIndex,
   onClose,
@@ -75,6 +80,7 @@ function Viewer({
 }: {
   title: string;
   photos: CollagePhoto[];
+  variant: ViewerVariant;
   index: number;
   onIndex: (i: number) => void;
   onClose: () => void;
@@ -106,7 +112,7 @@ function Viewer({
     let cancelled = false;
     setLoading(true);
     setSrc(null);
-    const url = resizedUrl(photos[index].src, viewerWidth(window.innerWidth, window.devicePixelRatio));
+    const url = resizedUrl(photos[index].src, widthFor(variant)(window.innerWidth, window.devicePixelRatio));
     const img = new window.Image();
     const show = (u: string) => {
       if (cancelled) return;
@@ -127,7 +133,7 @@ function Viewer({
       cancelled = true;
       window.clearTimeout(fallback);
     };
-  }, [index, photos, count, warm]);
+  }, [index, photos, count, warm, variant]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -155,7 +161,7 @@ function Viewer({
   return (
     <div
       ref={rootRef}
-      className="ec-viewer"
+      className={`ec-viewer${variant === "zoom" ? " ec-zoom" : ""}`}
       role="dialog"
       aria-modal="true"
       aria-label={`${title}: photo ${index + 1} of ${count}`}
@@ -163,7 +169,12 @@ function Viewer({
       onTouchEnd={onTouchEnd}
     >
       <div className={`ec-load${loading ? " ec-load-on" : ""}`} aria-hidden="true" />
-      <div ref={scrollRef} className="ec-scroll" tabIndex={-1}>
+      <div
+        ref={scrollRef}
+        className="ec-scroll"
+        tabIndex={-1}
+        onClick={variant === "zoom" ? (e) => e.target === e.currentTarget && onClose() : undefined}
+      >
         {src && (
           // eslint-disable-next-line @next/next/no-img-element
           <img key={src} className="ec-img" src={src} alt={photos[index].alt} draggable={false} />

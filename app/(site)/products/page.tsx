@@ -5,7 +5,7 @@ import { urlFor } from "@/studio/lib/image";
 import { FEATURED_PHOTOS } from "@/lib/productSelection";
 import { assetId, focalPoint, imageDimensions, planColumns, type PhotoShape } from "@/lib/collage";
 import PageHero from "@/components/PageHero";
-import ProductSpread, { type SpreadProps } from "@/components/products/ProductSpread";
+import ProjectBlock, { type SpreadProps } from "@/components/products/ProjectBlock";
 import type { CollagePhoto } from "@/components/gallery/EditorialCollage";
 
 export const metadata: Metadata = {
@@ -64,6 +64,7 @@ export default async function ProductsPage() {
           (set.photos ?? []).filter((f): f is Frame => !!f.image)
         );
         return {
+          slug: set.slug,
           title: set.title,
           description: set.description,
           photos: toPhotos(frames, (n, total) => `${project.title}, ${set.title}: photo ${n} of ${total}`),
@@ -75,14 +76,6 @@ export default async function ProductsPage() {
       const dims = imageDimensions(f.image);
       return { ar: dims ? dims.w / dims.h : 1 };
     });
-
-    const coverDims = project.coverImage ? imageDimensions(project.coverImage) : null;
-    const hero = project.coverImage
-      ? {
-          photo: toPhotos([{ image: project.coverImage }], () => `${project.title}, cover photo`)[0],
-          ratio: coverDims ? coverDims.w / coverDims.h : 4 / 5,
-        }
-      : undefined;
 
     // A project with no written introduction gets a plain line naming its sets.
     const setNames = sets.map((s) => s.title);
@@ -96,37 +89,43 @@ export default async function ProductsPage() {
 
     return {
       slug: project.slug,
-      index,
-      total: projects.length,
-      flip: index % 2 === 1,
       title: project.title,
       category: project.categoryLabel,
       years: project.yearRange,
       lead,
-      hero,
+      cover: project.coverImage ? { src: urlFor(project.coverImage).url(), alt: `${project.title}, cover photo` } : undefined,
+      priority: index === 0,
       collage: ownFrames.length
         ? {
             photos: toPhotos(ownFrames, (n, total) => `${project.title}: photo ${n} of ${total}`),
-            wide: planColumns(shapes, 5, 1100),
-            narrow: planColumns(shapes, 2),
+            wide: planColumns(shapes, 4, 860),
+            narrow: planColumns(shapes, 2, 500),
           }
         : undefined,
       sets,
-      photoCount: ownFrames.length + sets.reduce((n, s) => n + s.photos.length, 0),
     };
   });
 
   return (
-    <div className="mx-auto w-[min(88vw,1240px)] max-[700px]:w-[calc(100%-40px)] pt-[90px] pb-24">
+    <div className="mx-auto w-[min(calc(100%-72px),1328px)] max-[640px]:w-[calc(100%-40px)] pt-[90px] pb-24">
       <PageHero
         label="Products"
         headline={"Ecommerce and lookbook photography\nfor clothing and jewelry brands."}
         maxWidth="max-w-[1000px]"
         compactOnMobile
       />
+      {spreads.length > 1 && (
+        <nav aria-label="Projects" className="-mt-8 mb-9 flex flex-wrap gap-x-5 gap-y-1 font-body text-[13px]">
+          {spreads.map((spread) => (
+            <a key={spread.slug} href={`#${spread.slug}`} className="text-ink/50! no-underline transition-colors hover:text-ink!">
+              {spread.title}
+            </a>
+          ))}
+        </nav>
+      )}
       {spreads.length === 0 && <p className="text-ink/60">No projects yet.</p>}
       {spreads.map((spread) => (
-        <ProductSpread key={spread.slug} {...spread} />
+        <ProjectBlock key={spread.slug} {...spread} />
       ))}
     </div>
   );

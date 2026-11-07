@@ -16,14 +16,16 @@ interface Props {
   narrow: ColumnPlan;
   /** hint for the browser about how wide the photos are on wide screens */
   wideSizes?: string;
+  /** open photos in the smaller "click to zoom" view instead of the near full-width viewer */
+  zoom?: boolean;
 }
 
 /**
  * A photo collage laid out as a clean rectangle (every column ends at the same height).
  * Clicking a photo opens the full-screen viewer.
  */
-export default function EditorialCollage({ title, photos, wide, narrow, wideSizes = "18vw" }: Props) {
-  const { openAt, warm, viewer } = usePhotoViewer(title, photos);
+export default function EditorialCollage({ title, photos, wide, narrow, wideSizes = "18vw", zoom = false }: Props) {
+  const { openAt, warm, viewer } = usePhotoViewer(title, photos, zoom ? "zoom" : "wide");
 
   const renderGrid = (plan: ColumnPlan, sizes: string) => (
     <div

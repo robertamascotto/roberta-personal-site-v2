@@ -12,12 +12,15 @@ export default function UniformGrid({
   title,
   photos,
   ratio = "3/4",
+  zoom = false,
 }: {
   title: string;
   photos: CollagePhoto[];
   ratio?: string;
+  /** open photos in the smaller "click to zoom" view instead of the near full-width viewer */
+  zoom?: boolean;
 }) {
-  const { openAt, warm, viewer } = usePhotoViewer(title, photos);
+  const { openAt, warm, viewer } = usePhotoViewer(title, photos, zoom ? "zoom" : "wide");
 
   return (
     <>
