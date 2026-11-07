@@ -1,7 +1,6 @@
 import { MetadataRoute } from "next";
 import { SITE_URL, isHiddenHref } from "@/lib/constants";
 import {
-  getEditorials,
   getProductCaseStudies,
   getProductCaseStudyBySlug,
   safeFetch,
@@ -10,10 +9,7 @@ import {
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [editorials, caseStudies] = await Promise.all([
-    safeFetch(getEditorials(), []),
-    safeFetch(getProductCaseStudies(), []),
-  ]);
+  const caseStudies = await safeFetch(getProductCaseStudies(), []);
   const caseStudyDetails = await Promise.all(
     caseStudies.map((cs) => safeFetch(getProductCaseStudyBySlug(cs.slug), null))
   );
@@ -28,13 +24,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     })
   );
-
-  const editorialPages = editorials.map((e) => ({
-    url: `${SITE_URL}/editorials/${e.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
 
   const productPages = caseStudies.flatMap((cs, i) => [
     {
@@ -54,7 +43,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     ...staticPages,
-    ...editorialPages,
     ...productPages,
   ];
 }

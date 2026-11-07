@@ -1,5 +1,6 @@
 import { getClient } from "../client";
 import {
+  editorialsWithGalleriesQuery,
   siteConfigQuery,
   editorialsQuery,
   editorialBySlugQuery,
@@ -84,6 +85,15 @@ export interface Editorial {
   description?: string;
   galleryGap?: number;
   gallery?: ImageWithAspect[];
+}
+
+export interface EditorialWithGallery {
+  _id: string;
+  title: string;
+  slug: string;
+  year?: string;
+  description?: string;
+  gallery?: { image: unknown }[];
 }
 
 export interface EditorialNeighbor {
@@ -270,6 +280,10 @@ export async function getSiteConfigSafe(preview = false): Promise<SiteConfig | n
 
 export async function getEditorials(preview = false): Promise<EditorialSummary[]> {
   return getClient(preview).fetch(editorialsQuery);
+}
+
+export async function getEditorialsWithGalleries(preview = false): Promise<EditorialWithGallery[]> {
+  return getClient(preview).fetch(editorialsWithGalleriesQuery);
 }
 
 export async function getEditorialBySlug(slug: string, preview = false): Promise<Editorial | null> {

@@ -37,6 +37,15 @@ export function isHiddenHref(href: string | null | undefined): boolean {
   return HIDDEN_PAGES.includes(path);
 }
 
+// Editorials that are switched off for now: they disappear from the Editorials page
+// and the sitemap, and their address sends people to the Editorials page. Their
+// content stays in Sanity untouched; remove a slug from this list to bring it back.
+export const HIDDEN_EDITORIALS: readonly string[] = ["in-session"];
+
+export function isHiddenEditorial(slug: string | null | undefined): boolean {
+  return !!slug && HIDDEN_EDITORIALS.includes(slug);
+}
+
 export const DEFAULT_NAVIGATION_LINKS = [
   { href: "/editorials", label: "Editorials" },
   { href: "/products", label: "Products" },

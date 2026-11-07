@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { draftMode } from "next/headers";
 import { getMovementPage, safeFetch } from "@/studio/lib/helpers";
+import { isHiddenEditorial } from "@/lib/constants";
 import PageContainer from "@/components/PageContainer";
 import PageHero from "@/components/PageHero";
 import VideoTile from "@/components/gallery/VideoTile";
@@ -40,7 +41,7 @@ export default async function MovementPage() {
       />
 
       {reel && (reel.linkedEditorialSlug ? (
-        <Link href={`/editorials/${reel.linkedEditorialSlug}`} className="block no-underline">
+        <Link href={isHiddenEditorial(reel.linkedEditorialSlug) ? "/editorials" : `/editorials#${reel.linkedEditorialSlug}`} className="block no-underline">
           {reelBlock}
         </Link>
       ) : (

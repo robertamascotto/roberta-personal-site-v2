@@ -1,0 +1,178 @@
+/*
+ * Editorial collage: photos packed close together with a small white border, laid out so
+ * every column ends at exactly the same height (a clean rectangle). The arrangement is
+ * planned on the server (lib/collage.ts) and done with flex-grow, so it needs no JavaScript.
+ * Clicking a photo opens the full-screen viewer.
+ */
+.ec-wide {
+  display: none;
+}
+@media (min-width: 901px) {
+  .ec-wide {
+    display: block;
+  }
+  .ec-narrow {
+    display: none;
+  }
+}
+
+.ec-grid {
+  display: grid;
+  gap: 8px;
+}
+.ec-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+.ec-tile {
+  position: relative;
+  display: block;
+  flex-basis: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: rgba(17, 17, 16, 0.06);
+  cursor: zoom-in;
+  transition: opacity 0.3s;
+}
+/* while the pointer is over the collage, the photos you are not pointing at fade back a little */
+@media (hover: hover) {
+  .ec-grid:hover .ec-tile:not(:hover) {
+    opacity: 0.55;
+  }
+}
+.ec-tile:focus-visible {
+  outline: 2px solid #111110;
+  outline-offset: 2px;
+}
+
+/* ---------- full-screen viewer: white, with a little space at the sides; tall photos scroll ---------- */
+.ec-viewer {
+  --vm: clamp(16px, 12vw, 220px);
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #fdfdfc;
+  color: #111110;
+  animation: ec-in 0.25s ease;
+}
+@keyframes ec-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.ec-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  overscroll-behavior: contain;
+}
+.ec-img {
+  display: block;
+  width: calc(100% - 2 * var(--vm));
+  height: auto;
+  margin: auto var(--vm);
+  animation: ec-in 0.3s ease;
+}
+.ec-load {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 2px;
+  width: 0;
+  background: #111110;
+  opacity: 0;
+  z-index: 4;
+}
+.ec-load-on {
+  opacity: 0.55;
+  animation: ec-bar 2.2s ease-out forwards;
+}
+@keyframes ec-bar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 92%;
+  }
+}
+/* controls: black characters, no circles; a soft white glow keeps them readable over dark photos */
+.ec-btn {
+  position: fixed;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #111110;
+  font-family: var(--font-poppins), Poppins, sans-serif;
+  text-shadow:
+    0 0 8px rgba(253, 253, 252, 0.95),
+    0 0 3px rgba(253, 253, 252, 0.9);
+  opacity: 0.9;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+.ec-btn:hover,
+.ec-btn:focus-visible {
+  opacity: 1;
+}
+.ec-count {
+  top: 16px;
+  left: 18px;
+  height: 46px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  pointer-events: none;
+}
+.ec-close {
+  top: 16px;
+  right: 18px;
+  width: 46px;
+  height: 46px;
+  font-size: 28px;
+  line-height: 1;
+}
+.ec-arrow {
+  top: 50%;
+  margin-top: -26px;
+  width: 52px;
+  height: 52px;
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1;
+}
+.ec-prev {
+  left: 18px;
+}
+.ec-next {
+  right: 18px;
+}
+@media (max-width: 640px) {
+  .ec-viewer {
+    --vm: clamp(16px, 6vw, 48px);
+  }
+  .ec-arrow {
+    display: none;
+  }
+  .ec-close {
+    top: 12px;
+    right: 12px;
+  }
+  .ec-count {
+    top: 12px;
+    left: 12px;
+  }
+}

@@ -55,6 +55,16 @@ export const editorialsQuery = groq`*[_type == "editorial"] | order(orderRank as
   coverFrames[]${imageWithAspectProjection}
 }`;
 
+// All editorials with their full galleries, for the one long Editorials page
+export const editorialsWithGalleriesQuery = groq`*[_type == "editorial"] | order(orderRank asc){
+  _id,
+  title,
+  "slug": slug.current,
+  year,
+  description,
+  gallery[]{ image }
+}`;
+
 // A single editorial by slug, with its full gallery
 export const editorialBySlugQuery = groq`*[_type == "editorial" && slug.current == $slug][0]{
   _id,
