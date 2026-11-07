@@ -39,7 +39,7 @@ export default function ProjectBlock(p: SpreadProps) {
     <section id={p.slug} className="scroll-mt-20 border-t border-ink/10 py-14 max-[640px]:py-10">
       <div className="grid grid-cols-1 min-[901px]:grid-cols-[230px_minmax(0,1fr)] gap-x-14 gap-y-8">
         <aside className="min-[901px]:sticky min-[901px]:top-24 self-start">
-          <h2 className="font-heading font-black uppercase text-[44px] leading-[0.92] m-0 mb-3.5 [overflow-wrap:anywhere]">
+          <h2 className="font-title font-bold uppercase text-[25px] leading-[1.05] tracking-[-0.04em] m-0 mb-3.5 [overflow-wrap:anywhere]">
             {p.title}
           </h2>
           {p.lead && <p className="font-body text-sm leading-[1.55] text-ink/80 m-0 mb-[18px]">{p.lead}</p>}
@@ -75,7 +75,7 @@ export default function ProjectBlock(p: SpreadProps) {
           {p.sets.map((set) => (
             <section key={set.slug} id={`${p.slug}-${set.slug}`} className="scroll-mt-24">
               <h3
-                className={`font-heading font-black uppercase text-[26px] leading-none m-0 pt-3 border-t border-ink/10 ${
+                className={`font-title font-bold uppercase text-[14.5px] leading-none tracking-[-0.04em] m-0 pt-3 border-t border-ink/10 ${
                   set.description ? "mb-1.5" : "mb-3.5"
                 }`}
               >

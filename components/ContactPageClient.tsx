@@ -90,15 +90,15 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
   return (
     <div className="max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] pt-[90px]">
       <section className="pt-[72px] pb-14 max-w-[64ch]">
-        <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-[18px]">{sectionLabel}</span>
-        <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] m-0">
+        <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-[18px]">{sectionLabel}</span>
+        <h1 className="font-title font-bold text-[clamp(20px,2.6vw,32px)] leading-[1.15] tracking-[-0.03em] m-0">
           {heading}
         </h1>
       </section>
 
       <section className="contact-split border-t border-ink/12">
         <div>
-          <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">Send a brief</span>
+          <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">Send a brief</span>
           <form onSubmit={handleSubmit} className="grid gap-6 max-w-[44ch]">
             <label className="grid gap-2">
               <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.name}</span>
@@ -157,7 +157,7 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
         </div>
 
         <div>
-          <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">
+          <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">
             {contactPage?.contactInfoHeading || defaults.contactInfoHeading}
           </span>
           {siteConfig?.email && (

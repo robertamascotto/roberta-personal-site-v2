@@ -6,10 +6,13 @@
   --color-ink: #111110;
 
   /* Type roles */
+  /* Big Shoulders is kept for the name only; everything else is DM Sans with Space Mono details */
   --font-heading: var(--font-big-shoulders), "Big Shoulders", sans-serif;
+  --font-title: var(--font-space-mono), "Space Mono", monospace;
+  --font-label: var(--font-space-mono), "Space Mono", monospace;
   --font-mark: var(--font-oswald), Oswald, sans-serif;
-  --font-accent: var(--font-spectral), Spectral, serif;
-  --font-body: var(--font-poppins), Poppins, sans-serif;
+  --font-accent: var(--font-dm-sans), "DM Sans", sans-serif;
+  --font-body: var(--font-dm-sans), "DM Sans", sans-serif;
   --font-mono-label: var(--font-ibm-plex-mono), "IBM Plex Mono", monospace;
   --font-numeral: var(--font-bodoni-moda), "Bodoni Moda", serif;
 
@@ -263,5 +266,29 @@ a:hover {
 
   .skeleton-shimmer {
     animation: none;
+  }
+}
+
+
+/* ---------- date stamp: the date and live time, pinned to the corner like an old digital camera ---------- */
+.date-stamp {
+  position: fixed;
+  z-index: 90;
+  right: clamp(16px, 4vw, 48px);
+  bottom: 10px;
+  color: #111110;
+  font-family: var(--font-label);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 640px) {
+  .date-stamp {
+    font-size: 11px;
+    bottom: 8px;
   }
 }

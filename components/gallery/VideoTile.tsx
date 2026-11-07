@@ -37,7 +37,7 @@ export default function VideoTile({ videoUrl, poster, aspectRatio = "16/9", labe
         </div>
         {(label || caption) && (
           <div className="mt-4 max-w-[56ch]">
-            {label && <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-2">{label}</span>}
+            {label && <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-2">{label}</span>}
             {caption && <p className="font-body text-[15px] leading-[25px] text-ink/72 m-0">{caption}</p>}
           </div>
         )}
@@ -95,7 +95,7 @@ export default function VideoTile({ videoUrl, poster, aspectRatio = "16/9", labe
       {(label || caption) && (
         <div className="mt-4 max-w-[56ch]">
           {label && (
-            <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-2">{label}</span>
+            <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-2">{label}</span>
           )}
           {caption && <p className="font-body text-[15px] leading-[25px] text-ink/72 m-0">{caption}</p>}
         </div>

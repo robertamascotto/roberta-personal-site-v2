@@ -82,7 +82,7 @@ html[data-intro="on"] {
   display: flex;
   align-items: center;
   gap: max(8px, 1.3cqw);
-  font: 500 max(9px, 1.05cqw) var(--font-poppins), Poppins, sans-serif;
+  font: 500 max(9px, 1.05cqw) var(--font-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;

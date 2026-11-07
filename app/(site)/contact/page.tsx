@@ -28,7 +28,7 @@ export default async function ContactPage() {
     return (
       <div className="max-w-[1240px] mx-auto px-5 md:px-[clamp(20px,5vw,64px)] pt-[90px] pb-24">
         <div className="max-w-xl">
-          <h1 className="font-heading font-black text-[clamp(34px,4.2vw,52px)] leading-none tracking-[-0.01em] mb-6">
+          <h1 className="font-title font-bold text-[clamp(20px,2.6vw,32px)] leading-[1.15] tracking-[-0.03em] mb-6">
             Let&apos;s talk
           </h1>
           <p className="text-ink/60 mb-6">

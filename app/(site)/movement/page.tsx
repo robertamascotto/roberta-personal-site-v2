@@ -23,7 +23,7 @@ export default async function MovementPage() {
     <div className="mb-6">
       <VideoTile videoUrl={reel.videoUrl} aspectRatio="21/9" autoPlay />
       <div className="mt-4">
-        {reel.tag && <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-2">{reel.tag}</span>}
+        {reel.tag && <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-2">{reel.tag}</span>}
         <h2 className="font-accent italic font-light text-[22px] leading-[1.25] tracking-[-0.005em] m-0 mb-2">{reel.title}</h2>
         {reel.blurb && <p className="text-[15px] leading-[25px] text-ink/72 m-0">{reel.blurb}</p>}
         {reel.year && <span className="block mt-1.5 font-body text-[11px] tracking-[0.1em] text-ink/32">{reel.year}</span>}

@@ -35,8 +35,37 @@
   border: 0;
   overflow: hidden;
   background: rgba(17, 17, 16, 0.06);
-  cursor: zoom-in;
+  /* a small focus square instead of the magnifier: only photos you can click to zoom have it */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 44 44' fill='none'%3E%3Cg stroke='%23fff' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d=%22M4 14V4h10%22/%3E%3Cpath d=%22M30 4h10v10%22/%3E%3Cpath d=%22M40 30v10H30%22/%3E%3Cpath d=%22M14 40H4V30%22/%3E%3Cpath d=%22M22 18v8%22/%3E%3Cpath d=%22M18 22h8%22/%3E%3C/g%3E%3Cg stroke='%23111110' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d=%22M4 14V4h10%22/%3E%3Cpath d=%22M30 4h10v10%22/%3E%3Cpath d=%22M40 30v10H30%22/%3E%3Cpath d=%22M14 40H4V30%22/%3E%3Cpath d=%22M22 18v8%22/%3E%3Cpath d=%22M18 22h8%22/%3E%3C/g%3E%3C/svg%3E") 15 15, zoom-in;
   transition: opacity 0.3s;
+}
+/* viewfinder corners that appear on a photo you can zoom into */
+.ec-tile::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.45));
+  background:
+    linear-gradient(#fff, #fff) top left / 12px 1.5px no-repeat,
+    linear-gradient(#fff, #fff) top left / 1.5px 12px no-repeat,
+    linear-gradient(#fff, #fff) top right / 12px 1.5px no-repeat,
+    linear-gradient(#fff, #fff) top right / 1.5px 12px no-repeat,
+    linear-gradient(#fff, #fff) bottom left / 12px 1.5px no-repeat,
+    linear-gradient(#fff, #fff) bottom left / 1.5px 12px no-repeat,
+    linear-gradient(#fff, #fff) bottom right / 12px 1.5px no-repeat,
+    linear-gradient(#fff, #fff) bottom right / 1.5px 12px no-repeat;
+}
+@media (hover: hover) {
+  .ec-tile:hover::before {
+    opacity: 1;
+  }
+}
+.ec-tile:focus-visible::before {
+  opacity: 1;
 }
 /* while the pointer is over the collage, the photos you are not pointing at fade back a little */
 @media (hover: hover) {
@@ -149,7 +178,7 @@
   border: 0;
   padding: 0;
   color: #111110;
-  font-family: var(--font-poppins), Poppins, sans-serif;
+  font-family: var(--font-body);
   text-shadow:
     0 0 8px rgba(253, 253, 252, 0.95),
     0 0 3px rgba(253, 253, 252, 0.9);

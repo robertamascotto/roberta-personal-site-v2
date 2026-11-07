@@ -51,7 +51,7 @@ export default function ProjectTeaserRow({
 
   const text = (
     <div>
-      <div className="font-accent italic text-base font-normal tracking-[0.14em] uppercase text-ink/50 mb-2.5">{label}</div>
+      <div className="font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-2.5">{label}</div>
       <p className="font-body text-sm leading-[22px] text-ink/62 m-0 mb-3.5" style={{ maxWidth: blurbMaxWidth }}>
         {blurb}
       </p>

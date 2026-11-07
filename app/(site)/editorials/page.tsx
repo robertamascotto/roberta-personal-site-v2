@@ -42,7 +42,7 @@ export default async function EditorialsPage() {
 
         return (
           <section key={editorial._id} id={editorial.slug} className="scroll-mt-24 pt-20 max-[640px]:pt-14">
-            <h2 className="font-heading font-black text-[clamp(30px,3.6vw,46px)] leading-none tracking-[-0.01em] m-0 mb-1.5">
+            <h2 className="font-title font-bold text-[clamp(18px,2.2vw,28px)] leading-[1.1] tracking-[-0.03em] m-0 mb-1.5">
               {editorial.title}
             </h2>
             {editorial.year && (

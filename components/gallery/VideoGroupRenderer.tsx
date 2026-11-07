@@ -13,7 +13,7 @@ const LAYOUT_CLASSES: Record<VideoGroup["layout"], string> = {
 export default function VideoGroupRenderer({ group, isLast = false }: { group: VideoGroup; isLast?: boolean }) {
   return (
     <section className={`border-t border-ink/12 pt-14 ${isLast ? "pb-[88px]" : "pb-[72px]"}`}>
-      <span className="block font-body text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">
+      <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">
         {group.sectionLabel}
       </span>
       {group.intro && <p className="font-body text-[15px] leading-[25px] text-ink/72 mb-10">{group.intro}</p>}

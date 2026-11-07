@@ -29,7 +29,7 @@ export default function HomeHero({ headline, heroImageUrl, heroImageLqip }: Home
       </div>
 
       <div
-        className="absolute left-11 bottom-10 z-[5] flex flex-col items-start gap-2.5 font-body text-[11px] tracking-[0.16em] uppercase text-ink/50 pointer-events-none transition-opacity duration-300 max-[640px]:hidden"
+        className="absolute left-11 bottom-10 z-[5] flex flex-col items-start gap-2.5 font-label text-[11px] tracking-[0.16em] uppercase text-ink/50 pointer-events-none transition-opacity duration-300 max-[640px]:hidden"
         style={{ opacity: scrolled ? 0 : 1 }}
       >
         <span>Scroll</span>

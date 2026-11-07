@@ -90,7 +90,7 @@ export default function GalleryBlockRenderer({ blocks }: { blocks?: GalleryBlock
                   style={{ background: "linear-gradient(to right, rgba(253,253,252,0), rgba(253,253,252,0.92))" }}
                 />
               </div>
-              <div className="flex justify-end items-center gap-2 font-body text-[11px] tracking-[0.08em] uppercase text-ink -mt-6">
+              <div className="flex justify-end items-center gap-2 font-label text-[11px] tracking-[0.08em] uppercase text-ink -mt-6">
                 Scroll <span className="text-[15px] leading-none">&#8594;</span>
               </div>
             </Fragment>

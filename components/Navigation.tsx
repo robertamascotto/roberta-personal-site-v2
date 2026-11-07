@@ -110,7 +110,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
           borderBottom: `1px solid ${isScrolled ? "rgba(17,17,16,0.08)" : "transparent"}`,
         }}
       >
-        <div className="flex items-center gap-5 min-[641px]:gap-5 font-body text-[13px] tracking-[0.06em] uppercase w-full min-[641px]:w-auto justify-between min-[641px]:justify-start">
+        <div className="flex items-center gap-5 min-[641px]:gap-5 font-label text-xs tracking-[0.06em] uppercase w-full min-[641px]:w-auto justify-between min-[641px]:justify-start">
           <Link
             href="/"
             className="flex-none bg-ink flex items-center justify-center px-1.5 pt-1"
@@ -174,7 +174,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
             key={link.href}
             href={link.href}
             onClick={() => setIsMobileMenuOpen(false)}
-            className="font-heading font-bold text-[38px] leading-[1.15] uppercase no-underline text-ink"
+            className="font-title font-bold text-[24px] leading-[1.25] tracking-[-0.03em] uppercase no-underline text-ink"
           >
             {link.label}
           </Link>
@@ -182,7 +182,7 @@ export default function Navigation({ siteName, navigationLinks, email }: Navigat
         {email && (
           <a
             href={`mailto:${email}`}
-            className="mt-7 font-body text-[13px] tracking-[0.06em] uppercase text-ink/55 no-underline"
+            className="mt-7 font-label text-xs tracking-[0.06em] uppercase text-ink/55 no-underline"
           >
             {email}
           </a>

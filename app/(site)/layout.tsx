@@ -1,12 +1,13 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Oswald, Big_Shoulders, Spectral, Poppins, IBM_Plex_Mono, Bodoni_Moda } from "next/font/google";
+import { Oswald, Big_Shoulders, DM_Sans, Space_Mono, IBM_Plex_Mono, Bodoni_Moda } from "next/font/google";
 import { draftMode } from "next/headers";
 import "../globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import BackToTop from "@/components/BackToTop";
+import DateStamp from "@/components/DateStamp";
 import { getSiteConfigSafe } from "@/studio/lib/helpers";
 import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/constants";
 
@@ -24,18 +25,18 @@ const bigShoulders = Big_Shoulders({
   display: "swap",
 });
 
-const spectral = Spectral({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-spectral",
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
-const poppins = Poppins({
+const spaceMono = Space_Mono({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-poppins",
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
   display: "swap",
 });
 
@@ -58,8 +59,8 @@ const bodoniModa = Bodoni_Moda({
 const fontVariables = [
   oswald.variable,
   bigShoulders.variable,
-  spectral.variable,
-  poppins.variable,
+  dmSans.variable,
+  spaceMono.variable,
   ibmPlexMono.variable,
   bodoniModa.variable,
 ].join(" ");
@@ -151,6 +152,7 @@ export default async function SiteLayout({
           <PageTransition>{children}</PageTransition>
         </main>
         <BackToTop />
+        <DateStamp />
         <Footer
           footerTagline={siteConfig?.footerTagline}
           footerDescription={siteConfig?.footerDescription}
