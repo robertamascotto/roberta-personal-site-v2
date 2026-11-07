@@ -44,7 +44,8 @@ a:hover {
    (880px, then 640px) rather than Tailwind's default `md` (768px). */
 .home-hero-grid {
   display: grid;
-  grid-template-columns: 35fr 65fr;
+  /* The left column is as wide as the one-line name needs; the photo takes the rest. */
+  grid-template-columns: max-content 1fr;
   grid-template-rows: 100vh;
   height: 100vh;
 }

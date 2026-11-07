@@ -4,7 +4,9 @@ import { getSiteConfigSafe } from "@/studio/lib/helpers";
 import { urlFor } from "@/studio/lib/image";
 import { getSocialIcon } from "@/lib/socialIcons";
 import { toValidSocialLinks } from "@/lib/types";
-import CameraIntro from "@/components/CameraIntro";
+// The intro. To bring back the dark camera-screen one, import CameraIntro from
+// "@/components/CameraIntro" instead and render <CameraIntro /> where <NameIntro /> is below.
+import NameIntro from "@/components/NameIntro";
 import HomeHero from "@/components/home/HomeHero";
 import ProjectTeaserRow from "@/components/home/ProjectTeaserRow";
 import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION, isHiddenHref } from "@/lib/constants";
@@ -61,7 +63,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <CameraIntro />
+      <NameIntro headline={homePage?.heroHeadline || "Roberta Mascotto"} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}

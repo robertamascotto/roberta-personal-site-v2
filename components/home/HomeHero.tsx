@@ -2,30 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import HeadlineWords from "@/components/home/HeadlineWords";
 
 interface HomeHeroProps {
   headline: string;
   heroImageUrl?: string;
   heroImageLqip?: string;
-}
-
-/**
- * Matches the design's brand detail: for a two-word "Firstname Lastname"
- * headline, the first letter of the last name switches to the mark font
- * (Oswald — the same font as the RM logo). Any other headline shape (a
- * custom tagline, a single word, etc.) just renders plainly.
- */
-function renderHeadline(headline: string) {
-  const words = headline.trim().split(/\s+/);
-  if (words.length !== 2) return headline;
-
-  const [first, last] = words;
-  return (
-    <>
-      {first} <span className="font-mark font-bold">{last[0]}</span>
-      {last.slice(1)}
-    </>
-  );
 }
 
 export default function HomeHero({ headline, heroImageUrl, heroImageLqip }: HomeHeroProps) {
@@ -39,11 +21,10 @@ export default function HomeHero({ headline, heroImageUrl, heroImageLqip }: Home
 
   return (
     <div className="full-bleed home-hero-grid relative overflow-hidden">
-      <div className="home-hero-divider absolute left-[35%] top-0 bottom-0 w-px bg-ink/[0.12]" />
-
-      <div className="flex flex-col justify-center pl-11 pr-0 pt-0 pb-0 max-[640px]:pl-5 max-[640px]:pr-5 max-[640px]:pt-[132px] max-[640px]:pb-9 min-h-0 overflow-x-hidden">
-        <h1 className="font-heading font-black uppercase text-[clamp(40px,calc(8vw_-_14px),80px)] leading-[0.95] tracking-[-0.01em] m-0 pr-6">
-          {renderHeadline(headline)}
+      <div className="flex flex-col justify-center pl-11 pr-0 min-[881px]:pr-11 pt-0 pb-0 max-[640px]:pl-5 max-[640px]:pr-5 max-[640px]:pt-[132px] max-[640px]:pb-9 min-h-0 overflow-x-hidden">
+        {/* The name sits on one line; the left column grows to fit it and the photo takes the rest. */}
+        <h1 className="font-heading font-black uppercase text-[clamp(36px,calc(8vw_-_14px),80px)] leading-[0.95] tracking-[-0.01em] m-0 self-start inline-flex items-baseline gap-[0.27em] whitespace-nowrap">
+          <HeadlineWords headline={headline} wordData={{ "data-intro-word": "" }} />
         </h1>
       </div>
 
@@ -55,14 +36,14 @@ export default function HomeHero({ headline, heroImageUrl, heroImageLqip }: Home
         <span className="text-base leading-none animate-nudge">&#8595;</span>
       </div>
 
-      <figure className="m-0 h-full min-h-0 overflow-hidden relative">
+      <figure className="intro-reveal m-0 h-full min-h-0 overflow-hidden relative min-[881px]:border-l min-[881px]:border-ink/[0.12]">
         {heroImageUrl && (
           <Image
             src={heroImageUrl}
             alt={`${headline} — portrait`}
             fill
             priority
-            sizes="(max-width: 768px) 100vw, 65vw"
+            sizes="(max-width: 880px) 100vw, 55vw"
             className="object-cover"
             {...(heroImageLqip ? { placeholder: "blur", blurDataURL: heroImageLqip } : {})}
           />

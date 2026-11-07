@@ -1,0 +1,116 @@
+/*
+ * White name intro — your name alone on white. A click sends each word flying to its
+ * place in the home page headline while the page fades in around it.
+ *
+ * Visibility is controlled by data-intro on <html>, set by a tiny inline script before
+ * first paint: only "on" shows the intro. No JavaScript, crawlers, returning visitors and
+ * "reduce motion" users all leave it off.  data-intro-go is added at the moment of the
+ * click and starts the reveal.
+ */
+.ni {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  background-color: #fdfdfc;
+  color: #111110;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.9s ease 0.15s;
+}
+html[data-intro="on"] .ni {
+  display: flex;
+}
+html[data-intro="on"] {
+  overflow: hidden;
+}
+.ni-go {
+  background-color: transparent;
+  pointer-events: none;
+}
+
+.ni-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.27em;
+  white-space: nowrap;
+  font-family: var(--font-big-shoulders), "Big Shoulders Display", sans-serif;
+  font-weight: 900;
+  font-size: clamp(30px, 6.2vw, 112px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.ni-w {
+  display: block;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+@media (max-width: 640px) {
+  .ni-line {
+    font-size: 9.2vw;
+  }
+}
+
+/* A button for keyboards and screen readers; the whole screen is also clickable. */
+.ni-btn {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ni:has(.ni-btn:focus-visible) .ni-line {
+  outline: 1px solid #111110;
+  outline-offset: 14px;
+}
+
+/* A very faint nudge that appears after a few seconds if nothing has been clicked. */
+.ni-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 7vh;
+  text-align: center;
+  font-family: var(--font-poppins), Poppins, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 16, 0.4);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+.ni-hint-on {
+  opacity: 1;
+}
+.ni-go .ni-hint {
+  opacity: 0;
+}
+
+/* The page underneath stays out of sight until the click, then fades in. */
+html[data-intro="on"] [data-intro-word] {
+  visibility: hidden;
+}
+html[data-intro="on"] #rm-nav,
+html[data-intro="on"] .intro-reveal {
+  opacity: 0;
+}
+html[data-intro="on"] .intro-reveal {
+  transform: scale(1.05);
+}
+html[data-intro="on"][data-intro-go] #rm-nav,
+html[data-intro="on"][data-intro-go] .intro-reveal {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 1s ease 0.4s,
+    transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
