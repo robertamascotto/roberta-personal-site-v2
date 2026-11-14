@@ -64,6 +64,15 @@ export default defineType({
       validation: (rule) => rule.min(1),
     }),
     defineField({
+      name: "mobileGallery",
+      title: "Phone photos (vertical)",
+      type: "array",
+      of: [{ type: "imageWithAspect" }],
+      description:
+        "Optional. Tall photos (2:3 or 4:5) used ONLY on phones: the first one is the shoot's card on the Editorials page, and they are what opens when you tap it. Leave empty and phones show the normal photos.",
+      group: "gallery",
+    }),
+    defineField({
       name: "galleryGap",
       title: "Gallery Gap (px)",
       type: "number",

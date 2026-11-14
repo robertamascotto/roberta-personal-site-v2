@@ -35,8 +35,8 @@
   border: 0;
   overflow: hidden;
   background: rgba(17, 17, 16, 0.06);
-  /* a small focus square instead of the magnifier: only photos you can click to zoom have it */
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 44 44' fill='none'%3E%3Cg stroke='%23fff' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d=%22M4 14V4h10%22/%3E%3Cpath d=%22M30 4h10v10%22/%3E%3Cpath d=%22M40 30v10H30%22/%3E%3Cpath d=%22M14 40H4V30%22/%3E%3Cpath d=%22M22 18v8%22/%3E%3Cpath d=%22M18 22h8%22/%3E%3C/g%3E%3Cg stroke='%23111110' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d=%22M4 14V4h10%22/%3E%3Cpath d=%22M30 4h10v10%22/%3E%3Cpath d=%22M40 30v10H30%22/%3E%3Cpath d=%22M14 40H4V30%22/%3E%3Cpath d=%22M22 18v8%22/%3E%3Cpath d=%22M18 22h8%22/%3E%3C/g%3E%3C/svg%3E") 15 15, zoom-in;
+  /* the normal pointer; the viewfinder corners below are the only hint that a photo opens */
+  cursor: pointer;
   transition: opacity 0.3s;
 }
 /* viewfinder corners that appear on a photo you can zoom into */
@@ -74,7 +74,7 @@
   }
 }
 .ec-tile:focus-visible {
-  outline: 2px solid #111110;
+  outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
 
@@ -112,12 +112,14 @@
 
 /* ---------- full-screen viewer: white, with a little space at the sides; tall photos scroll ---------- */
 .ec-viewer {
+  touch-action: none; /* fingers only swipe sideways between photos; the page behind never scrolls */
+  overscroll-behavior: none;
   --vm: clamp(16px, 12vw, 220px);
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: #fdfdfc;
-  color: #111110;
+  background: #0b0b0a;
+  color: #ffffff;
   animation: ec-in 0.25s ease;
 }
 @keyframes ec-in {
@@ -128,21 +130,26 @@
     opacity: 1;
   }
 }
+/* every photo is shown whole, fitted to the screen (nothing to scroll); the mouse wheel / trackpad
+   changes photo instead */
 .ec-scroll {
   position: absolute;
   inset: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   outline: none;
   overscroll-behavior: contain;
 }
 .ec-img {
   display: block;
-  width: calc(100% - 2 * var(--vm));
+  width: auto;
   height: auto;
-  margin: auto var(--vm);
+  max-width: calc(100vw - 2 * var(--vm));
+  max-height: calc(100vh - 96px);
+  max-height: calc(100dvh - 96px);
+  object-fit: contain;
   animation: ec-in 0.3s ease;
 }
 .ec-load {
@@ -151,7 +158,7 @@
   top: 0;
   height: 2px;
   width: 0;
-  background: #111110;
+  background: #ffffff;
   opacity: 0;
   z-index: 4;
 }
@@ -177,11 +184,11 @@
   background: none;
   border: 0;
   padding: 0;
-  color: #111110;
+  color: #ffffff;
   font-family: var(--font-body);
   text-shadow:
-    0 0 8px rgba(253, 253, 252, 0.95),
-    0 0 3px rgba(253, 253, 252, 0.9);
+    0 0 8px rgba(11, 11, 10, 0.95),
+    0 0 3px rgba(11, 11, 10, 0.9);
   opacity: 0.9;
   transition: opacity 0.2s;
   cursor: pointer;
@@ -256,5 +263,82 @@
   .ec-zoom .ec-img {
     max-width: 94vw;
     max-height: 80vh;
+  }
+}
+
+/* phone viewer: black screen, the whole photo, counter top left, plain "Close" top right, arrows at the bottom */
+@media (max-width: 700px) {
+  .ec-viewer {
+    --vm: 0px;
+  }
+  .ec-img {
+    max-width: 100vw;
+    max-height: calc(100vh - 150px);
+    max-height: calc(100dvh - 150px);
+  }
+  .ec-count {
+    top: 26px;
+    left: 20px;
+    height: auto;
+  }
+  .ec-close {
+    top: 26px;
+    right: 20px;
+    width: auto;
+    height: auto;
+    font-size: 0;
+  }
+  .ec-close::after {
+    content: "Close";
+    font-family: var(--font-label);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .ec-arrow {
+    display: flex;
+    top: auto;
+    bottom: 26px;
+    margin: 0;
+    width: 52px;
+    height: 52px;
+    font-size: 36px;
+  }
+  .ec-prev {
+    left: 8px;
+  }
+  .ec-next {
+    right: 8px;
+  }
+  /* ecommerce sets: four photos, then a "View all" button that opens the viewer */
+  .ec-ugrid {
+    gap: 4px;
+  }
+  .ec-ugrid .ec-tile:nth-child(n + 5) {
+    display: none;
+  }
+}
+.ec-viewall {
+  display: none; /* phones only, see below */
+  margin: 12px 0 0;
+  padding: 9px 13px 8px;
+  border: 1px solid #ffffff;
+  background: none;
+  color: #ffffff;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.ec-viewall:hover {
+  color: var(--color-hv);
+  border-color: var(--color-hv);
+}
+@media (max-width: 700px) {
+  .ec-viewall {
+    display: inline-block;
   }
 }

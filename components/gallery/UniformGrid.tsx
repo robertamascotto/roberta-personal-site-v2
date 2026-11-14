@@ -48,6 +48,11 @@ export default function UniformGrid({
           </button>
         ))}
       </div>
+      {photos.length > 4 && (
+        <button type="button" className="ec-viewall" onClick={(e) => openAt(0, e.currentTarget)}>
+          View all {photos.length}
+        </button>
+      )}
       {viewer}
     </>
   );

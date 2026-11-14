@@ -1,0 +1,331 @@
+/*
+ * Movement: the film fills the page (to the right of the menu column) and an editing timeline runs along its
+ * bottom edge: ruler with timecodes, the sections' names, every clip as a strip of real frames, a red playhead.
+ * Plain black. The page does not scroll.
+ */
+.mv-cin {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--menu-col);
+  right: 0;
+  z-index: 20;
+  overflow: hidden;
+  background: #000000;
+  color: #ffffff;
+  outline: none;
+  container-type: size;
+  --bar: 196px;
+}
+/* soft shadows top and bottom so the writing stays readable over bright frames */
+.mv-cin::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 170px;
+  z-index: 2;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), transparent);
+  pointer-events: none;
+}
+.mv-cin::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--bar) + 260px);
+  z-index: 2;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+  pointer-events: none;
+}
+.mv-mon {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+.mv-v {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+.mv-v.v {
+  object-fit: contain;
+}
+.mv-v.on {
+  opacity: 1;
+}
+
+/* a thin outlined play mark in the middle of the film while it is stopped (tap the film to play again) */
+.mv-play {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: 68px;
+  height: 68px;
+  margin: -34px 0 0 -34px;
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+.mv-play.on {
+  display: block;
+}
+.mv-play::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -11px 0 0 -6px;
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent #ffffff;
+}
+
+.mv-tc,
+.mv-snd,
+.mv-gl,
+.mv-ruler em {
+  font-family: var(--font-body);
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.95), 0 0 16px rgba(0, 0, 0, 0.7);
+}
+.mv-tc {
+  position: absolute;
+  right: 28px;
+  top: 20px;
+  z-index: 3;
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+  pointer-events: none;
+}
+.mv-snd {
+  position: absolute;
+  right: 28px;
+  top: 42px;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.mv-snd:hover,
+.mv-snd:focus-visible {
+  color: var(--color-hv);
+}
+
+.mv-info {
+  position: absolute;
+  left: 28px;
+  bottom: calc(var(--bar) + 54px);
+  max-width: 600px;
+  z-index: 3;
+  pointer-events: none;
+}
+.mv-info.v {
+  max-width: max(150px, calc((100cqw - 100cqh * var(--ar)) / 2 - 52px));
+}
+.mv-info b {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--t-m);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.mv-info p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 21px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+/* the timeline */
+.mv-bar {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 24px;
+  height: var(--bar);
+  z-index: 3;
+}
+.mv-line {
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+}
+.mv-ruler {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.mv-ruler i {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.4);
+}
+.mv-ruler em {
+  position: absolute;
+  top: 2px;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.75);
+}
+.mv-trk {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 22px;
+  bottom: 0;
+}
+.mv-gl {
+  position: absolute;
+  top: 0;
+  height: 34px;
+  margin: 0;
+  padding: 6px 0 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+}
+.mv-gl:hover,
+.mv-gl:focus-visible {
+  color: var(--color-hv);
+}
+.mv-clip {
+  position: absolute;
+  top: 34px;
+  height: 112px;
+  overflow: hidden;
+  background: #161615;
+  opacity: 0.72;
+}
+.mv-clip canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mv-clip.sel,
+.mv-line:hover .mv-clip:hover {
+  opacity: 1;
+}
+.mv-ph {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--color-hv);
+  pointer-events: none;
+}
+.mv-ph::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -4px;
+  border: 4.5px solid transparent;
+  border-top: 7px solid var(--color-hv);
+}
+
+/* this page has its own clock (the timecode), so the corner date stamp steps aside */
+body:has(.mv-cin) .date-stamp {
+  display: none;
+}
+
+/*
+ * Phone and small windows: the film on top (whole picture, never cropped), its title and description under it, and the
+ * timeline at the bottom: swipe it sideways, tap a clip to play it.
+ */
+@media (max-width: 999px) {
+  .mv-cin {
+    display: flex;
+    flex-direction: column;
+    --bar: 172px;
+  }
+  .mv-cin::before,
+  .mv-cin::after {
+    display: none;
+  }
+  .mv-mon {
+    position: relative;
+    inset: auto;
+    flex: 1 1 0;
+    min-height: 0;
+    margin-top: 64px;
+  }
+  .mv-v,
+  .mv-v.v {
+    object-fit: contain;
+  }
+  .mv-tc {
+    top: 76px;
+    right: 20px;
+  }
+  .mv-snd {
+    top: 98px;
+    right: 20px;
+  }
+  .mv-info,
+  .mv-info.v {
+    position: static;
+    flex: none;
+    max-width: none;
+    max-height: 148px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding: 14px 20px 16px;
+    pointer-events: auto;
+  }
+  .mv-bar {
+    position: static;
+    flex: none;
+    height: var(--bar);
+    padding-left: 20px;
+    margin-bottom: max(12px, env(safe-area-inset-bottom));
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+  .mv-bar::-webkit-scrollbar {
+    display: none;
+  }
+  /* 8 pixels for every second of film, so it scrolls sideways */
+  .mv-line {
+    width: calc(var(--tot, 200) * 8px + 33px);
+    margin-right: 20px;
+  }
+  .mv-clip {
+    height: 112px;
+  }
+}

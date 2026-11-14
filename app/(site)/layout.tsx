@@ -1,16 +1,15 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Oswald, Big_Shoulders, DM_Sans, Space_Mono, IBM_Plex_Mono, Bodoni_Moda } from "next/font/google";
+import { Oswald, Anton, DM_Sans } from "next/font/google";
 import { draftMode } from "next/headers";
 import "../globals.css";
 import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import PageTransition from "@/components/PageTransition";
-import BackToTop from "@/components/BackToTop";
 import DateStamp from "@/components/DateStamp";
+import SiteFooter from "@/components/SiteFooter";
 import { getSiteConfigSafe } from "@/studio/lib/helpers";
 import { SITE_URL, SITE_NAME, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/constants";
 
+// Three fonts only: Anton for the big words, DM Sans for everything small, Oswald for the RM mark.
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["500", "700"],
@@ -18,10 +17,10 @@ const oswald = Oswald({
   display: "swap",
 });
 
-const bigShoulders = Big_Shoulders({
+const anton = Anton({
   subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  variable: "--font-big-shoulders",
+  weight: "400",
+  variable: "--font-anton",
   display: "swap",
 });
 
@@ -33,37 +32,7 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const spaceMono = Space_Mono({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-space-mono",
-  display: "swap",
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-ibm-plex-mono",
-  preload: false,
-  display: "swap",
-});
-
-const bodoniModa = Bodoni_Moda({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-bodoni-moda",
-  preload: false,
-  display: "swap",
-});
-
-const fontVariables = [
-  oswald.variable,
-  bigShoulders.variable,
-  dmSans.variable,
-  spaceMono.variable,
-  ibmPlexMono.variable,
-  bodoniModa.variable,
-].join(" ");
+const fontVariables = [oswald.variable, anton.variable, dmSans.variable].join(" ");
 
 export async function generateMetadata(): Promise<Metadata> {
   const siteConfig = await getSiteConfigSafe();
@@ -147,20 +116,14 @@ export default async function SiteLayout({
           siteName={siteConfig?.siteName || undefined}
           navigationLinks={siteConfig?.navigationLinks}
           email={siteConfig?.email || undefined}
+          socials={siteConfig?.socialLinks || undefined}
         />
-        <main id="main-content" tabIndex={-1} className="flex-1">
-          <PageTransition>{children}</PageTransition>
+        {/* On a computer, every page sits to the right of the menu column. Pages change with a plain cut: no fade. */}
+        <main id="main-content" tabIndex={-1} className="flex-1" style={{ paddingLeft: "var(--menu-col)" }}>
+          {children}
         </main>
-        <BackToTop />
+        <SiteFooter email={siteConfig?.email || undefined} socials={siteConfig?.socialLinks || undefined} />
         <DateStamp />
-        <Footer
-          footerTagline={siteConfig?.footerTagline}
-          footerDescription={siteConfig?.footerDescription}
-          socialLinks={siteConfig?.socialLinks}
-          navigationLinks={siteConfig?.navigationLinks}
-          email={siteConfig?.email || undefined}
-          footerLabels={siteConfig?.footerLabels}
-        />
       </body>
     </html>
   );

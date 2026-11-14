@@ -1,0 +1,42 @@
+/* "Page not found": same look as the rest: big Anton title, one line, one outlined button. */
+.nf-page {
+  padding: 90px 44px 140px;
+  max-width: 1334px;
+  margin: 0 auto;
+}
+.nf-h1 {
+  font-family: var(--font-title);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: var(--t-l);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+.nf-p {
+  font-size: 15px;
+  line-height: 25px;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 22px 0 36px;
+}
+.nf-link {
+  display: inline-block;
+  border: 1px solid #fff;
+  color: #fff;
+  font-family: var(--font-title);
+  font-size: var(--t-s);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 12px 22px 10px;
+  text-decoration: none;
+}
+.nf-link:hover {
+  background: #c4453a;
+  border-color: #c4453a;
+}
+@media (max-width: 1000px) {
+  .nf-page {
+    padding: 90px 20px 120px;
+  }
+}

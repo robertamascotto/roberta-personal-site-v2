@@ -1,0 +1,40 @@
+/* The footer: one thin line at the end of the page, lined up with the page content to the right of the menu column. */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: 0 44px 0 calc(var(--menu-col) + 44px);
+  padding: 26px 0 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.site-footer-links {
+  display: flex;
+  gap: 22px;
+}
+.site-footer a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}
+.site-footer a:hover {
+  color: var(--color-hv);
+}
+/* small windows and phones: no menu column */
+@media (max-width: 1000px) {
+  .site-footer {
+    margin: 0 20px;
+  }
+}
+@media (max-width: 700px) {
+  .site-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 24px 0 34px;
+  }
+}

@@ -1,8 +1,7 @@
-import Image from "next/image";
 import type { ColumnPlan } from "@/lib/collage";
 import EditorialCollage, { type CollagePhoto } from "@/components/gallery/EditorialCollage";
 import UniformGrid from "@/components/gallery/UniformGrid";
-import SetNav from "./SetNav";
+import "./products.css";
 
 export interface SpreadSet {
   slug: string;
@@ -16,80 +15,74 @@ export interface SpreadProps {
   title: string;
   category?: string;
   years?: string;
+  /** the project's own written introduction (shown when it has no sets) */
   lead?: string;
-  cover?: { src: string; alt: string };
-  priority?: boolean;
-  /** a mixed-size collage of the project's own photos */
+  /** a mixed-size collage of the project's own photos (projects without sets) */
   collage?: { photos: CollagePhoto[]; wide: ColumnPlan; narrow: ColumnPlan };
-  /** sets of ecommerce photos, all the same size */
+  /** sets of ecommerce photos, all the same size (all shown, one under the other) */
   sets: SpreadSet[];
 }
 
 /**
- * One project: its title, introduction, cover and facts stay in a column on the left while its
- * photographs scroll on the right. Clicking any photo opens it in a normal "click to zoom" view.
+ * One project, catalog style: on the left (scrolling away with the page) its title, facts and, when it has
+ * sets, a small list that jumps to each one; its photos on the right. A project with sets shows every set one
+ * under the other, each with its name, description and a strict grid; a project without sets shows its own
+ * photos as a collage with its introduction under the facts.
  */
 export default function ProjectBlock(p: SpreadProps) {
+  const hasSets = p.sets.length > 0;
+
   const facts = [
     ["Category", p.category],
-    ["Year", p.years],
+    ["Years", p.years],
+    ...(hasSets ? [["Sets", String(p.sets.length)]] : []),
   ].filter(([, value]) => value) as [string, string][];
 
   return (
-    <section id={p.slug} className="scroll-mt-20 border-t border-ink/10 py-14 max-[640px]:py-10">
-      <div className="grid grid-cols-1 min-[901px]:grid-cols-[230px_minmax(0,1fr)] gap-x-14 gap-y-8">
-        <aside className="min-[901px]:sticky min-[901px]:top-24 self-start">
-          <h2 className="font-title font-bold uppercase text-[25px] leading-[1.05] tracking-[-0.04em] m-0 mb-3.5 [overflow-wrap:anywhere]">
-            {p.title}
-          </h2>
-          {p.lead && <p className="font-body text-sm leading-[1.55] text-ink/80 m-0 mb-[18px]">{p.lead}</p>}
-          {p.cover && (
-            <div className="relative aspect-[3/2] overflow-hidden bg-ink/[0.06] mb-[18px] max-[900px]:max-w-[360px]">
-              <Image src={p.cover.src} alt={p.cover.alt} fill priority={p.priority} sizes="(min-width: 901px) 230px, 360px" className="object-cover" />
-            </div>
-          )}
-          {facts.length > 0 && (
-            <dl className="m-0 border-b border-ink/10">
-              {facts.map(([name, value]) => (
-                <div key={name} className="flex justify-between gap-4 py-[9px] border-t border-ink/10 text-xs">
-                  <dt className="text-ink/50">{name}</dt>
-                  <dd className="m-0 text-right">{value}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-          {p.sets.length > 1 && <SetNav items={p.sets.map((s) => ({ id: `${p.slug}-${s.slug}`, title: s.title }))} />}
-        </aside>
+    <section id={p.slug} className="pr-proj">
+      <aside className="pr-aside">
+        <h2 className="pr-title">{p.title}</h2>
+        {facts.length > 0 && (
+          <dl className="pr-facts">
+            {facts.map(([name, value]) => (
+              <div key={name}>
+                <dt>{name}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {p.sets.length > 1 && (
+          <nav className="pr-jump" aria-label={`${p.title}: sets`}>
+            {p.sets.map((s) => (
+              <a key={s.slug} href={`#${p.slug}-${s.slug}`}>
+                {s.title}
+              </a>
+            ))}
+          </nav>
+        )}
+        {!hasSets && p.lead && <p className="pr-desc">{p.lead}</p>}
+      </aside>
 
-        <div className="min-w-0 flex flex-col gap-14">
-          {p.collage && (
-            <EditorialCollage
-              zoom
-              title={p.title}
-              photos={p.collage.photos}
-              wide={p.collage.wide}
-              narrow={p.collage.narrow}
-              wideSizes="22vw"
-            />
-          )}
-          {p.sets.map((set) => (
-            <section key={set.slug} id={`${p.slug}-${set.slug}`} className="scroll-mt-24">
-              <h3
-                className={`font-title font-bold uppercase text-[14.5px] leading-none tracking-[-0.04em] m-0 pt-3 border-t border-ink/10 ${
-                  set.description ? "mb-1.5" : "mb-3.5"
-                }`}
-              >
-                {set.title}
-              </h3>
-              {set.description && (
-                <p className="font-body text-[12.5px] leading-[1.55] text-ink/60 m-0 mb-3.5 max-w-[620px] whitespace-pre-line">
-                  {set.description}
-                </p>
-              )}
-              <UniformGrid zoom title={`${p.title}, ${set.title}`} photos={set.photos} />
-            </section>
-          ))}
-        </div>
+      <div className="pr-main">
+        {hasSets ? (
+          <div className="pr-stack">
+            {p.sets.map((s) => (
+              <section key={s.slug} id={`${p.slug}-${s.slug}`} className="pr-set">
+                <h3 className="pr-set-title">
+                  {s.title}
+                  <i>{s.photos.length}</i>
+                </h3>
+                {s.description && <p className="pr-desc">{s.description}</p>}
+                <UniformGrid title={`${p.title}, ${s.title}`} photos={s.photos} />
+              </section>
+            ))}
+          </div>
+        ) : (
+          p.collage && (
+            <EditorialCollage title={p.title} photos={p.collage.photos} wide={p.collage.wide} narrow={p.collage.narrow} wideSizes="22vw" />
+          )
+        )}
       </div>
     </section>
   );

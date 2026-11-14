@@ -4,7 +4,6 @@ import { getProductsPage, safeFetch, type ProductsPageProject } from "@/studio/l
 import { urlFor } from "@/studio/lib/image";
 import { FEATURED_PHOTOS } from "@/lib/productSelection";
 import { assetId, focalPoint, imageDimensions, planColumns, type PhotoShape } from "@/lib/collage";
-import PageHero from "@/components/PageHero";
 import ProjectBlock, { type SpreadProps } from "@/components/products/ProjectBlock";
 import type { CollagePhoto } from "@/components/gallery/EditorialCollage";
 
@@ -48,13 +47,11 @@ function toPhotos(frames: Frame[], describe: (n: number, total: number) => strin
   }));
 }
 
-const NUMBER_WORDS = ["", "One", "Two", "Three", "Four", "Five", "Six"];
-
 export default async function ProductsPage() {
   const { isEnabled: isPreview } = await draftMode();
   const projects = await safeFetch(getProductsPage(isPreview), []);
 
-  const spreads: SpreadProps[] = projects.map((project, index) => {
+  const spreads: SpreadProps[] = projects.map((project) => {
     const ownFrames = galleryFrames(project);
     const sets = (project.sets ?? [])
       .map((set) => {
@@ -77,24 +74,12 @@ export default async function ProductsPage() {
       return { ar: dims ? dims.w / dims.h : 1 };
     });
 
-    // A project with no written introduction gets a plain line naming its sets.
-    const setNames = sets.map((s) => s.title);
-    const lead =
-      project.description ||
-      (setNames.length
-        ? `${NUMBER_WORDS[setNames.length] ?? setNames.length} set${setNames.length > 1 ? "s" : ""}: ${
-            setNames.length > 1 ? `${setNames.slice(0, -1).join(", ")} and ${setNames[setNames.length - 1]}` : setNames[0]
-          }.`
-        : undefined);
-
     return {
       slug: project.slug,
       title: project.title,
       category: project.categoryLabel,
       years: project.yearRange,
-      lead,
-      cover: project.coverImage ? { src: urlFor(project.coverImage).url(), alt: `${project.title}, cover photo` } : undefined,
-      priority: index === 0,
+      lead: project.description,
       collage: ownFrames.length
         ? {
             photos: toPhotos(ownFrames, (n, total) => `${project.title}: photo ${n} of ${total}`),
@@ -107,22 +92,8 @@ export default async function ProductsPage() {
   });
 
   return (
-    <div className="mx-auto w-[min(calc(100%-72px),1328px)] max-[640px]:w-[calc(100%-40px)] pt-[90px] pb-24">
-      <PageHero
-        label="Products"
-        headline={"Ecommerce and lookbook photography\nfor clothing and jewelry brands."}
-        maxWidth="max-w-[1000px]"
-        compactOnMobile
-      />
-      {spreads.length > 1 && (
-        <nav aria-label="Projects" className="-mt-8 mb-9 flex flex-wrap gap-x-5 gap-y-1 font-body text-[13px]">
-          {spreads.map((spread) => (
-            <a key={spread.slug} href={`#${spread.slug}`} className="text-ink/50! no-underline transition-colors hover:text-ink!">
-              {spread.title}
-            </a>
-          ))}
-        </nav>
-      )}
+    <div className="pr-page">
+      <h1 className="sr-only">Products: ecommerce and lookbook photography for clothing and jewelry brands</h1>
       {spreads.length === 0 && <p className="text-ink/60">No projects yet.</p>}
       {spreads.map((spread) => (
         <ProjectBlock key={spread.slug} {...spread} />

@@ -95,6 +95,8 @@ export interface EditorialWithGallery {
   year?: string;
   description?: string;
   gallery?: { image: unknown }[];
+  /** tall photos made for phones (optional) */
+  mobileGallery?: { image: unknown }[];
 }
 
 export interface ProductsPageSet {

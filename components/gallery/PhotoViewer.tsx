@@ -14,9 +14,10 @@ export interface CollagePhoto {
 }
 
 /**
- * The white full-screen photo viewer used by the Editorials collages and the Products
- * pages: a little white at the sides, tall photos scroll, arrow keys / swipe / Esc, only
- * the sharp photo is shown (never a stretched small one), neighbours are preloaded.
+ * The black full-screen photo viewer used by the Editorials and the Products pages: every
+ * photo is shown whole and fitted to the screen, arrow keys / mouse wheel / swipe / Esc
+ * change photo, only the sharp photo is shown (never a stretched small one), neighbours
+ * are preloaded.
  *
  *   const { openAt, warm, viewer } = usePhotoViewer(title, photos);
  *   ...  onClick={(e) => openAt(index, e.currentTarget)}  onPointerEnter={() => warm(index)} ...
@@ -144,6 +145,40 @@ function Viewer({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [index, go, onClose]);
+
+  // Mouse wheel / trackpad: one scroll gesture = one photo. A trackpad keeps sending small "coasting"
+  // events after the finger lifts, so after a change we wait for the movement to die down
+  // (or for a clearly new, firmer scroll) before allowing the next one.
+  const wheel = useRef({ sum: 0, locked: false, lockedAt: 0, lastAt: 0 });
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || count < 2) return;
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) return;
+      e.preventDefault();
+      const w = wheel.current;
+      const now = performance.now();
+      const k = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
+      const d = (Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX) * k;
+      const quiet = now - w.lastAt > 160;
+      w.lastAt = now;
+      if (w.locked) {
+        if (quiet || (now - w.lockedAt > 650 && Math.abs(d) >= 30)) w.locked = false;
+        else return;
+      }
+      if (quiet) w.sum = 0;
+      w.sum += d;
+      if (Math.abs(w.sum) >= 40) {
+        const dir = w.sum > 0 ? 1 : -1;
+        w.sum = 0;
+        w.locked = true;
+        w.lockedAt = now;
+        go(index + dir);
+      }
+    };
+    root.addEventListener("wheel", onWheel, { passive: false });
+    return () => root.removeEventListener("wheel", onWheel);
+  }, [index, go, count]);
 
   // Swipe sideways to change photo; up and down still scrolls a tall photo.
   const onTouchStart = (e: React.TouchEvent) => {

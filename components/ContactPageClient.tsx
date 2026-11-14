@@ -2,27 +2,30 @@
 
 import { useState, type FormEvent } from "react";
 import type { SiteConfig } from "@/studio/lib/helpers";
+import { toValidSocialLinks } from "@/lib/types";
+import "./contact/contact.css";
 
+// The page's words. The heading, labels, project types, location and availability come from Sanity when they are
+// filled in there; the one-line intro is fixed on purpose (Roberta's own wording, shorter than what Sanity holds).
 const defaults = {
-  sectionLabel: "Contact",
-  heading: "Let's talk",
+  heading: "Let's Work Together",
+  intro: "Have a project in mind? I'd love to hear about it.",
   formLabels: {
     name: "Name",
     email: "Email",
-    projectType: "Project Type",
-    message: "Project",
-    submitButton: "Send enquiry",
+    projectType: "Project type",
+    message: "Message",
+    submitButton: "Send message",
   },
   formPlaceholders: {
     name: "Your name",
-    email: "you@brand.com",
+    email: "your@email.com",
     projectType: "Select a project type",
-    message: "What you need, timeline, anything else",
+    message: "Tell me about your project...",
   },
-  successMessage: "Thanks — your brief has been noted. In a live site this would land in my inbox.",
+  successMessage: "Thank you! Your message has been sent.",
   errorMessage: "Something went wrong. Please try again or email me directly.",
-  contactInfoHeading: "Direct",
-  availability: "Replies within two working days.",
+  availability: "Open for projects",
 };
 
 interface ContactPageClientProps {
@@ -34,7 +37,6 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
 
   const contactPage = siteConfig?.contactPage;
 
-  const sectionLabel = contactPage?.sectionLabel || defaults.sectionLabel;
   const heading = contactPage?.heading || defaults.heading;
 
   const formLabels = {
@@ -52,9 +54,8 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
     message: contactPage?.formPlaceholders?.message || defaults.formPlaceholders.message,
   };
 
-  const cmsProjectTypes = contactPage?.projectTypes?.filter(
-    (t): t is string => !!t && t.length > 0
-  );
+  const projectTypes = contactPage?.projectTypes?.filter((t): t is string => !!t && t.length > 0);
+  const socials = toValidSocialLinks(siteConfig?.socialLinks || []);
 
   const successMessage = contactPage?.successMessage || defaults.successMessage;
   const errorMessage = contactPage?.errorMessage || defaults.errorMessage;
@@ -88,34 +89,29 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
   };
 
   return (
-    <div className="max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] pt-[90px]">
-      <section className="pt-[72px] pb-14 max-w-[64ch]">
-        <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-[18px]">{sectionLabel}</span>
-        <h1 className="font-title font-bold text-[clamp(20px,2.6vw,32px)] leading-[1.15] tracking-[-0.03em] m-0">
-          {heading}
-        </h1>
-      </section>
+    <div className="ct-page">
+      <div className="ct-wrap">
+        <h1 className="ct-h1">{heading}</h1>
+        <p className="ct-intro">{defaults.intro}</p>
 
-      <section className="contact-split border-t border-ink/12">
-        <div>
-          <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">Send a brief</span>
-          <form onSubmit={handleSubmit} className="grid gap-6 max-w-[44ch]">
-            <label className="grid gap-2">
-              <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.name}</span>
-              <input type="text" name="name" required className="editorial-input" placeholder={formPlaceholders.name} />
+        <div className="ct-cols">
+          <form onSubmit={handleSubmit} className="ct-form">
+            <label>
+              <span className="ct-label">{formLabels.name}</span>
+              <input type="text" name="name" required placeholder={formPlaceholders.name} />
             </label>
 
-            <label className="grid gap-2">
-              <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.email}</span>
-              <input type="email" name="email" required className="editorial-input" placeholder={formPlaceholders.email} />
+            <label>
+              <span className="ct-label">{formLabels.email}</span>
+              <input type="email" name="email" required placeholder={formPlaceholders.email} />
             </label>
 
-            {cmsProjectTypes && cmsProjectTypes.length > 0 && (
-              <label className="grid gap-2">
-                <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.projectType}</span>
-                <select name="project-type" className="editorial-input cursor-pointer appearance-none">
+            {projectTypes && projectTypes.length > 0 && (
+              <label>
+                <span className="ct-label">{formLabels.projectType}</span>
+                <select name="project-type" defaultValue="">
                   <option value="">{formPlaceholders.projectType}</option>
-                  {cmsProjectTypes.map((type) => (
+                  {projectTypes.map((type) => (
                     <option key={type} value={type.toLowerCase().replace(/\s+/g, "-")}>
                       {type}
                     </option>
@@ -124,58 +120,53 @@ export default function ContactPageClient({ siteConfig }: ContactPageClientProps
               </label>
             )}
 
-            <label className="grid gap-2">
-              <span className="text-xs tracking-[0.1em] uppercase text-ink/55">{formLabels.message}</span>
-              <textarea
-                name="message"
-                rows={5}
-                required
-                className="editorial-input resize-y leading-[24px]"
-                placeholder={formPlaceholders.message}
-              />
+            <label>
+              <span className="ct-label">{formLabels.message}</span>
+              <textarea name="message" rows={5} required placeholder={formPlaceholders.message} />
             </label>
 
-            <button
-              type="submit"
-              disabled={formStatus === "submitting"}
-              className="justify-self-start mt-1 bg-ink text-white border-0 px-7 py-[15px] font-body text-sm font-semibold tracking-[0.02em] cursor-pointer hover:bg-ink/[0.82] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+            <button type="submit" disabled={formStatus === "submitting"} className="ct-send">
               {formStatus === "submitting" ? "Sending..." : formLabels.submitButton}
             </button>
 
-            {formStatus === "success" && (
-              <p role="status" aria-live="polite" className="text-[13.5px] leading-[21px] text-ink/60 m-0">
-                {successMessage}
-              </p>
-            )}
-            {formStatus === "error" && (
-              <p role="alert" className="text-[13.5px] leading-[21px] text-ink/60 m-0">
-                {errorMessage}
-              </p>
-            )}
+            <p className="ct-msg" role={formStatus === "error" ? "alert" : "status"} aria-live="polite">
+              {formStatus === "success" && successMessage}
+              {formStatus === "error" && errorMessage}
+            </p>
           </form>
-        </div>
 
-        <div>
-          <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-6">
-            {contactPage?.contactInfoHeading || defaults.contactInfoHeading}
-          </span>
-          {siteConfig?.email && (
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="font-accent italic font-light text-[clamp(22px,2.4vw,30px)] leading-[1.25] no-underline inline-block mb-3"
-            >
-              {siteConfig.email}
-            </a>
-          )}
-          <p className="text-sm leading-[22px] text-ink/60 mb-2.5 mt-0">
-            {contactPage?.availability || defaults.availability}
-          </p>
-          {contactPage?.location && (
-            <p className="text-[11px] tracking-[0.1em] uppercase text-ink/38 m-0">{contactPage.location}</p>
-          )}
+          <div className="ct-direct">
+            {siteConfig?.email && (
+              <>
+                <span className="ct-label">Email</span>
+                <a className="ct-mail" href={`mailto:${siteConfig.email}`}>
+                  {siteConfig.email}
+                </a>
+              </>
+            )}
+            {socials.length > 0 && (
+              <>
+                <span className="ct-label">Follow along</span>
+                <div className="ct-soc">
+                  {socials.map((s) => (
+                    <a key={s.platform} href={s.url} target="_blank" rel="noopener noreferrer">
+                      {s.platform}
+                    </a>
+                  ))}
+                </div>
+              </>
+            )}
+            {contactPage?.location && (
+              <>
+                <span className="ct-label">Based in</span>
+                <p>{contactPage.location}</p>
+              </>
+            )}
+            <span className="ct-label">Availability</span>
+            <p>{contactPage?.availability || defaults.availability}</p>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

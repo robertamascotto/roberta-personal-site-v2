@@ -1,0 +1,155 @@
+/*
+ * Products: every project in the same "catalog" layout. On the left (not sticky, it scrolls away with the
+ * page) the title, a few facts and a small list of its sets; its photos on the right, every set one under
+ * the other. Plain black page. Titles have no animation, they just turn red while you point at them.
+ */
+.pr-page {
+  padding: 90px 28px 140px;
+}
+.pr-proj {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 40px;
+  max-width: 1334px;
+  margin: 0 auto;
+  padding-bottom: 150px;
+}
+.pr-main {
+  min-width: 0;
+}
+.pr-main .ec-tile {
+  background: #1a1a19;
+}
+.pr-aside {
+  align-self: start;
+}
+.pr-title {
+  margin: 0 0 24px;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--t-l);
+  line-height: 0.86;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+.pr-title:hover {
+  color: var(--color-hv);
+}
+.pr-facts {
+  margin: 0 0 26px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.pr-facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+.pr-facts dt {
+  color: rgba(255, 255, 255, 0.5);
+}
+.pr-facts dd {
+  margin: 0;
+  text-align: right;
+}
+.pr-desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 21px;
+  color: rgba(255, 255, 255, 0.72);
+  white-space: pre-line;
+}
+
+/* a small list under the facts that jumps to each set */
+.pr-jump {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 18px;
+}
+.pr-jump a {
+  width: max-content;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6) !important;
+  text-decoration: none;
+}
+.pr-jump a:hover {
+  color: var(--color-hv) !important;
+}
+
+/* every set one under the other: its name and photo count, its description, then its photos */
+.pr-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+.pr-set {
+  scroll-margin-top: 24px;
+}
+.pr-set-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--t-m);
+  line-height: 1.02;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+.pr-set-title i {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.45);
+}
+.pr-set .pr-desc {
+  max-width: 62ch;
+  margin-bottom: 14px;
+}
+
+/* narrow screens (the phone layout is designed later): text stays above the photos */
+@media (max-width: 900px) {
+  .pr-proj {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+
+/* phone */
+@media (max-width: 700px) {
+  .pr-page {
+    padding: 84px 20px 60px;
+  }
+  .pr-proj {
+    gap: 20px;
+    padding-bottom: 70px;
+  }
+  .pr-title {
+    margin-bottom: 18px;
+  }
+  .pr-facts {
+    margin-bottom: 16px;
+  }
+  .pr-jump {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0 0 8px;
+  }
+  .pr-stack {
+    gap: 40px;
+  }
+}

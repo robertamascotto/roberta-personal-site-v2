@@ -1,0 +1,176 @@
+/*
+ * Contact: big heading, one short line, then the form on the left and the direct details on the right.
+ * Plain black page, red when you point at or click into something.
+ */
+.ct-page {
+  padding: 90px 44px 140px;
+}
+.ct-wrap {
+  max-width: 1334px;
+  margin: 0 auto;
+}
+.ct-h1 {
+  font-family: var(--font-title);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: var(--t-l); /* same size as the project names on Products */
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+.ct-intro {
+  font-size: 15px;
+  line-height: 25px;
+  max-width: 52ch;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 22px 0 0;
+}
+.ct-cols {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 70px;
+  margin-top: 60px;
+  padding-top: 34px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.ct-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* the form */
+.ct-form {
+  display: grid;
+  gap: 26px;
+  max-width: 46ch;
+}
+.ct-form label {
+  display: grid;
+  gap: 8px;
+}
+.ct-form input,
+.ct-form select,
+.ct-form textarea {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 24px;
+  padding: 8px 0;
+  width: 100%;
+  outline: none;
+}
+.ct-form textarea {
+  resize: vertical;
+}
+.ct-form input::placeholder,
+.ct-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.ct-form input:focus,
+.ct-form select:focus,
+.ct-form textarea:focus {
+  border-bottom-color: var(--color-hv, #c4453a);
+}
+.ct-form select {
+  appearance: none;
+  cursor: pointer;
+}
+.ct-form select option {
+  background: #0b0b0a;
+  color: #fff;
+}
+.ct-send {
+  justify-self: start;
+  background: none;
+  border: 1px solid #fff;
+  color: #fff;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: var(--t-s);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 12px 22px 10px;
+  cursor: pointer;
+}
+.ct-send:hover:not(:disabled) {
+  background: #c4453a;
+  border-color: #c4453a;
+}
+.ct-send:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.ct-msg {
+  font-size: var(--t-body);
+  line-height: 21px;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+  min-height: 21px;
+}
+
+/* the direct details */
+.ct-direct {
+  container-type: inline-size;
+}
+.ct-direct .ct-label {
+  margin: 30px 0 8px;
+}
+.ct-direct .ct-label:first-child {
+  margin-top: 0;
+}
+.ct-mail {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: max(19px, min(30px, 5.4cqw));
+  line-height: 1.1;
+  color: #fff;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.ct-mail:hover {
+  color: #c4453a;
+}
+.ct-soc {
+  display: flex;
+  gap: 22px;
+}
+.ct-soc a {
+  font-size: 15px;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.ct-soc a:hover {
+  color: #c4453a;
+  border-bottom-color: #c4453a;
+}
+.ct-direct p {
+  font-size: 15px;
+  line-height: 24px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* narrow windows: one column (phone version still to be designed) */
+@media (max-width: 1000px) {
+  .ct-page {
+    padding: 90px 20px 120px;
+  }
+}
+@media (max-width: 880px) {
+  .ct-cols {
+    grid-template-columns: 1fr;
+    gap: 56px;
+    margin-top: 44px;
+  }
+}

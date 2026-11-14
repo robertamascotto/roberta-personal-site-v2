@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import "./not-found.css";
 
 export const metadata: Metadata = {
   title: "Page Not Found",
@@ -8,18 +9,11 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="max-w-[1240px] mx-auto px-5 md:px-[clamp(20px,5vw,64px)] pt-[90px] pb-32 text-center">
-      <p className="font-label text-xs tracking-[0.3em] uppercase text-ink/40 mb-4">Page Not Found</p>
-      <h1 className="font-title font-bold text-4xl md:text-5xl lg:text-6xl tracking-[-0.03em] mb-6">404</h1>
-      <p className="text-ink/60 max-w-md mx-auto mb-12">
-        The page you&apos;re looking for doesn&apos;t exist or has been moved.
-      </p>
-      <Link
-        href="/"
-        className="inline-block px-10 py-4 text-sm tracking-[0.1em] uppercase border border-ink hover:bg-ink hover:text-paper transition-all duration-500 no-underline"
-        style={{ transitionTimingFunction: "var(--ease-luxe)" }}
-      >
-        Back to Home
+    <div className="nf-page">
+      <h1 className="nf-h1">Page not found</h1>
+      <p className="nf-p">This page doesn&apos;t exist, or it has moved.</p>
+      <Link href="/" className="nf-link">
+        Back to home
       </Link>
     </div>
   );

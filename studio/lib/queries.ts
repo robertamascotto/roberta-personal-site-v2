@@ -62,7 +62,8 @@ export const editorialsWithGalleriesQuery = groq`*[_type == "editorial"] | order
   "slug": slug.current,
   year,
   description,
-  gallery[]{ image }
+  gallery[]{ image },
+  mobileGallery[]{ image }
 }`;
 
 // Everything the one long Products page needs: each project with its cover, its photos

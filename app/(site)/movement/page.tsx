@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { draftMode } from "next/headers";
 import { getMovementPage, safeFetch } from "@/studio/lib/helpers";
-import { isHiddenEditorial } from "@/lib/constants";
-import PageContainer from "@/components/PageContainer";
-import PageHero from "@/components/PageHero";
-import VideoTile from "@/components/gallery/VideoTile";
-import VideoGroupRenderer from "@/components/gallery/VideoGroupRenderer";
+import MovementCinema, { type Clip } from "@/components/movement/MovementCinema";
+import measured from "@/lib/movementClips.json";
 
 export const metadata: Metadata = {
   title: "Movement",
@@ -14,47 +10,56 @@ export const metadata: Metadata = {
   alternates: { canonical: "/movement" },
 };
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/** running time and shape of a clip, measured ahead of time (scripts/build-movement-thumbs.mjs); missing for a brand new video */
+const measure = (url: string): Pick<Clip, "duration" | "aspect"> => {
+  const hash = url.split("/").pop()?.replace(/\.mp4$/, "") ?? "";
+  const m = (measured as Record<string, { d: number; ar: number }>)[hash];
+  return m ? { duration: m.d, aspect: m.ar } : {};
+};
+
 export default async function MovementPage() {
   const { isEnabled: isPreview } = await draftMode();
   const page = await safeFetch(getMovementPage(isPreview), null);
 
+  // the reel first, then every section's videos in order: this is the order along the timeline
+  const clips: Clip[] = [];
   const reel = page?.featuredReel;
-  const reelBlock = reel && (
-    <div className="mb-6">
-      <VideoTile videoUrl={reel.videoUrl} aspectRatio="21/9" autoPlay />
-      <div className="mt-4">
-        {reel.tag && <span className="block font-label text-xs tracking-[0.14em] uppercase text-ink/50 mb-2">{reel.tag}</span>}
-        <h2 className="font-accent italic font-light text-[22px] leading-[1.25] tracking-[-0.005em] m-0 mb-2">{reel.title}</h2>
-        {reel.blurb && <p className="text-[15px] leading-[25px] text-ink/72 m-0">{reel.blurb}</p>}
-        {reel.year && <span className="block mt-1.5 font-body text-[11px] tracking-[0.1em] text-ink/32">{reel.year}</span>}
-      </div>
-    </div>
-  );
+  if (reel?.videoUrl) {
+    clips.push({ url: reel.videoUrl, name: reel.title, caption: reel.blurb ?? "", group: "Movement", ...measure(reel.videoUrl) });
+  }
+  for (const group of page?.videoGroups ?? []) {
+    (group.videos ?? []).forEach((video, i) => {
+      if (!video.videoUrl) return;
+      clips.push({
+        url: video.videoUrl,
+        name: video.label || `${group.sectionLabel} ${pad(i + 1)}`,
+        caption: video.caption || group.intro || "",
+        group: group.sectionLabel,
+        ...measure(video.videoUrl),
+      });
+    });
+  }
 
   return (
-    <PageContainer>
-      <PageHero
-        label={page?.heroLabel || "Movement"}
-        headline={page?.heroHeadline || "Reels and short-form video content."}
-        body={page?.heroBody}
-        maxWidth=""
-      />
-
-      {reel && (reel.linkedEditorialSlug ? (
-        <Link href={isHiddenEditorial(reel.linkedEditorialSlug) ? "/editorials" : `/editorials#${reel.linkedEditorialSlug}`} className="block no-underline">
-          {reelBlock}
-        </Link>
+    <>
+      <h1 className="sr-only">{page?.heroHeadline || "Reels and short-form video content."}</h1>
+      {page?.heroBody && <p className="sr-only">{page.heroBody}</p>}
+      {clips.length > 0 ? (
+        <>
+          <MovementCinema clips={clips} />
+          <ul className="sr-only">
+            {clips.map((clip) => (
+              <li key={clip.url}>
+                {clip.group}: {clip.name}. {clip.caption}
+              </li>
+            ))}
+          </ul>
+        </>
       ) : (
-        reelBlock
-      ))}
-
-      <div>
-        {page?.videoGroups?.map((group, i) => (
-          <VideoGroupRenderer key={i} group={group} isLast={i === (page.videoGroups?.length ?? 0) - 1} />
-        ))}
-      </div>
-
-      {!page && <p className="text-ink/60 pb-24">Add Movement page content in the Studio.</p>}
-    </PageContainer>
+        <p className="text-ink/60 pt-24">Add Movement page content in the Studio.</p>
+      )}
+    </>
   );
 }
