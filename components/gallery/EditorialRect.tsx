@@ -144,7 +144,6 @@ export default function EditorialRect({ slug, title, description, photos, mobile
     <button
       key={i}
       type="button"
-      data-cover={i === 0 ? "" : undefined}
       className={`ec-tile ed-tile ${className}`}
       style={style}
       aria-label={`Open photo ${i + 1} of ${count}: ${title}`}
@@ -164,7 +163,7 @@ export default function EditorialRect({ slug, title, description, photos, mobile
     </button>
   );
 
-  const small = "(min-width: 1001px) 420px, (min-width: 701px) 60vw, 100vw";
+  const small = "(min-width: 1001px) 420px, 60vw";
   let body: React.ReactNode;
   if (mode === "single") {
     const bigIndex = pick >= 0 && pick < count ? pick : 0;
@@ -209,7 +208,7 @@ export default function EditorialRect({ slug, title, description, photos, mobile
   }
 
   return (
-    <section id={slug} className="ed-proj" style={{ "--cover-ar": Math.min(2, Math.max(0.8, photos[0]?.ar ?? 1.5)) } as CSSProperties}>
+    <section id={slug} className="ed-proj">
       <div className="ed-wrap">
         <div ref={blockRef} className={`ed-blk ${mode}`}>
           {body}

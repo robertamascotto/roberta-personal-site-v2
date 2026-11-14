@@ -183,7 +183,7 @@
   white-space: pre-line;
 }
 
-/* phone: each shoot is ONE whole photo (its first) with the title on it; tapping opens all of them in the viewer */
+/* phone: the same collage as on the computer, full width; only the spacing changes */
 @media (max-width: 700px) {
   .ed-page {
     padding: 84px 0 70px;
@@ -193,28 +193,6 @@
   }
   .ed-wrap {
     width: 100%;
-    aspect-ratio: var(--cover-ar, 1.5);
-  }
-  .ed-blk {
-    cursor: pointer;
-    overflow: hidden !important;
-  }
-  .ed-blk .ed-rows,
-  .ed-blk .ed-r,
-  .ed-blk .ed-grp {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-  .ed-blk .ed-tile {
-    display: none !important;
-  }
-  .ed-blk .ed-tile[data-cover] {
-    display: block !important;
-    position: absolute;
-    inset: 0;
-    width: 100% !important;
-    height: 100% !important;
   }
   .ed-info {
     width: auto;
